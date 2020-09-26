@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://brunomcuesta.github.io/about/</loc>
+    <lastmod>2020-09-26T18:29:29-03:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://brunomcuesta.github.io/posts/2020/09/primeiro-post/</loc>
     <lastmod>2020-09-26T13:59:56-03:00</lastmod>
   </url>
@@ -14,7 +19,7 @@
   
   <url>
     <loc>https://brunomcuesta.github.io/</loc>
-    <lastmod>2020-09-26T13:59:56-03:00</lastmod>
+    <lastmod>2020-09-26T18:29:29-03:00</lastmod>
     <priority>0</priority>
   </url>
   

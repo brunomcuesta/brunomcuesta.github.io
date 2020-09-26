@@ -6,10 +6,19 @@
     <description>Recent content on Haderach</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Sat, 26 Sep 2020 13:59:56 -0300</lastBuildDate>
+    <lastBuildDate>Sat, 26 Sep 2020 18:29:29 -0300</lastBuildDate>
     
 	<atom:link href="https://brunomcuesta.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>About</title>
+      <link>https://brunomcuesta.github.io/about/</link>
+      <pubDate>Sat, 26 Sep 2020 18:29:29 -0300</pubDate>
+      
+      <guid>https://brunomcuesta.github.io/about/</guid>
+      <description> Analista e Desenvolvedor de Sistemas Desenvolvedor Python/Django CTF player Pentester  </description>
+    </item>
     
     <item>
       <title>Primeiro Post</title>
