@@ -56,7 +56,7 @@ Varredura e Enumeração Port Scan Ao executar o Nmap são mostradas três porta
 
 <meta itemprop="datePublished" content="2021-02-20T10:00:00-03:00" />
 <meta itemprop="dateModified" content="2021-02-20T10:00:00-03:00" />
-<meta itemprop="wordCount" content="1099">
+<meta itemprop="wordCount" content="1091">
 
 
 
@@ -347,9 +347,7 @@ $2a$12$ik.0o.TGRwMgUmyOR.Djzuyb/hjisgk2vws1xYC/hxw8M1nFk0MQy</code></pre></div>
 
 
 
-<p>Pesquisando por vulnerabilidades na versão 5.2.2.1 do Rails foi descoberta a CVE-2020-8165 no site <a href="https://brunomcuesta.github.io/" title="mitre.org" target="_blank">mitre.org</a>.</p>
-
-<p>URL: <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-8165" target="_blank">https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-8165</a></p>
+<p>Pesquisando por vulnerabilidades na versão 5.2.2.1 do Rails foi descoberta a <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-8165" target="_blank">CVE-2020-8165</a> no site <a href="https://cve.mitre.org/" target="_blank">mitre.org</a>.</p>
 
 
     <img src="https://i.imgur.com/bRgeBwk.png"  alt="CVE-2020-8165"  class="center"  style="border-radius: 8px;"  />
@@ -360,14 +358,12 @@ $2a$12$ik.0o.TGRwMgUmyOR.Djzuyb/hjisgk2vws1xYC/hxw8M1nFk0MQy</code></pre></div>
 
 <h3 id="exploração">Exploração</h3>
 
-<p>Buscando por exploits para a CVE-2020-8165 foi encontrado no <a href="https://brunomcuesta.github.io/" title="github" target="_blank">github</a> um exploit público.</p>
+<p>Buscando por exploits para a <a href="https://github.com/masahiro331/CVE-2020-8165" target="_blank">CVE-2020-8165</a> foi encontrado no <a href="https://github.com/" target="_blank">github</a> um exploit público.</p>
 
 
     <img src="https://i.imgur.com/uUSwT37.png"  alt="Pesquisa de Exploits"  class="center"  style="border-radius: 8px;"  />
 
 
-
-<p>URL: <a href="https://github.com/masahiro331/CVE-2020-8165" target="_blank">https://github.com/masahiro331/CVE-2020-8165</a></p>
 
 <p>O exploit consiste em encodar uma string de comando que será o payload a ser enviado ao servidor. O envio do payload é efetuado duas vezes usando o curl e o alvo utilizado é a página de cadastro de usuário.</p>
 
@@ -389,20 +385,16 @@ $2a$12$ik.0o.TGRwMgUmyOR.Djzuyb/hjisgk2vws1xYC/hxw8M1nFk0MQy</code></pre></div>
 
 <h3 id="escalação-de-privilégios">Escalação de Privilégios</h3>
 
-<p>Após executar o exploit com o payload e receber a shell reversa foi possível analisar o conteúdo do diretório do usuário bill. Neste diretório foi encontrada a pasta oculta do Google Authenticator.</p>
+<p>Após executar o exploit com o payload e receber a shell reversa foi possível analisar o conteúdo do diretório do usuário bill. Neste diretório foi encontrado o arquivo oculto do Google Authenticator.</p>
 
 
     <img src="https://i.imgur.com/PVwPiZF.png"  alt="Diretório Bill"  class="center"  style="border-radius: 8px;"  />
 
 
 
-<p>Ao tentar executar algum comando com o &lsquo;sudo&rsquo; utilizando este usuário surge a solicitação do código de autenticação do Google Authenticator (verificação em duas etapas).</p>
+<p>Ao tentar executar algum comando com o &lsquo;sudo&rsquo; utilizando este usuário surge a solicitação do código de autenticação do <a href="https://github.com/google/google-authenticator/wiki" target="_blank">Google Authenticator</a> (verificação em duas etapas).</p>
 
-<p>URL: <a href="https://github.com/google/google-authenticator/wiki" target="_blank">https://github.com/google/google-authenticator/wiki</a></p>
-
-<p>O código de verificação pode ser obtido com o addon Authenticator instalado no browser.</p>
-
-<p>URL: <a href="https://addons.mozilla.org/pt-BR/firefox/addon/auth-helper/" target="_blank">https://addons.mozilla.org/pt-BR/firefox/addon/auth-helper/</a></p>
+<p>O código de verificação pode ser obtido com o addon <a href="https://addons.mozilla.org/pt-BR/firefox/addon/auth-helper/" target="_blank">Authenticator</a> instalado no browser.</p>
 
 <p>Para utilizar o código gerado a data e horário do host devem estar sincronizados com a máquina do atacante. Para isto é necessário desabilitar o NTP de fuso-horário automático e setar a hora manualmente, de acordo com a hora e minutos da máquina Jewel.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ timedatectl set-ntp false
@@ -416,7 +408,7 @@ $ sudo timedatectl set-time <span style="color:#e6db74">&#39;2020-10-26 22:34:18
 
 <p>O usuário bill possui privilégios de root no gem (gerenciador de pacotes do Ruby).</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">(ALL : ALL) /usr/bin/gem</code></pre></div>
-<p>Buscando no <a href="https://brunomcuesta.github.io/" title="GTFOBins" target="_blank">GTFOBins</a> é possível encontrar a forma de escalar privilégios com o gem usando o sudo.</p>
+<p>Buscando no <a href="https://gtfobins.github.io/" target="_blank">GTFOBins</a> é possível encontrar a forma de escalar privilégios com o gem usando o sudo.</p>
 
 
     <img src="https://i.imgur.com/QkM9UxI.png"  alt="GTFOBins"  class="center"  style="border-radius: 8px;"  />
@@ -474,7 +466,7 @@ $ sudo timedatectl set-time <span style="color:#e6db74">&#39;2020-10-26 22:34:18
           <line x1="16" y1="17" x2="8" y2="17"></line>
           <polyline points="10 9 9 9 8 9"></polyline>
         </svg>
-        1099 Palavras
+        1091 Palavras
       </p>
 
       <p>
