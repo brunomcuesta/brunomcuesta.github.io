@@ -27,7 +27,7 @@ Varredura e Enumeração Port Scan Ao executar o Nmap são mostradas três porta
 
 
 
-<p>Neste primeiro post veremos a resolução da máquina &lsquo;Jewel&rsquo; do <a href="https://brunomcuesta.github.io/" title="HackTheBox" target="_blank">HackTheBox</a>. A resolução foi efetuada em outubro de 2020, quando a máquina estava &lsquo;ativa&rsquo;. Em fevereiro de 2021 a mesma passou para &lsquo;retirada&rsquo; e com as evidências coletadas anteriormente foi possível publicar este &lsquo;writeup&rsquo;.</p>
+<p>Neste primeiro post veremos a resolução da máquina &lsquo;Jewel&rsquo; do <a href="https://www.hackthebox.eu/" target="_blank">HackTheBox</a>. A resolução foi efetuada em outubro de 2020, quando a máquina estava &lsquo;ativa&rsquo;. Em fevereiro de 2021 a mesma passou para &lsquo;retirada&rsquo; e com as evidências coletadas anteriormente foi possível publicar este &lsquo;writeup&rsquo;.</p>
 
 <h3 id="informações-da-máquina">Informações da Máquina</h3>
 
