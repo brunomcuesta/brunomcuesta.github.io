@@ -6,10 +6,22 @@
     <description>Recent content in Writeup on Haderach</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Wed, 23 Jun 2021 13:23:07 -0300</lastBuildDate>
+    <lastBuildDate>Sat, 03 Jul 2021 13:04:58 -0300</lastBuildDate>
     
 	<atom:link href="https://brunomcuesta.github.io/tags/writeup/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>HackTheBox - Ophiuchi</title>
+      <link>https://brunomcuesta.github.io/posts/2021/07/hackthebox-ophiuchi/</link>
+      <pubDate>Sat, 03 Jul 2021 13:04:58 -0300</pubDate>
+      
+      <guid>https://brunomcuesta.github.io/posts/2021/07/hackthebox-ophiuchi/</guid>
+      <description>Nesta máquina veremos uma vulnerabilidade de desserialização Yaml. Esta vulnerabilidade permite ao atacante obter acesso ao host através de um RCE (Remote Command Execution). O &amp;lsquo;privesc&amp;rsquo; é feito com a obtenção de credenciais válidas após enumerar diretórios e arquivos dos programas e serviços executados no servidor e abusando das permissões de usuário para obter acesso ao host como usuário root.
+Informações da Máquina IP: 10.10.10.227
+Sistema Operacional: Linux
+Nível de dificuldade: Medium</description>
+    </item>
     
     <item>
       <title>HackTheBox - Delivery</title>
