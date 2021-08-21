@@ -21,7 +21,7 @@ Nível de dificuldade: Easy
 Varredura e Enumeração Port Scan Iniciando um scan completo em todas as portas TCP abertas com nmap:
 # Nmap 7.91 scan initiated Sat Jun 26 22:18:58 2021 as: nmap -v -sV -sC -p 22,80 -Pn -oN details.txt 10.10.10.233 Nmap scan report for 10.10.10.233 Host is up (0.37s latency).</description>
             <content type="html"><![CDATA[
-    <img src="https://i.imgur.com/j1UBIGf.jpg"  alt="Armageddon Cover"  class="center"  style="border-radius: 8px;"  />
+    <img src="https://i.imgur.com/dfT5a2S.png"  alt="Armageddon Cover"  class="center"  style="border-radius: 8px;"  />
 
 
 <p>Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Armageddon&rsquo; do <a href="https://www.hackthebox.eu/">HackTheBox</a>.</p>
