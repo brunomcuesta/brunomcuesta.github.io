@@ -173,15 +173,16 @@ Varredura e Enumeração Port Scan O primeiro passo é iniciar um scan prelimina
           <div class="toc-title">Índice</div>
           <nav id="TableOfContents">
   <ul>
-    <li>
+    <li><a href="#informações-da-máquina">Informações da Máquina</a></li>
+    <li><a href="#varredura-e-enumeração">Varredura e Enumeração</a>
       <ul>
-        <li><a href="#informações-da-máquina">Informações da Máquina</a></li>
-        <li><a href="#varredura-e-enumeração">Varredura e Enumeração</a></li>
-        <li><a href="#vulnerabilidade">Vulnerabilidade</a></li>
-        <li><a href="#exploração">Exploração</a></li>
-        <li><a href="#escalação-de-privilégios">Escalação de Privilégios</a></li>
+        <li><a href="#port-scan">Port Scan</a></li>
+        <li><a href="#webserver">Webserver</a></li>
       </ul>
     </li>
+    <li><a href="#vulnerabilidade">Vulnerabilidade</a></li>
+    <li><a href="#exploração">Exploração</a></li>
+    <li><a href="#escalação-de-privilégios">Escalação de Privilégios</a></li>
   </ul>
 </nav>
         </aside>
@@ -195,12 +196,12 @@ Varredura e Enumeração Port Scan O primeiro passo é iniciar um scan prelimina
 
 
 <p>Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Delivery&rsquo; do <a href="https://www.hackthebox.eu/">HackTheBox</a>. O autor desta máquina é o <a href="https://www.hackthebox.eu/profile/3769">ippsec</a>, um conhecido membro do HTB que costuma postar a resolução de máquinas retiradas em seu canal no <a href="https://www.youtube.com/c/ippsec">Youtube</a>. Ele também possui um <a href="https://ippsec.rocks/">site</a> que permite filtrar seus vídeos no Youtube de acordo com o que é informado na busca.</p>
-<h3 id="informações-da-máquina">Informações da Máquina</h3>
+<h2 id="informações-da-máquina">Informações da Máquina</h2>
 <p>IP: 10.10.10.222</p>
 <p>Sistema Operacional: Linux</p>
 <p>Nível de dificuldade: Easy</p>
-<h3 id="varredura-e-enumeração">Varredura e Enumeração</h3>
-<h4 id="port-scan">Port Scan</h4>
+<h2 id="varredura-e-enumeração">Varredura e Enumeração</h2>
+<h3 id="port-scan">Port Scan</h3>
 <p>O primeiro passo é iniciar um scan preliminar pelas portas TCP abertas e logo em seguida um segundo scan para determinar a versão dos serviços que estão rodando no servidor. Este é o resultado do Nmap.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Nmap 7.91 scan initiated Fri May 14 15:27:04 2021 as: nmap -v -sC -sV -p 22,80,8065 -Pn -oN details 10.10.10.222</span>
 Nmap scan report <span style="color:#66d9ef">for</span> 10.10.10.222
@@ -278,7 +279,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 Read data files from: /usr/bin/../share/nmap
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 <span style="color:#75715e"># Nmap done at Fri May 14 15:29:11 2021 -- 1 IP address (1 host up) scanned in 127.39 seconds</span>
-</code></pre></div><h4 id="webserver">Webserver</h4>
+</code></pre></div><h3 id="webserver">Webserver</h3>
 <p>Para acessar o site pelo seu domínio e não pelo seu ip basta inserir a linha correspondente ao arquivo /etc/hosts.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">10.10.10.222  delivery.htb
 </code></pre></div><p>O site poderá ser acessado pela seguinte URL.</p>
@@ -314,7 +315,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">O Mattermost foi desenvolvido como um centro de comando de comunicação
 para ajudar as equipes de DevOps a orquestrar fluxos de trabalho
 de colaboração de incidentes urgentes.
-</code></pre></div><h3 id="vulnerabilidade">Vulnerabilidade</h3>
+</code></pre></div><h2 id="vulnerabilidade">Vulnerabilidade</h2>
 <p>Acessando esta aplicação na porta 8065 surge uma tela de login e logo abaixo um link &ldquo;Create one now&rdquo; que direciona para a tela de cadastro de usuário. O problema é que ao fazer o cadastro o sistema envia um link de confirmação ao e-mail informado. Como não há nenhum serviço de e-mail no servidor com a porta exposta, não há como explorar o serviço e visualizar o link de confirmação. A opção seria receber o e-mail do Mattermost de outra forma, talvez pelo OsTicket. Ao fazer uma pesquisa sobre recebimento de e-mails no <a href="https://docs.osticket.com/en/latest/Getting%20Started/Email%20Settings.html#:~:text=osTicket%20allows%20you%20to%20setup,support%20requests%20in%20one%20place.">site</a> do OSTicket é possível encontrar a seguinte informação:</p>
 
     <img src="https://i.imgur.com/GK8aRn2.png"  alt="OSTicket routing e-mails"  class="center"  style="border-radius: 8px;"  />
@@ -348,7 +349,7 @@ a uma prioridade padrão associada ao e-mail.
     <img src="https://i.imgur.com/XLOTuS6.png"  alt="Mattermost dashboard"  class="center"  style="border-radius: 8px;"  />
 
 
-<h3 id="exploração">Exploração</h3>
+<h2 id="exploração">Exploração</h2>
 <p>Explorando as mensagens no &lsquo;dashboard&rsquo; foi encontrada uma mensagem do usuário root e nela uma credencial de acesso.</p>
 
     <img src="https://i.imgur.com/6ZdXPsf.png"  alt="Mattermost mensagem root"  class="center"  style="border-radius: 8px;"  />
@@ -389,7 +390,7 @@ a uma prioridade padrão associada ao e-mail.
 
 <p>Nesta tabela foi encontrada a credencial do usuário root.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">root | $2a$10$VM6EeymRxJ29r8Wjkr8Dtev0O.1STWb4.4ScG.anuu7v0EFJwgjjO
-</code></pre></div><h3 id="escalação-de-privilégios">Escalação de Privilégios</h3>
+</code></pre></div><h2 id="escalação-de-privilégios">Escalação de Privilégios</h2>
 <p>As duas ferramentas mais usadas para a quebra de hashes são o john e o hashcat. Na lista de formatos suportados do hashcat a hash é reconhecida como &ldquo;bcrypt/blowfish&rdquo;.</p>
 
     <img src="https://i.imgur.com/G4m1hdx.png"  alt="Hashcat bcrypt"  class="center"  style="border-radius: 8px;"  />
