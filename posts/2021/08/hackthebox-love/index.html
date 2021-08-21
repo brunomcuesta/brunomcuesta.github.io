@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="author" content="Haderach ">
-<meta name="description" content="Neste &amp;lsquo;writeup&amp;rsquo; veremos a resolução da máquina &amp;lsquo;Love&amp;rsquo; do HackTheBox.
+<meta name="description" content="Neste &amp;lsquo;writeup&amp;rsquo; veremos a resolução da máquina &amp;lsquo;Love&amp;rsquo; do HackTheBox. Na parte de escalação de privilégios é demonstrado como obter shell do Administrator de várias formas abusando do &amp;lsquo;AlwaysInstallElevated&amp;rsquo; habilitado no sistema.
 Informações da Máquina IP: 10.10.10.239
 Sistema Operacional: Windows
 Nível de dificuldade: Easy
-Varredura e Enumeração Port Scan # Nmap 7.91 scan initiated Thu Jun 24 17:39:25 2021 as: nmap -v -sC -sV -p 80,135,139,443,445,3306,5000,5040,5985,5986,7680,47001,49664,49665,49666,49667,49668,49669,49670 -Pn -oN details.txt 10.10.10.239 Nmap scan report for 10.10.10.239 Host is up (0.48s latency). PORT STATE SERVICE VERSION 80/tcp open http Apache httpd 2.4.46 ((Win64) OpenSSL/1." />
+Varredura e Enumeração Port Scan # Nmap 7.91 scan initiated Thu Jun 24 17:39:25 2021 as: nmap -v -sC -sV -p 80,135,139,443,445,3306,5000,5040,5985,5986,7680,47001,49664,49665,49666,49667,49668,49669,49670 -Pn -oN details.txt 10." />
 <meta name="keywords" content="DCPT,Pentest,CTF,Cybersecurity,RedTeam,HackTheBox, writeup, hackthebox" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
@@ -46,14 +46,14 @@ Varredura e Enumeração Port Scan # Nmap 7.91 scan initiated Thu Jun 24 17:39:2
 
 
 <meta itemprop="name" content="HackTheBox - Love">
-<meta itemprop="description" content="Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Love&rsquo; do HackTheBox.
+<meta itemprop="description" content="Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Love&rsquo; do HackTheBox. Na parte de escalação de privilégios é demonstrado como obter shell do Administrator de várias formas abusando do &lsquo;AlwaysInstallElevated&rsquo; habilitado no sistema.
 Informações da Máquina IP: 10.10.10.239
 Sistema Operacional: Windows
 Nível de dificuldade: Easy
-Varredura e Enumeração Port Scan # Nmap 7.91 scan initiated Thu Jun 24 17:39:25 2021 as: nmap -v -sC -sV -p 80,135,139,443,445,3306,5000,5040,5985,5986,7680,47001,49664,49665,49666,49667,49668,49669,49670 -Pn -oN details.txt 10.10.10.239 Nmap scan report for 10.10.10.239 Host is up (0.48s latency). PORT STATE SERVICE VERSION 80/tcp open http Apache httpd 2.4.46 ((Win64) OpenSSL/1.">
+Varredura e Enumeração Port Scan # Nmap 7.91 scan initiated Thu Jun 24 17:39:25 2021 as: nmap -v -sC -sV -p 80,135,139,443,445,3306,5000,5040,5985,5986,7680,47001,49664,49665,49666,49667,49668,49669,49670 -Pn -oN details.txt 10.">
 <meta itemprop="datePublished" content="2021-08-21T13:39:28-03:00" />
 <meta itemprop="dateModified" content="2021-08-21T13:39:28-03:00" />
-<meta itemprop="wordCount" content="1530">
+<meta itemprop="wordCount" content="1552">
 <meta itemprop="image" content="https://brunomcuesta.github.io"/>
 
 
@@ -64,21 +64,21 @@ Varredura e Enumeração Port Scan # Nmap 7.91 scan initiated Thu Jun 24 17:39:2
 <meta name="twitter:image" content="https://brunomcuesta.github.io"/>
 
 <meta name="twitter:title" content="HackTheBox - Love"/>
-<meta name="twitter:description" content="Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Love&rsquo; do HackTheBox.
+<meta name="twitter:description" content="Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Love&rsquo; do HackTheBox. Na parte de escalação de privilégios é demonstrado como obter shell do Administrator de várias formas abusando do &lsquo;AlwaysInstallElevated&rsquo; habilitado no sistema.
 Informações da Máquina IP: 10.10.10.239
 Sistema Operacional: Windows
 Nível de dificuldade: Easy
-Varredura e Enumeração Port Scan # Nmap 7.91 scan initiated Thu Jun 24 17:39:25 2021 as: nmap -v -sC -sV -p 80,135,139,443,445,3306,5000,5040,5985,5986,7680,47001,49664,49665,49666,49667,49668,49669,49670 -Pn -oN details.txt 10.10.10.239 Nmap scan report for 10.10.10.239 Host is up (0.48s latency). PORT STATE SERVICE VERSION 80/tcp open http Apache httpd 2.4.46 ((Win64) OpenSSL/1."/>
+Varredura e Enumeração Port Scan # Nmap 7.91 scan initiated Thu Jun 24 17:39:25 2021 as: nmap -v -sC -sV -p 80,135,139,443,445,3306,5000,5040,5985,5986,7680,47001,49664,49665,49666,49667,49668,49669,49670 -Pn -oN details.txt 10."/>
 
 
 
 
     <meta property="og:title" content="HackTheBox - Love" />
-<meta property="og:description" content="Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Love&rsquo; do HackTheBox.
+<meta property="og:description" content="Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Love&rsquo; do HackTheBox. Na parte de escalação de privilégios é demonstrado como obter shell do Administrator de várias formas abusando do &lsquo;AlwaysInstallElevated&rsquo; habilitado no sistema.
 Informações da Máquina IP: 10.10.10.239
 Sistema Operacional: Windows
 Nível de dificuldade: Easy
-Varredura e Enumeração Port Scan # Nmap 7.91 scan initiated Thu Jun 24 17:39:25 2021 as: nmap -v -sC -sV -p 80,135,139,443,445,3306,5000,5040,5985,5986,7680,47001,49664,49665,49666,49667,49668,49669,49670 -Pn -oN details.txt 10.10.10.239 Nmap scan report for 10.10.10.239 Host is up (0.48s latency). PORT STATE SERVICE VERSION 80/tcp open http Apache httpd 2.4.46 ((Win64) OpenSSL/1." />
+Varredura e Enumeração Port Scan # Nmap 7.91 scan initiated Thu Jun 24 17:39:25 2021 as: nmap -v -sC -sV -p 80,135,139,443,445,3306,5000,5040,5985,5986,7680,47001,49664,49665,49666,49667,49668,49669,49670 -Pn -oN details.txt 10." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://brunomcuesta.github.io/posts/2021/08/hackthebox-love/" />
 <meta property="og:image" content="https://brunomcuesta.github.io"/>
@@ -196,7 +196,7 @@ Varredura e Enumeração Port Scan # Nmap 7.91 scan initiated Thu Jun 24 17:39:2
     <img src="https://i.imgur.com/npEuHZw.jpg"  alt="Love Cover"  class="center"  style="border-radius: 8px;"  />
 
 
-<p>Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Love&rsquo; do <a href="https://www.hackthebox.eu/">HackTheBox</a>.</p>
+<p>Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Love&rsquo; do <a href="https://www.hackthebox.eu/">HackTheBox</a>. Na parte de escalação de privilégios é demonstrado como obter shell do Administrator de várias formas abusando do &lsquo;AlwaysInstallElevated&rsquo; habilitado no sistema.</p>
 <h2 id="informações-da-máquina">Informações da Máquina</h2>
 <p>IP: 10.10.10.239</p>
 <p>Sistema Operacional: Windows</p>
@@ -565,7 +565,7 @@ Import-Module ./PowerUp.ps1
           <line x1="16" y1="17" x2="8" y2="17"></line>
           <polyline points="10 9 9 9 8 9"></polyline>
         </svg>
-        1530 Palavras
+        1552 Palavras
       </p>
 
       <p>

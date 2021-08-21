@@ -13,11 +13,11 @@
       <pubDate>Sat, 21 Aug 2021 13:39:28 -0300</pubDate>
       
       <guid>https://brunomcuesta.github.io/posts/2021/08/hackthebox-love/</guid>
-      <description>Neste &amp;lsquo;writeup&amp;rsquo; veremos a resolução da máquina &amp;lsquo;Love&amp;rsquo; do HackTheBox.
+      <description>Neste &amp;lsquo;writeup&amp;rsquo; veremos a resolução da máquina &amp;lsquo;Love&amp;rsquo; do HackTheBox. Na parte de escalação de privilégios é demonstrado como obter shell do Administrator de várias formas abusando do &amp;lsquo;AlwaysInstallElevated&amp;rsquo; habilitado no sistema.
 Informações da Máquina IP: 10.10.10.239
 Sistema Operacional: Windows
 Nível de dificuldade: Easy
-Varredura e Enumeração Port Scan # Nmap 7.91 scan initiated Thu Jun 24 17:39:25 2021 as: nmap -v -sC -sV -p 80,135,139,443,445,3306,5000,5040,5985,5986,7680,47001,49664,49665,49666,49667,49668,49669,49670 -Pn -oN details.txt 10.10.10.239 Nmap scan report for 10.10.10.239 Host is up (0.48s latency). PORT STATE SERVICE VERSION 80/tcp open http Apache httpd 2.4.46 ((Win64) OpenSSL/1.</description>
+Varredura e Enumeração Port Scan # Nmap 7.91 scan initiated Thu Jun 24 17:39:25 2021 as: nmap -v -sC -sV -p 80,135,139,443,445,3306,5000,5040,5985,5986,7680,47001,49664,49665,49666,49667,49668,49669,49670 -Pn -oN details.txt 10.</description>
     </item>
     
     <item>
