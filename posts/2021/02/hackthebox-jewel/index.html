@@ -173,16 +173,17 @@ Varredura e Enumeração Port Scan Ao executar o Nmap são mostradas três porta
           <div class="toc-title">Índice</div>
           <nav id="TableOfContents">
   <ul>
-    <li>
+    <li><a href="#informações-da-máquina">Informações da Máquina</a></li>
+    <li><a href="#varredura-e-enumeração">Varredura e Enumeração</a>
       <ul>
-        <li><a href="#informações-da-máquina">Informações da Máquina</a></li>
-        <li><a href="#varredura-e-enumeração">Varredura e Enumeração</a></li>
-        <li><a href="#vulnerabilidades">Vulnerabilidades</a></li>
-        <li><a href="#exploração">Exploração</a></li>
-        <li><a href="#escalação-de-privilégios">Escalação de Privilégios</a></li>
-        <li><a href="#recomendações">Recomendações</a></li>
+        <li><a href="#port-scan">Port Scan</a></li>
+        <li><a href="#webserver">Webserver</a></li>
       </ul>
     </li>
+    <li><a href="#vulnerabilidades">Vulnerabilidades</a></li>
+    <li><a href="#exploração">Exploração</a></li>
+    <li><a href="#escalação-de-privilégios">Escalação de Privilégios</a></li>
+    <li><a href="#recomendações">Recomendações</a></li>
   </ul>
 </nav>
         </aside>
@@ -196,12 +197,12 @@ Varredura e Enumeração Port Scan Ao executar o Nmap são mostradas três porta
 
 
 <p>Neste primeiro post veremos a resolução da máquina &lsquo;Jewel&rsquo; do <a href="https://www.hackthebox.eu/">HackTheBox</a>. A resolução foi efetuada em outubro de 2020, quando a máquina estava &lsquo;ativa&rsquo;. Em fevereiro de 2021 a mesma passou para &lsquo;retirada&rsquo; e com as evidências coletadas anteriormente foi possível publicar este &lsquo;writeup&rsquo;.</p>
-<h3 id="informações-da-máquina">Informações da Máquina</h3>
+<h2 id="informações-da-máquina">Informações da Máquina</h2>
 <p>IP: 10.10.10.211</p>
 <p>Sistema Operacional: Linux</p>
 <p>Nível de dificuldade: Médio</p>
-<h3 id="varredura-e-enumeração">Varredura e Enumeração</h3>
-<h4 id="port-scan">Port Scan</h4>
+<h2 id="varredura-e-enumeração">Varredura e Enumeração</h2>
+<h3 id="port-scan">Port Scan</h3>
 <p>Ao executar o Nmap são mostradas três portas abertas: 22, 8000 e 8080.</p>
 
     <img src="https://i.imgur.com/tytB0Oe.png"  alt="Nmap"  class="center"  style="border-radius: 8px;"  />
@@ -213,7 +214,7 @@ Varredura e Enumeração Port Scan Ao executar o Nmap são mostradas três porta
     <img src="https://i.imgur.com/YJXvrR8.png"  alt="Nmap detalhes"  class="center"  style="border-radius: 8px;"  />
 
 
-<h4 id="webserver">Webserver</h4>
+<h3 id="webserver">Webserver</h3>
 <p>Na saída do comando Nmap é possível verificar duas aplicações Web rodando, uma na porta 8000 e outra na 8080.
 Na porta 8080, onde o Apache é executado, surge um &lsquo;Blog&rsquo;, permitindo o cadastro de usuário, login e edição do usuário cadastrado.</p>
 <p>URL: http://10.10.10.211:8080/</p>
@@ -234,7 +235,7 @@ Na porta 8080, onde o Apache é executado, surge um &lsquo;Blog&rsquo;, permitin
 </code></pre></div><p>Desta forma as aplicações podem ser acessadas pelo browser com as seguintes URLs.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">http://jewel.htb:8080/
 http://jewel.htb:8000/gitweb/
-</code></pre></div><h3 id="vulnerabilidades">Vulnerabilidades</h3>
+</code></pre></div><h2 id="vulnerabilidades">Vulnerabilidades</h2>
 <p>O sistema permite visualizar o perfil de outros usuários, sendo necessário apenas alterar a id do usuário na URL. Com isto foi possível obter o nome de usuário bill (id=01) e jennifer (id=02).</p>
 
     <img src="https://i.imgur.com/gEeZYw6.png"  alt="Blog"  class="center"  style="border-radius: 8px;"  />
@@ -311,7 +312,7 @@ $2a$12$ik.0o.TGRwMgUmyOR.Djzuyb/hjisgk2vws1xYC/hxw8M1nFk0MQy
 
 
 <p>Trata-se de uma vulnerabilidade de desserialização de dados não confiáveis que existe nas versões do Rails &lt;5.2.4.3, Rails &lt;6.0.3.1 e que pode permitir que um invasor desempacote objetos fornecidos pelo usuário em MemCacheStore e RedisCacheStore, resultando potencialmente em um RCE (Remote Code Execution).</p>
-<h3 id="exploração">Exploração</h3>
+<h2 id="exploração">Exploração</h2>
 <p>Buscando por exploits para a <a href="https://github.com/masahiro331/CVE-2020-8165">CVE-2020-8165</a> foi encontrado no <a href="https://github.com/">github</a> um exploit público.</p>
 
     <img src="https://i.imgur.com/uUSwT37.png"  alt="Pesquisa de Exploits"  class="center"  style="border-radius: 8px;"  />
@@ -330,7 +331,7 @@ $2a$12$ik.0o.TGRwMgUmyOR.Djzuyb/hjisgk2vws1xYC/hxw8M1nFk0MQy
     <img src="https://i.imgur.com/8hWl8Wx.png"  alt="User Key"  class="center"  style="border-radius: 8px;"  />
 
 
-<h3 id="escalação-de-privilégios">Escalação de Privilégios</h3>
+<h2 id="escalação-de-privilégios">Escalação de Privilégios</h2>
 <p>Após executar o exploit com o payload e receber a shell reversa foi possível analisar o conteúdo do diretório do usuário bill. Neste diretório foi encontrado o arquivo oculto do Google Authenticator.</p>
 
     <img src="https://i.imgur.com/PVwPiZF.png"  alt="Diretório Bill"  class="center"  style="border-radius: 8px;"  />
@@ -363,7 +364,7 @@ $ sudo timedatectl set-time <span style="color:#e6db74">&#39;2020-10-26 22:34:18
     <img src="https://i.imgur.com/xp0tPmt.png"  alt="Flag Root"  class="center"  style="border-radius: 8px;"  />
 
 
-<h3 id="recomendações">Recomendações</h3>
+<h2 id="recomendações">Recomendações</h2>
 <p>Caso fosse um Pentest realizado para alguma empresa, estas seriam as recomendações para solucionar os problemas encontrados no host.</p>
 <ul>
 <li>Implementar um sistema de permissão de acesso à aplicação &lsquo;gitweb&rsquo;. Deve ser de uso restrito dos desenvolvedores do sistema e não deve estar acessível para qualquer usuário. Outra opção é remover a sua disponibilidade.</li>
