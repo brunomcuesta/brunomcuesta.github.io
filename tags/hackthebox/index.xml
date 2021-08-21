@@ -6,7 +6,20 @@
     <description>Recent content in hackthebox on Haderach</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Fri, 20 Aug 2021 20:32:28 -0300</lastBuildDate><atom:link href="https://brunomcuesta.github.io/tags/hackthebox/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 21 Aug 2021 13:39:28 -0300</lastBuildDate><atom:link href="https://brunomcuesta.github.io/tags/hackthebox/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HackTheBox - Love</title>
+      <link>https://brunomcuesta.github.io/posts/2021/08/hackthebox-love/</link>
+      <pubDate>Sat, 21 Aug 2021 13:39:28 -0300</pubDate>
+      
+      <guid>https://brunomcuesta.github.io/posts/2021/08/hackthebox-love/</guid>
+      <description>Neste &amp;lsquo;writeup&amp;rsquo; veremos a resolução da máquina &amp;lsquo;Love&amp;rsquo; do HackTheBox.
+Informações da Máquina IP: 10.10.10.239
+Sistema Operacional: Windows
+Nível de dificuldade: Easy
+Varredura e Enumeração Port Scan # Nmap 7.91 scan initiated Thu Jun 24 17:39:25 2021 as: nmap -v -sC -sV -p 80,135,139,443,445,3306,5000,5040,5985,5986,7680,47001,49664,49665,49666,49667,49668,49669,49670 -Pn -oN details.txt 10.10.10.239 Nmap scan report for 10.10.10.239 Host is up (0.48s latency). PORT STATE SERVICE VERSION 80/tcp open http Apache httpd 2.4.46 ((Win64) OpenSSL/1.</description>
+    </item>
+    
     <item>
       <title>HackTheBox - Armageddon</title>
       <link>https://brunomcuesta.github.io/posts/2021/08/hackthebox-armageddon/</link>

