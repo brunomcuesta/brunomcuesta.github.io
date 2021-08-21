@@ -1,6 +1,36 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://brunomcuesta.github.io/tags/hackthebox/</loc>
+    <lastmod>2021-08-20T20:32:28-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://brunomcuesta.github.io/posts/2021/08/hackthebox-armageddon/</loc>
+    <lastmod>2021-08-20T20:32:28-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://brunomcuesta.github.io/</loc>
+    <lastmod>2021-08-20T20:32:28-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://brunomcuesta.github.io/posts/</loc>
+    <lastmod>2021-08-20T20:32:28-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://brunomcuesta.github.io/tags/</loc>
+    <lastmod>2021-08-20T20:32:28-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://brunomcuesta.github.io/tags/writeup/</loc>
+    <lastmod>2021-08-20T20:32:28-03:00</lastmod>
+  </url>
   
   <url>
     <loc>https://brunomcuesta.github.io/posts/2021/07/hackthebox-ophiuchi/</loc>
@@ -24,42 +54,10 @@
   
   <url>
     <loc>https://brunomcuesta.github.io/categories/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://brunomcuesta.github.io/tags/hackthebox/</loc>
-    <lastmod>2021-07-03T13:04:58-03:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://brunomcuesta.github.io/</loc>
-    <lastmod>2021-07-03T13:04:58-03:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://brunomcuesta.github.io/posts/</loc>
-    <lastmod>2021-07-03T13:04:58-03:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://brunomcuesta.github.io/series/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://brunomcuesta.github.io/tags/</loc>
-    <lastmod>2021-07-03T13:04:58-03:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://brunomcuesta.github.io/tags/writeup/</loc>
-    <lastmod>2021-07-03T13:04:58-03:00</lastmod>
-    <priority>0</priority>
   </url>
   
 </urlset>

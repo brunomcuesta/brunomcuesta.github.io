@@ -1,15 +1,25 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Writeup on Haderach</title>
+    <title>writeup on Haderach</title>
     <link>https://brunomcuesta.github.io/tags/writeup/</link>
-    <description>Recent content in Writeup on Haderach</description>
+    <description>Recent content in writeup on Haderach</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Sat, 03 Jul 2021 13:04:58 -0300</lastBuildDate>
-    
-	<atom:link href="https://brunomcuesta.github.io/tags/writeup/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Fri, 20 Aug 2021 20:32:28 -0300</lastBuildDate><atom:link href="https://brunomcuesta.github.io/tags/writeup/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HackTheBox - Armageddon</title>
+      <link>https://brunomcuesta.github.io/posts/2021/08/hackthebox-armageddon/</link>
+      <pubDate>Fri, 20 Aug 2021 20:32:28 -0300</pubDate>
+      
+      <guid>https://brunomcuesta.github.io/posts/2021/08/hackthebox-armageddon/</guid>
+      <description>Neste &amp;lsquo;writeup&amp;rsquo; veremos a resolução da máquina &amp;lsquo;Armageddon&amp;rsquo; do HackTheBox.
+Informações da Máquina IP: 10.10.10.233
+Sistema Operacional: Linux
+Nível de dificuldade: Easy
+Varredura e Enumeração Port Scan Iniciando um scan completo em todas as portas TCP abertas com nmap:
+# Nmap 7.91 scan initiated Sat Jun 26 22:18:58 2021 as: nmap -v -sV -sC -p 22,80 -Pn -oN details.txt 10.10.10.233 Nmap scan report for 10.10.10.233 Host is up (0.37s latency).</description>
+    </item>
     
     <item>
       <title>HackTheBox - Ophiuchi</title>
