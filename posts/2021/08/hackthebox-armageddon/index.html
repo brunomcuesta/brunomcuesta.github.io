@@ -177,15 +177,16 @@ Varredura e Enumeração Port Scan Iniciando um scan completo em todas as portas
           <div class="toc-title">Índice</div>
           <nav id="TableOfContents">
   <ul>
-    <li>
+    <li><a href="#informações-da-máquina">Informações da Máquina</a></li>
+    <li><a href="#varredura-e-enumeração">Varredura e Enumeração</a>
       <ul>
-        <li><a href="#informações-da-máquina">Informações da Máquina</a></li>
-        <li><a href="#varredura-e-enumeração">Varredura e Enumeração</a></li>
-        <li><a href="#vulnerabilidade">Vulnerabilidade</a></li>
-        <li><a href="#exploração">Exploração</a></li>
-        <li><a href="#escalação-de-privilégios">Escalação de Privilégios</a></li>
+        <li><a href="#port-scan">Port Scan</a></li>
+        <li><a href="#webserver">Webserver</a></li>
       </ul>
     </li>
+    <li><a href="#vulnerabilidade">Vulnerabilidade</a></li>
+    <li><a href="#exploração">Exploração</a></li>
+    <li><a href="#escalação-de-privilégios">Escalação de Privilégios</a></li>
   </ul>
 </nav>
         </aside>
@@ -199,12 +200,12 @@ Varredura e Enumeração Port Scan Iniciando um scan completo em todas as portas
 
 
 <p>Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Armageddon&rsquo; do <a href="https://www.hackthebox.eu/">HackTheBox</a>.</p>
-<h3 id="informações-da-máquina">Informações da Máquina</h3>
+<h2 id="informações-da-máquina">Informações da Máquina</h2>
 <p>IP: 10.10.10.233</p>
 <p>Sistema Operacional: Linux</p>
 <p>Nível de dificuldade: Easy</p>
-<h3 id="varredura-e-enumeração">Varredura e Enumeração</h3>
-<h4 id="port-scan">Port Scan</h4>
+<h2 id="varredura-e-enumeração">Varredura e Enumeração</h2>
+<h3 id="port-scan">Port Scan</h3>
 <p>Iniciando um scan completo em todas as portas TCP abertas com nmap:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Nmap 7.91 scan initiated Sat Jun 26 22:18:58 2021 as: nmap -v -sV -sC -p 22,80 -Pn -oN details.txt 10.10.10.233</span>
 Nmap scan report <span style="color:#66d9ef">for</span> 10.10.10.233
@@ -232,7 +233,7 @@ PORT   STATE SERVICE VERSION
 Read data files from: /usr/bin/../share/nmap
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 <span style="color:#75715e"># Nmap done at Sat Jun 26 22:19:25 2021 -- 1 IP address (1 host up) scanned in 27.48 seconds</span>
-</code></pre></div><h4 id="webserver">Webserver</h4>
+</code></pre></div><h3 id="webserver">Webserver</h3>
 <p>O host possui apenas duas portas abertas, a 22 e a 80. Acessando a porta 80 encontramos a seguinte página.</p>
 
     <img src="https://i.imgur.com/M9Bo9fS.png"  alt="Armageddon - Página Inicial"  class="center"  style="border-radius: 8px;"  />
@@ -327,7 +328,7 @@ PHP[5.4.16], PasswordField[pass], PoweredBy[Arnageddon],
 Script[text/javascript], Title[Welcome to  Armageddon |  Armageddon],
 UncommonHeaders[x-content-type-options,x-generator],
 X-Frame-Options[SAMEORIGIN], X-Powered-By[PHP/5.4.16]
-</code></pre><h3 id="vulnerabilidade">Vulnerabilidade</h3>
+</code></pre><h2 id="vulnerabilidade">Vulnerabilidade</h2>
 <p>Com a versão do CMS foi feita a busca por vulnerabilidades e exploits.</p>
 
     <img src="https://i.imgur.com/ggD5SPz.png"  alt="Google - Drupal Exploit"  class="center"  style="border-radius: 8px;"  />
@@ -338,7 +339,7 @@ X-Frame-Options[SAMEORIGIN], X-Powered-By[PHP/5.4.16]
     <img src="https://i.imgur.com/U1zMkBR.png"  alt="Github - Drupal 7 Exploit"  class="center"  style="border-radius: 8px;"  />
 
 
-<h3 id="exploração">Exploração</h3>
+<h2 id="exploração">Exploração</h2>
 <p>Clonando o projeto para a máquina local.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/pimps/CVE-2018-7600.git
 </code></pre></div><p>Executando o script em python para efetuar o RCE (Remote Code Execution).</p>
@@ -384,7 +385,7 @@ X-Frame-Options[SAMEORIGIN], X-Powered-By[PHP/5.4.16]
     <img src="https://i.imgur.com/6AAfVov.png"  alt="Versão OS"  class="center"  style="border-radius: 8px;"  />
 
 
-<h3 id="escalação-de-privilégios">Escalação de Privilégios</h3>
+<h2 id="escalação-de-privilégios">Escalação de Privilégios</h2>
 <p>Um procedimento muito usual para escalar privilégios é verificar as permissões do usuário com o sudo. Ao rodar o &lsquo;sudo -l&rsquo; é confirmado que o usuário possui privilégios de root com o &lsquo;snap&rsquo;. Pacotes snaps não necessitam ser instalados na máquina para serem executados.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">(</span>root<span style="color:#f92672">)</span> NOPASSWD: /usr/bin/snap install *
 </code></pre></div><p>Verificando a versão do snap instalado no sistema.</p>
