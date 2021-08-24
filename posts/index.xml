@@ -222,7 +222,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 
 
 <p>Para acessar a aplicação via domínio, que é mostrado pelo nmap, adicionamos o IP da máquina ao /etc/hosts.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">10.10.10.139 love.htb staging.love.htb
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">10.10.10.239 love.htb staging.love.htb
 </code></pre></div><p>Acessando a página via https.</p>
 
     <img src="https://i.imgur.com/Cj5cRMT.png"  alt="Alerta certificado https"  class="center"  style="border-radius: 8px;"  />
