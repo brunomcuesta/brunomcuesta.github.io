@@ -60,6 +60,20 @@ Varredura e Enumeração Port Scan O primeiro passo é iniciar um scan prelimina
     </item>
     
     <item>
+      <title>HackTheBox - Knife</title>
+      <link>https://brunomcuesta.github.io/posts/2021/06/hackthebox-knife/</link>
+      <pubDate>Tue, 22 Jun 2021 14:21:29 -0300</pubDate>
+      
+      <guid>https://brunomcuesta.github.io/posts/2021/06/hackthebox-knife/</guid>
+      <description>Neste &amp;lsquo;writeup&amp;rsquo; veremos a resolução da máquina &amp;lsquo;Knife&amp;rsquo; do HackTheBox.
+Informações da Máquina IP: 10.10.10.242
+Sistema Operacional: Linux
+Nível de dificuldade: Easy
+Varredura e Enumeração Port Scan Duas portas abertas foram descobertas com o Nmap: 22 e 80. Abaixo o resultado do Nmap executando o scan com os scripts padrão.
+# Nmap 7.91 scan initiated Mon Jun 21 18:20:19 2021 as: nmap -v -sC -sV -p 22,80 -Pn -oN details.</description>
+    </item>
+    
+    <item>
       <title>HackTheBox - Jewel</title>
       <link>https://brunomcuesta.github.io/posts/2021/02/hackthebox-jewel/</link>
       <pubDate>Sat, 20 Feb 2021 10:00:00 -0300</pubDate>
