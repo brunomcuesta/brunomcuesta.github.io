@@ -5,8 +5,220 @@
         <description>Recent content in Posts on Haderach</description>
         <generator>Hugo -- gohugo.io</generator>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Sat, 28 Aug 2021 14:21:00 -0300</lastBuildDate>
+        <lastBuildDate>Sat, 02 Oct 2021 22:36:39 -0300</lastBuildDate>
         <atom:link href="https://brunomcuesta.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>HackTheBox - Cap</title>
+            <link>https://brunomcuesta.github.io/posts/2021/10/hackthebox-cap/</link>
+            <pubDate>Sat, 02 Oct 2021 22:36:39 -0300</pubDate>
+            
+            <guid>https://brunomcuesta.github.io/posts/2021/10/hackthebox-cap/</guid>
+            <description>Nesta máquina do HackTheBox veremos como extrair credenciais de um arquivo .pcap. Com o usuário e senha obtidos o atacante pode logar no host e escalar privilégios abusando da &amp;lsquo;Capabilities&amp;rsquo; no binário do Python3.
+Informações da Máquina IP: 10.10.10.245
+Sistema Operacional: Linux
+Nível de dificuldade: Easy
+Varredura e Enumeração Port Scan Iniciando um scan completo em todas as portas TCP abertas com nmap:
+# Nmap 7.91 scan initiated Mon Jun 28 13:35:46 2021 as: nmap -v -sV -sC -p 21,22,80 -Pn -oN details.</description>
+            <content type="html"><![CDATA[
+    <img src="https://i.imgur.com/7WY2ppN.png"  alt="Cap Cover"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Nesta máquina do <a href="https://www.hackthebox.eu/">HackTheBox</a> veremos como extrair credenciais de um arquivo .pcap. Com o usuário e senha obtidos o atacante pode logar no host e escalar privilégios abusando da &lsquo;Capabilities&rsquo; no binário do Python3.</p>
+<h2 id="informações-da-máquina">Informações da Máquina</h2>
+<p>IP: 10.10.10.245</p>
+<p>Sistema Operacional: Linux</p>
+<p>Nível de dificuldade: Easy</p>
+<h2 id="varredura-e-enumeração">Varredura e Enumeração</h2>
+<h3 id="port-scan">Port Scan</h3>
+<p>Iniciando um scan completo em todas as portas TCP abertas com nmap:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Nmap 7.91 scan initiated Mon Jun 28 13:35:46 2021 as: nmap -v -sV -sC -p 21,22,80 -Pn -oN details.txt 10.10.10.245</span>
+Nmap scan report <span style="color:#66d9ef">for</span> 10.10.10.245
+Host is up <span style="color:#f92672">(</span>0.33s latency<span style="color:#f92672">)</span>.
+
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     vsftpd 3.0.3
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+| ssh-hostkey: 
+|   <span style="color:#ae81ff">3072</span> fa:80:a9:b2:ca:3b:88:69:a4:28:9e:39:0d:27:d5:75 <span style="color:#f92672">(</span>RSA<span style="color:#f92672">)</span>
+|   <span style="color:#ae81ff">256</span> 96:d8:f8:e3:e8:f7:71:36:c5:49:d5:9d:b6:a4:c9:0c <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
+|_  <span style="color:#ae81ff">256</span> 3f:d0:ff:91:eb:3b:f6:e1:9f:2e:8d🇩🇪b3🇩🇪b2:18 <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
+80/tcp open  http    gunicorn
+| fingerprint-strings: 
+|   FourOhFourRequest: 
+|     HTTP/1.0 <span style="color:#ae81ff">404</span> NOT FOUND
+|     Server: gunicorn
+|     Date: Mon, <span style="color:#ae81ff">28</span> Jun <span style="color:#ae81ff">2021</span> 16:48:27 GMT
+|     Connection: close
+|     Content-Type: text/html; charset<span style="color:#f92672">=</span>utf-8
+|     Content-Length: <span style="color:#ae81ff">232</span>
+|     &lt;!DOCTYPE HTML PUBLIC <span style="color:#e6db74">&#34;-//W3C//DTD HTML 3.2 Final//EN&#34;</span>&gt;
+|     &lt;title&gt;404 Not Found&lt;/title&gt;
+|     &lt;h1&gt;Not Found&lt;/h1&gt;
+|     &lt;p&gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&lt;/p&gt;
+|   GetRequest: 
+|     HTTP/1.0 <span style="color:#ae81ff">200</span> OK
+|     Server: gunicorn
+|     Date: Mon, <span style="color:#ae81ff">28</span> Jun <span style="color:#ae81ff">2021</span> 16:48:19 GMT
+|     Connection: close
+|     Content-Type: text/html; charset<span style="color:#f92672">=</span>utf-8
+|     Content-Length: <span style="color:#ae81ff">19386</span>
+|     &lt;!DOCTYPE html&gt;
+|     &lt;html class<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;no-js&#34;</span> lang<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>&gt;
+|     &lt;head&gt;
+|     &lt;meta charset<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;utf-8&#34;</span>&gt;
+|     &lt;meta http-equiv<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;x-ua-compatible&#34;</span> content<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ie=edge&#34;</span>&gt;
+|     &lt;title&gt;Security Dashboard&lt;/title&gt;
+|     &lt;meta name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;viewport&#34;</span> content<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;width=device-width, initial-scale=1&#34;</span>&gt;
+|     &lt;link rel<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;shortcut icon&#34;</span> type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;image/png&#34;</span> href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/static/images/icon/favicon.ico&#34;</span>&gt;
+|     &lt;link rel<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;stylesheet&#34;</span> href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/static/css/bootstrap.min.css&#34;</span>&gt;
+|     &lt;link rel<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;stylesheet&#34;</span> href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/static/css/font-awesome.min.css&#34;</span>&gt;
+|     &lt;link rel<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;stylesheet&#34;</span> href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/static/css/themify-icons.css&#34;</span>&gt;
+|     &lt;link rel<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;stylesheet&#34;</span> href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/static/css/metisMenu.css&#34;</span>&gt;
+|     &lt;link rel<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;stylesheet&#34;</span> href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/static/css/owl.carousel.min.css&#34;</span>&gt;
+|     &lt;link rel<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;stylesheet&#34;</span> href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/static/css/slicknav.min.css&#34;</span>&gt;
+|     &lt;!-- amchar
+|   HTTPOptions: 
+|     HTTP/1.0 <span style="color:#ae81ff">200</span> OK
+|     Server: gunicorn
+|     Date: Mon, <span style="color:#ae81ff">28</span> Jun <span style="color:#ae81ff">2021</span> 16:48:19 GMT
+|     Connection: close
+|     Content-Type: text/html; charset<span style="color:#f92672">=</span>utf-8
+|     Allow: GET, OPTIONS, HEAD
+|     Content-Length: <span style="color:#ae81ff">0</span>
+|   RTSPRequest: 
+|     HTTP/1.1 <span style="color:#ae81ff">400</span> Bad Request
+|     Connection: close
+|     Content-Type: text/html
+|     Content-Length: <span style="color:#ae81ff">196</span>
+|     &lt;html&gt;
+|     &lt;head&gt;
+|     &lt;title&gt;Bad Request&lt;/title&gt;
+|     &lt;/head&gt;
+|     &lt;body&gt;
+|     &lt;h1&gt;&lt;p&gt;Bad Request&lt;/p&gt;&lt;/h1&gt;
+|     Invalid HTTP Version &amp;<span style="color:#75715e">#x27;Invalid HTTP Version: &amp;#x27;RTSP/1.0&amp;#x27;&amp;#x27;</span>
+|     &lt;/body&gt;
+|_    &lt;/html&gt;
+| http-methods: 
+|_  Supported Methods: GET OPTIONS HEAD
+|_http-server-header: gunicorn
+|_http-title: Security Dashboard
+<span style="color:#ae81ff">1</span> service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port80-TCP:V<span style="color:#f92672">=</span>7.91%I<span style="color:#f92672">=</span>7%D<span style="color:#f92672">=</span>6/28%Time<span style="color:#f92672">=</span>60D9FA6A%P<span style="color:#f92672">=</span>x86_64-pc-linux-gnu%r<span style="color:#f92672">(</span>GetR
+SF:equest,2A94,<span style="color:#e6db74">&#34;HTTP/1\.0\x20200\x20OK\r\nServer:\x20gunicorn\r\nDate:\x20
+</span><span style="color:#e6db74">SF:Mon,\x2028\x20Jun\x202021\x2016:48:19\x20GMT\r\nConnection:\x20close\r\
+</span><span style="color:#e6db74">SF:nContent-Type:\x20text/html;\x20charset=utf-8\r\nContent-Length:\x20193
+</span><span style="color:#e6db74">SF:86\r\n\r\n&lt;!DOCTYPE\x20html&gt;\n&lt;html\x20class=\&#34;no-js\&#34;\x20lang=\&#34;en\&#34;&gt;\
+</span><span style="color:#e6db74">SF:n\n&lt;head&gt;\n\x20\x20\x20\x20&lt;meta\x20charset=\&#34;utf-8\&#34;&gt;\n\x20\x20\x20\x2
+</span><span style="color:#e6db74">SF:0&lt;meta\x20http-equiv=\&#34;x-ua-compatible\&#34;\x20content=\&#34;ie=edge\&#34;&gt;\n\x20\
+</span><span style="color:#e6db74">SF:x20\x20\x20&lt;title&gt;Security\x20Dashboard&lt;/title&gt;\n\x20\x20\x20\x20&lt;meta\
+</span><span style="color:#e6db74">SF:x20name=\&#34;viewport\&#34;\x20content=\&#34;width=device-width,\x20initial-scale=
+</span><span style="color:#e6db74">SF:1\&#34;&gt;\n\x20\x20\x20\x20&lt;link\x20rel=\&#34;shortcut\x20icon\&#34;\x20type=\&#34;image
+</span><span style="color:#e6db74">SF:/png\&#34;\x20href=\&#34;/static/images/icon/favicon\.ico\&#34;&gt;\n\x20\x20\x20\x20&lt;
+</span><span style="color:#e6db74">SF:link\x20rel=\&#34;stylesheet\&#34;\x20href=\&#34;/static/css/bootstrap\.min\.css\&#34;&gt;
+</span><span style="color:#e6db74">SF:\n\x20\x20\x20\x20&lt;link\x20rel=\&#34;stylesheet\&#34;\x20href=\&#34;/static/css/fon
+</span><span style="color:#e6db74">SF:t-awesome\.min\.css\&#34;&gt;\n\x20\x20\x20\x20&lt;link\x20rel=\&#34;stylesheet\&#34;\x20
+</span><span style="color:#e6db74">SF:href=\&#34;/static/css/themify-icons\.css\&#34;&gt;\n\x20\x20\x20\x20&lt;link\x20rel=
+</span><span style="color:#e6db74">SF:\&#34;stylesheet\&#34;\x20href=\&#34;/static/css/metisMenu\.css\&#34;&gt;\n\x20\x20\x20\x2
+</span><span style="color:#e6db74">SF:0&lt;link\x20rel=\&#34;stylesheet\&#34;\x20href=\&#34;/static/css/owl\.carousel\.min\.
+</span><span style="color:#e6db74">SF:css\&#34;&gt;\n\x20\x20\x20\x20&lt;link\x20rel=\&#34;stylesheet\&#34;\x20href=\&#34;/static/c
+</span><span style="color:#e6db74">SF:ss/slicknav\.min\.css\&#34;&gt;\n\x20\x20\x20\x20&lt;!--\x20amchar&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>HTTPOption
+SF:s,B3,<span style="color:#e6db74">&#34;HTTP/1\.0\x20200\x20OK\r\nServer:\x20gunicorn\r\nDate:\x20Mon,\x2
+</span><span style="color:#e6db74">SF:028\x20Jun\x202021\x2016:48:19\x20GMT\r\nConnection:\x20close\r\nConten
+</span><span style="color:#e6db74">SF:t-Type:\x20text/html;\x20charset=utf-8\r\nAllow:\x20GET,\x20OPTIONS,\x2
+</span><span style="color:#e6db74">SF:0HEAD\r\nContent-Length:\x200\r\n\r\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>RTSPRequest,121,<span style="color:#e6db74">&#34;HTTP/1\.1\x2
+</span><span style="color:#e6db74">SF:0400\x20Bad\x20Request\r\nConnection:\x20close\r\nContent-Type:\x20text
+</span><span style="color:#e6db74">SF:/html\r\nContent-Length:\x20196\r\n\r\n&lt;html&gt;\n\x20\x20&lt;head&gt;\n\x20\x20
+</span><span style="color:#e6db74">SF:\x20\x20&lt;title&gt;Bad\x20Request&lt;/title&gt;\n\x20\x20&lt;/head&gt;\n\x20\x20&lt;body&gt;\
+</span><span style="color:#e6db74">SF:n\x20\x20\x20\x20&lt;h1&gt;&lt;p&gt;Bad\x20Request&lt;/p&gt;&lt;/h1&gt;\n\x20\x20\x20\x20Invali
+</span><span style="color:#e6db74">SF:d\x20HTTP\x20Version\x20&amp;#x27;Invalid\x20HTTP\x20Version:\x20&amp;#x27;RTSP
+</span><span style="color:#e6db74">SF:/1\.0&amp;#x27;&amp;#x27;\n\x20\x20&lt;/body&gt;\n&lt;/html&gt;\n&#34;</span><span style="color:#f92672">)</span>%r<span style="color:#f92672">(</span>FourOhFourRequest,189
+SF:,<span style="color:#e6db74">&#34;HTTP/1\.0\x20404\x20NOT\x20FOUND\r\nServer:\x20gunicorn\r\nDate:\x20M
+</span><span style="color:#e6db74">SF:on,\x2028\x20Jun\x202021\x2016:48:27\x20GMT\r\nConnection:\x20close\r\n
+</span><span style="color:#e6db74">SF:Content-Type:\x20text/html;\x20charset=utf-8\r\nContent-Length:\x20232\
+</span><span style="color:#e6db74">SF:r\n\r\n&lt;!DOCTYPE\x20HTML\x20PUBLIC\x20\&#34;-//W3C//DTD\x20HTML\x203\.2\x20
+</span><span style="color:#e6db74">SF:Final//EN\&#34;&gt;\n&lt;title&gt;404\x20Not\x20Found&lt;/title&gt;\n&lt;h1&gt;Not\x20Found&lt;/h1&gt;
+</span><span style="color:#e6db74">SF:\n&lt;p&gt;The\x20requested\x20URL\x20was\x20not\x20found\x20on\x20the\x20ser
+</span><span style="color:#e6db74">SF:ver\.\x20If\x20you\x20entered\x20the\x20URL\x20manually\x20please\x20ch
+</span><span style="color:#e6db74">SF:eck\x20your\x20spelling\x20and\x20try\x20again\.&lt;/p&gt;\n&#34;</span><span style="color:#f92672">)</span>;
+Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+<span style="color:#75715e"># Nmap done at Mon Jun 28 13:38:30 2021 -- 1 IP address (1 host up) scanned in 164.00 seconds</span>
+</code></pre></div><h3 id="webserver">Webserver</h3>
+<p>Acessando a aplicação web na porta 80 é mostrado um &lsquo;dashboard&rsquo; com o nome de um usuário no canto superior direito.</p>
+
+    <img src="https://i.imgur.com/4JXFQ7T.png"  alt="Dashboard"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>No menú sidebar três opções podem ser selecionadas e em cada uma é mostrada a saída de um comando executado no server: O &lsquo;Ipconfig&rsquo;, o &lsquo;Network Status&rsquo; (Netstat) e o &lsquo;Security Snapshots&rsquo; (comando que gera um arquivo .pcap, contendo todo o tráfego entre o usuário e o host).</p>
+
+    <img src="https://i.imgur.com/4JXFQ7T.png"  alt="Dashboard"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Na URL de download do arquivo .pcap percebe-se que o parâmetro passado é &lsquo;1&rsquo;.</p>
+
+    <img src="https://i.imgur.com/jL3FIhX.png"  alt="Download pcap"  class="center"  style="border-radius: 8px;"  />
+
+
+<h2 id="vulnerabilidade">Vulnerabilidade</h2>
+<p>O conteúdo do arquivo 1.pcap é apenas o tráfego da máquina local com o host. Ao tentar com 2, 3, 4 e 5 outros pcaps puderam ser baixados, mas com o tráfego de outros usuários do HackTheBox que estavam acessando o host. Ao colocar na URL o 0 (zero) o &lsquo;0.pcap&rsquo; também estava disponível, mas agora contendo o tráfego interno. Ao abrir o arquivo e analisá-lo pelo Wireshark foi possível encontrar a senha <strong>Buck3tH4TF0RM3!</strong> do usuário <strong>nathan</strong>.</p>
+
+    <img src="https://i.imgur.com/0JYSrCk.png"  alt="Wireshark password"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Detalhes do &lsquo;TCP Stream&rsquo;.</p>
+
+    <img src="https://i.imgur.com/tW6bVrW.png"  alt="Credenciais FTP"  class="center"  style="border-radius: 8px;"  />
+
+
+<h2 id="exploração">Exploração</h2>
+<p>Com estas credenciais foi possível acessar o host via FTP e obter a flag do usuário no arquivo user.txt.</p>
+
+    <img src="https://i.imgur.com/pj6Agms.png"  alt="Login FTP"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>A mesma credencial permite o acesso ao host via SSH.</p>
+
+    <img src="https://i.imgur.com/qK1pH9h.png"  alt="Login SSH"  class="center"  style="border-radius: 8px;"  />
+
+
+<h2 id="escalação-de-privilégios">Escalação de Privilégios</h2>
+<p>O usuário nathan não possui permissões com o sudo, o que impede obter privilégios de root em algum script ou binário.</p>
+
+    <img src="https://i.imgur.com/JOL1vBe.png"  alt="Sudo"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Para obter mais informações sobre o host, configurações e permissões foi executado o script <strong>linpeas.sh</strong>. O resultado mostrou que o o Python3 possui uma configuração de permissões (Capabilities) que o deixa vulnerável a escalação de privilégios. As Capabilities são usadas ​​para permitir que binários (executados por usuários não root) realizem ações privilegiadas sem fornecer a eles todas as permissões de root.</p>
+
+    <img src="https://i.imgur.com/gRzAbXC.png"  alt="Python capabilities"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Consultando o site <a href="https://book.hacktricks.xyz/linux-unix/privilege-escalation/linux-capabilities">HackTricks</a> e <a href="https://gtfobins.github.io/gtfobins/python/#capabilities">GTFobins</a> podemos encontrar a forma de escalar privilégios pelo Python e obter a shell do root.</p>
+
+    <img src="https://i.imgur.com/MPkiR0X.png"  alt="GTFobins capabilities"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Pelo próprio terminal também é possível listar as capabilities de um usuário, com o comando <strong>getcap</strong>. Na primeira linha aparece o python3.8.</p>
+
+    <img src="https://i.imgur.com/88YCUe0.png"  alt="Comando getcap"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Executando o comando sugerido pelo GTFogins para obter shell de root.</p>
+
+    <img src="https://i.imgur.com/nQCmsHB.png"  alt="Shell root"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Obtendo a flag do usuário root.</p>
+
+    <img src="https://i.imgur.com/T0aKTkj.png"  alt="Flag root"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Até a próxima!</p>
+]]></content>
+        </item>
         
         <item>
             <title>HackTheBox - Knife</title>
