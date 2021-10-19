@@ -5,8 +5,73 @@
         <description>Recent content in Posts on Haderach</description>
         <generator>Hugo -- gohugo.io</generator>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Sat, 02 Oct 2021 22:36:39 -0300</lastBuildDate>
+        <lastBuildDate>Tue, 19 Oct 2021 18:57:35 -0300</lastBuildDate>
         <atom:link href="https://brunomcuesta.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Extraindo credenciais e arquivos de pcap com o Zeek</title>
+            <link>https://brunomcuesta.github.io/posts/2021/10/extraindo-credenciais-e-arquivos-de-pcap-com-o-zeek/</link>
+            <pubDate>Tue, 19 Oct 2021 18:57:35 -0300</pubDate>
+            
+            <guid>https://brunomcuesta.github.io/posts/2021/10/extraindo-credenciais-e-arquivos-de-pcap-com-o-zeek/</guid>
+            <description>Muitos profissionais da área de segurança defensiva e ofensiva costumam usar o tcpdump e Wireshark para analisar o tráfego de rede e extrair credenciais e arquivos do pcap. Em busca de uma nova ferramenta para análise de pcap encontrei o Zeek.
+Esta é a descrição da ferramenta de acordo com a documentação.
+Zeek é um analisador de tráfego de rede passivo e de código aberto. Muitos operadores usam Zeek como um monitor de segurança de rede (NSM) para apoiar investigações de atividades suspeitas ou maliciosas.</description>
+            <content type="html"><![CDATA[<p>Muitos profissionais da área de segurança defensiva e ofensiva costumam usar o <a href="https://www.tcpdump.org/manpages/tcpdump.1.html">tcpdump</a> e <a href="https://www.wireshark.org/">Wireshark</a> para analisar o tráfego de rede e extrair credenciais e arquivos do pcap. Em busca de uma nova ferramenta para análise de pcap encontrei o <a href="https://docs.zeek.org/en/current/index.html">Zeek</a>.</p>
+<p>Esta é a <a href="https://docs.zeek.org/en/current/about.html">descrição</a> da ferramenta de acordo com a documentação.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">Zeek é um analisador de tráfego de rede passivo e de código aberto.
+Muitos operadores usam Zeek como um monitor de segurança de rede (NSM) 
+para apoiar investigações de atividades suspeitas ou maliciosas. 
+Zeek também oferece suporte a uma ampla gama de tarefas de análise de 
+tráfego além do domínio da segurança, incluindo medição de desempenho 
+e solução de problemas.
+</code></pre></div><p>O desafio em questão é extrair credenciais FTP e um arquivo PDF de um arquivo chamado &lsquo;invasao.pcap&rsquo; gerado por uma equipe de segurança defensiva. Ao invés de usar o Wireshark para analisar os frames, vamos usar o Zeek.</p>
+<p>Instalando o Zeek no Kali Linux.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt install zeek
+</code></pre></div><p>O Zeek gera arquivos .log e cada arquivo terá o seu conteúdo correspondente. O formato dos logs <a href="https://docs.zeek.org/en/current/log-formats.html">pode ser escolhido pelo usuário</a>, neste caso será usado o json. Além de extrair os dados é possível extrair os arquivos passando como parâmetro o &lsquo;path&rsquo; do seu plugin de extração.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">zeek -C -r invasao.pcap LogAscii::use_json<span style="color:#f92672">=</span>T /usr/share/zeek/policy/frameworks/files/extract-all-files.zeek
+</code></pre></div><p>Na imagem abaixo vemos os arquivos gerados pelo Zeek e um diretório &lsquo;extract_files&rsquo; com todos os arquivos que ele extraiu do pcap.</p>
+
+    <img src="https://i.imgur.com/roVHR5M.png"  alt="Diretório com arquivos log"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Por padrão o Zeek não mostra as senhas FTP em texto plano, então é necessário alterar o seu arquivo de configuração.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo vi /usr/share/zeek/base/protocols/ftp/info.zeek
+</code></pre></div><p>Alterar a linha abaixo de &lsquo;F&rsquo; (false) para &lsquo;T&rsquo; (true).</p>
+
+    <img src="https://i.imgur.com/OUlRBqf.png"  alt="info.zeek"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Para visualizar os dados no formato json e de forma colorida pelo terminal é necessário instalar o &lsquo;jq&rsquo;.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt install jq
+</code></pre></div><p>Com o &lsquo;jq&rsquo; podemos visualizar o conteúdo do arquivo ftp.log e as credenciais FTP.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">jq . ftp.log
+</code></pre></div>
+    <img src="https://i.imgur.com/eKAyPZl.png"  alt="ftp.log"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Agora podemos acessar a pasta &lsquo;extract_files&rsquo; e conferir os arquivos extraídos. O arquivo sensível é um PDF, então podemos listar os arquivos e identificá-lo pelo seu maior tamanho ou pela sua <strong>fuid</strong>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ls -lah
+</code></pre></div>
+    <img src="https://i.imgur.com/BqpCHBs.png"  alt="Listando arquivos"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Identificando o arquivo PDF com o comando &lsquo;file&rsquo;.</p>
+
+    <img src="https://i.imgur.com/a2GCQG1.png"  alt="Listando arquivos"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Com o arquivo identificado, basta renomeá-lo.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mv extract-1569431588.592514-FTP_DATA-FHlq6m1Wa75SNeFFFf documento.pdf
+</code></pre></div><p>Abrindo o documento.pdf.</p>
+
+    <img src="https://i.imgur.com/IJ7ywvu.png"  alt="documento.pdf"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Neste artigo foi demonstrado como o Zeek pode ser útil para extrair informações confidenciais e arquivos sensíveis de arquivos pcap. Muito recomendado para Blue Team, Red Team, Forensis e CTF Players.</p>
+<p>Até a próxima!</p>
+]]></content>
+        </item>
         
         <item>
             <title>HackTheBox - Cap</title>

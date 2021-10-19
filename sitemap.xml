@@ -3,27 +3,52 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://brunomcuesta.github.io/tags/ctf/</loc>
+    <lastmod>2021-10-19T18:57:35-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://brunomcuesta.github.io/posts/2021/10/extraindo-credenciais-e-arquivos-de-pcap-com-o-zeek/</loc>
+    <lastmod>2021-10-19T18:57:35-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://brunomcuesta.github.io/tags/forensis/</loc>
+    <lastmod>2021-10-19T18:57:35-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://brunomcuesta.github.io/</loc>
+    <lastmod>2021-10-19T18:57:35-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://brunomcuesta.github.io/tags/pentest/</loc>
+    <lastmod>2021-10-19T18:57:35-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://brunomcuesta.github.io/posts/</loc>
+    <lastmod>2021-10-19T18:57:35-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://brunomcuesta.github.io/tags/redteam/</loc>
+    <lastmod>2021-10-19T18:57:35-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://brunomcuesta.github.io/tags/</loc>
+    <lastmod>2021-10-19T18:57:35-03:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://brunomcuesta.github.io/tags/hackthebox/</loc>
     <lastmod>2021-10-02T22:36:39-03:00</lastmod>
   </url>
   
   <url>
     <loc>https://brunomcuesta.github.io/posts/2021/10/hackthebox-cap/</loc>
-    <lastmod>2021-10-02T22:36:39-03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://brunomcuesta.github.io/</loc>
-    <lastmod>2021-10-02T22:36:39-03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://brunomcuesta.github.io/posts/</loc>
-    <lastmod>2021-10-02T22:36:39-03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://brunomcuesta.github.io/tags/</loc>
     <lastmod>2021-10-02T22:36:39-03:00</lastmod>
   </url>
   
