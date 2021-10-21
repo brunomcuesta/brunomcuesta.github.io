@@ -6,7 +6,16 @@
     <description>Recent content on Haderach</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Tue, 19 Oct 2021 18:57:35 -0300</lastBuildDate><atom:link href="https://brunomcuesta.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 21 Oct 2021 12:28:42 -0300</lastBuildDate><atom:link href="https://brunomcuesta.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HackTheBox - Dynstr</title>
+      <link>https://brunomcuesta.github.io/posts/2021/10/hackthebox-dynstr/</link>
+      <pubDate>Thu, 21 Oct 2021 12:28:42 -0300</pubDate>
+      
+      <guid>https://brunomcuesta.github.io/posts/2021/10/hackthebox-dynstr/</guid>
+      <description>Nesta máquina do HackTheBox o atacante deve explorar uma vulnerabilidade em um servidor de DNS dinâmico. Um script PHP, que é responsável pela atualização dos nomes de subdomínios, recebe um parâmetro via GET e o executa sem nenhum tipo de tratamento, o que permite a um atacante injetar código malicioso em um request e acessar o servidor. O script executa o nsupdate, o que permite ao invasor o registro de um subdomínio no server.</description>
+    </item>
+    
     <item>
       <title>Extraindo credenciais e arquivos de pcap com o Zeek</title>
       <link>https://brunomcuesta.github.io/posts/2021/10/extraindo-credenciais-e-arquivos-de-pcap-com-o-zeek/</link>

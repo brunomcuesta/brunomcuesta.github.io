@@ -6,7 +6,25 @@
     <description>Recent content in Tags on Haderach</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Tue, 19 Oct 2021 18:57:35 -0300</lastBuildDate><atom:link href="https://brunomcuesta.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 21 Oct 2021 12:28:42 -0300</lastBuildDate><atom:link href="https://brunomcuesta.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>hackthebox</title>
+      <link>https://brunomcuesta.github.io/tags/hackthebox/</link>
+      <pubDate>Thu, 21 Oct 2021 12:28:42 -0300</pubDate>
+      
+      <guid>https://brunomcuesta.github.io/tags/hackthebox/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>writeup</title>
+      <link>https://brunomcuesta.github.io/tags/writeup/</link>
+      <pubDate>Thu, 21 Oct 2021 12:28:42 -0300</pubDate>
+      
+      <guid>https://brunomcuesta.github.io/tags/writeup/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>ctf</title>
       <link>https://brunomcuesta.github.io/tags/ctf/</link>
@@ -40,24 +58,6 @@
       <pubDate>Tue, 19 Oct 2021 18:57:35 -0300</pubDate>
       
       <guid>https://brunomcuesta.github.io/tags/redteam/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>hackthebox</title>
-      <link>https://brunomcuesta.github.io/tags/hackthebox/</link>
-      <pubDate>Sat, 02 Oct 2021 22:36:39 -0300</pubDate>
-      
-      <guid>https://brunomcuesta.github.io/tags/hackthebox/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>writeup</title>
-      <link>https://brunomcuesta.github.io/tags/writeup/</link>
-      <pubDate>Sat, 02 Oct 2021 22:36:39 -0300</pubDate>
-      
-      <guid>https://brunomcuesta.github.io/tags/writeup/</guid>
       <description></description>
     </item>
     
