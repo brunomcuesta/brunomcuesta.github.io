@@ -45,7 +45,7 @@
 <meta itemprop="description" content="Nesta máquina do HackTheBox o atacante deve explorar uma vulnerabilidade em um servidor de DNS dinâmico. Um script PHP, que é responsável pela atualização dos nomes de subdomínios, recebe um parâmetro via GET e o executa sem nenhum tipo de tratamento, o que permite a um atacante injetar código malicioso em um request e acessar o servidor. O script executa o nsupdate, o que permite ao invasor o registro de um subdomínio no server.">
 <meta itemprop="datePublished" content="2021-10-21T12:28:42-03:00" />
 <meta itemprop="dateModified" content="2021-10-21T12:28:42-03:00" />
-<meta itemprop="wordCount" content="1667">
+<meta itemprop="wordCount" content="1664">
 <meta itemprop="image" content="https://brunomcuesta.github.io"/>
 
 
@@ -281,7 +281,7 @@ User-Agent: Company DeviceName-Model/FirmwareVersionNumber maintainer-contact@ex
     <img src="https://i.imgur.com/FVZpshK.png"  alt="Update file"  class="center"  style="border-radius: 8px;"  />
 
 
-<p>Analisando o script PHP podemos visualizar a vulnerabilidade no parâmetro <strong>hostname</strong>. O payload é rebebido com <strong>$_GET[&lsquo;hostname&rsquo;]</strong> e armazenado na variável <strong>$h</strong> através de interpolação. Logo abaixo aparece um <strong>$cmd</strong>, que é outra variável e monta a string de comando a ser executada no servidor (e junto vai o comando malicioso injetado pelo atacante). Finalmente surge o comando <strong>system</strong> do PHP que vai executar a string de comando armazenada em <strong>$cmd</strong>.</p>
+<p>Analisando o script PHP podemos visualizar a vulnerabilidade no parâmetro <strong>hostname</strong>. O payload é rebebido com <strong>$_GET[&lsquo;hostname&rsquo;]</strong> e armazenado na variável <strong>$h</strong>. Logo abaixo aparece um <strong>$cmd</strong>, que é outra variável e monta a string de comando a ser executada no servidor (e junto vai o comando malicioso injetado pelo atacante). Finalmente surge o comando <strong>system</strong> do PHP que vai executar a string de comando armazenada em <strong>$cmd</strong>.</p>
 <p>Estas são as linhas do script que permitiram a exploração da vulnerabilidade através do curl e BurpSuite.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#66d9ef">list</span>($h,$d) <span style="color:#f92672">=</span> <span style="color:#a6e22e">explode</span>(<span style="color:#e6db74">&#34;.&#34;</span>,$_GET[<span style="color:#e6db74">&#39;hostname&#39;</span>],<span style="color:#ae81ff">2</span>); 
 $cmd <span style="color:#f92672">=</span> <span style="color:#a6e22e">sprintf</span>(<span style="color:#e6db74">&#34;server 127.0.0.1</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">zone %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">update delete %s.</span><span style="color:#e6db74">$s\nupdate</span><span style="color:#e6db74"> add %s.%s 30 IN A %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">send</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,$d,$h,$d,$h,$d,$myip);
@@ -466,7 +466,7 @@ echo &gt; --preserve<span style="color:#f92672">=</span>mode
           <line x1="16" y1="17" x2="8" y2="17"></line>
           <polyline points="10 9 9 9 8 9"></polyline>
         </svg>
-        1667 Palavras
+        1664 Palavras
       </p>
 
       <p>
